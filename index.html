@@ -42,9 +42,14 @@
                         <p class="text-xs text-emerald-100 mt-1 font-medium">Presidencia Roque Sáenz Peña, Chaco</p>
                     </div>
                 </div>
-                <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="bg-white text-emerald-900 hover:bg-emerald-50 active:scale-95 transition font-bold text-sm px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5">
-                    <span class="text-lg leading-none">+</span> <span id="textoBotonPrincipal">Falta Uno</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="abrirModalAdmin()" class="bg-black/30 hover:bg-black/50 text-emerald-200 p-2.5 rounded-xl text-sm transition shadow" title="Panel Administrador">
+                        ⚙️
+                    </button>
+                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="bg-white text-emerald-900 hover:bg-emerald-50 active:scale-95 transition font-bold text-sm px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5">
+                        <span class="text-lg leading-none">+</span> <span id="textoBotonPrincipal">Falta Uno</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Selector de Secciones (Tabs) -->
@@ -288,6 +293,60 @@
         </div>
     </div>
 
+    <!-- ==================== MODAL 3: PANEL ADMINISTRADOR ==================== -->
+    <div id="modalAdminLogin" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
+            <h3 class="text-lg font-extrabold text-white mb-1">🔐 Acceso Administrador</h3>
+            <p class="text-xs text-slate-400 mb-4">Ingresá tu contraseña para gestionar complejos.</p>
+            <input type="password" id="adminPasswordInput" placeholder="Contraseña..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white mb-4 focus:outline-none focus:border-emerald-500">
+            <div class="flex gap-2">
+                <button onclick="cerrarModalAdmin()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-sm">Cancelar</button>
+                <button onclick="verificarAdminPassword()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-sm">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalAdminPanel" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-extrabold text-white">⚙️ Gestión de Complejos y PINs</h2>
+                <button onclick="cerrarPanelAdmin()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form id="formAgregarComplejoAdmin" onsubmit="guardarComplejoAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700 mb-5">
+                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Nuevo Complejo</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre Complejo</label>
+                        <input type="text" id="adminNombreComp" placeholder="Ej: Complejo Gol" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">PIN (4 dígitos)</label>
+                        <input type="text" id="adminPinComp" maxlength="4" placeholder="Ej: 5050" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white tracking-widest font-bold">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Dirección / Ubicación</label>
+                        <input type="text" id="adminDirComp" placeholder="Ej: Calle 14 y 9" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
+                        <input type="tel" id="adminWspComp" placeholder="Ej: 3644123456" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                    Guardar y Habilitar Complejo
+                </button>
+            </form>
+
+            <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Complejos Activos en la Ciudad</h3>
+            <div id="listaComplejosAdmin" class="space-y-2.5">
+                <!-- Se llena por JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Súmate Rápido -->
     <div id="modalSumarse" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
@@ -306,10 +365,10 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =========================================================================
-        // 🔑 CONFIGURACIÓN DE FIREBASE (CONFIGURADO Y LISTO)
+        // 🔑 CONFIGURACIÓN DE FIREBASE
         // =========================================================================
         const miFirebaseConfig = {
             apiKey: "AIzaSyDFQHssEPXm4APUolV5CFOw1-dWSauHqAg",
@@ -320,19 +379,18 @@
             appId: "1:415745937408:web:bfd5828092332b0c1388e5"
         };
 
-        // Detecta entorno automático si existe, sino usa miFirebaseConfig
         const firebaseConfig = (typeof __firebase_config !== 'undefined')
             ? JSON.parse(__firebase_config)
             : miFirebaseConfig;
 
         const appId = (typeof __app_id !== 'undefined') ? __app_id : 'corriendo-la-bola-sp';
 
-        // Base local de Complejos Autorizados en Sáenz Peña (PIN -> Datos oficiales)
-        const COMPLEJOS_AUTORIZADOS = {
-            "1010": { nombre: "Complejo La Red", direccion: "Calle 14 y 21, Sáenz Peña", whatsapp: "3644111111" },
-            "2020": { nombre: "El Predio Fútbol 5", direccion: "Ruta 16 Km 174, Sáenz Peña", whatsapp: "3644222222" },
-            "3030": { nombre: "Cancha El Galpón", direccion: "Calle 9 e/ 12 y 14, Sáenz Peña", whatsapp: "3644333333" },
-            "4040": { nombre: "Club Unión (Canchas Auxiliares)", direccion: "Av. 1 y Calle 18, Sáenz Peña", whatsapp: "3644444444" }
+        // Base por defecto (se complementa con Firestore en tiempo real)
+        let COMPLEJOS_AUTORIZADOS = {
+            "1010": { id: "default_1", nombre: "Complejo La Red", direccion: "Calle 14 y 21, Sáenz Peña", whatsapp: "3644111111" },
+            "2020": { id: "default_2", nombre: "El Predio Fútbol 5", direccion: "Ruta 16 Km 174, Sáenz Peña", whatsapp: "3644222222" },
+            "3030": { id: "default_3", nombre: "Cancha El Galpón", direccion: "Calle 9 e/ 12 y 14, Sáenz Peña", whatsapp: "3644333333" },
+            "4040": { id: "default_4", nombre: "Club Unión (Canchas Auxiliares)", direccion: "Av. 1 y Calle 18, Sáenz Peña", whatsapp: "3644444444" }
         };
 
         let db, auth;
@@ -340,6 +398,7 @@
         let filtroActual = 'todos';
         let partidosCache = [];
         let canchasCache = [];
+        let complejosAdminCache = [];
         let modoTurnoActual = 'complejo';
         let complejoVerificadoActual = null;
 
@@ -391,6 +450,95 @@
         window.cerrarModalTurno = () => {
             document.getElementById('modalTurno').classList.add('hidden');
         };
+
+        // ==================== PANEL ADMIN ====================
+        window.abrirModalAdmin = () => {
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('modalAdminLogin').classList.remove('hidden');
+        };
+
+        window.cerrarModalAdmin = () => {
+            document.getElementById('modalAdminLogin').classList.add('hidden');
+        };
+
+        window.verificarAdminPassword = () => {
+            const pass = document.getElementById('adminPasswordInput').value.trim();
+            if (pass === 'atitomelero') {
+                cerrarModalAdmin();
+                document.getElementById('modalAdminPanel').classList.remove('hidden');
+                renderizarAdminComplejos();
+            } else {
+                alert("❌ Contraseña incorrecta");
+            }
+        };
+
+        window.cerrarPanelAdmin = () => {
+            document.getElementById('modalAdminPanel').classList.add('hidden');
+        };
+
+        window.guardarComplejoAdmin = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando a base de datos...");
+
+            const nuevo = {
+                nombre: document.getElementById('adminNombreComp').value.trim(),
+                pin: document.getElementById('adminPinComp').value.trim(),
+                direccion: document.getElementById('adminDirComp').value.trim(),
+                whatsapp: document.getElementById('adminWspComp').value.trim(),
+                creadoEn: serverTimestamp()
+            };
+
+            if (nuevo.pin.length !== 4) {
+                return alert("El PIN debe tener exactamente 4 dígitos.");
+            }
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), nuevo);
+                document.getElementById('formAgregarComplejoAdmin').reset();
+                alert("✅ Complejo guardado y habilitado con éxito.");
+            } catch (err) {
+                console.error(err);
+                alert("Error al guardar en Firestore.");
+            }
+        };
+
+        window.eliminarComplejoAdmin = async (id) => {
+            if (confirm("¿Estás seguro de eliminar este complejo de la lista oficial?")) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_complexes', id));
+                } catch (err) {
+                    console.error(err);
+                    alert("No se pudo eliminar.");
+                }
+            }
+        };
+
+        function renderizarAdminComplejos() {
+            const contenedor = document.getElementById('listaComplejosAdmin');
+            
+            // Unimos los predeterminados y los de Firestore
+            let todos = [
+                ...Object.keys(COMPLEJOS_AUTORIZADOS).map(pin => ({ pin, ...COMPLEJOS_AUTORIZADOS[pin] })),
+                ...complejosAdminCache
+            ];
+
+            contenedor.innerHTML = todos.map(c => `
+                <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center justify-between gap-2">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-bold px-2 py-0.5 rounded">PIN: ${c.pin || 'Predeterminado'}</span>
+                            <h4 class="text-xs font-bold text-white">${c.nombre}</h4>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5">📍 ${c.direccion} • 📱 ${c.whatsapp}</p>
+                    </div>
+                    ${c.id && !c.id.startsWith('default') ? `
+                        <button onclick="eliminarComplejoAdmin('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold">
+                            Eliminar
+                        </button>
+                    ` : `<span class="text-[10px] text-slate-500 italic">Sistema</span>`}
+                </div>
+            `).join('');
+        }
 
         window.toggleCanchaCustom = () => {
             const val = document.getElementById('canchaSelect').value;
@@ -448,8 +596,14 @@
             const inputDir = document.getElementById('turnoDireccion');
             const inputWsp = document.getElementById('turnoWhatsapp');
 
-            if (COMPLEJOS_AUTORIZADOS[pin]) {
-                const datos = COMPLEJOS_AUTORIZADOS[pin];
+            // Combinar complejos estáticos y dinámicos
+            let mapaComplejos = { ...COMPLEJOS_AUTORIZADOS };
+            complejosAdminCache.forEach(c => {
+                mapaComplejos[c.pin] = c;
+            });
+
+            if (mapaComplejos[pin]) {
+                const datos = mapaComplejos[pin];
                 complejoVerificadoActual = datos;
                 inputComp.value = datos.nombre;
                 inputDir.value = datos.direccion;
@@ -468,7 +622,11 @@
         };
 
         window.mostrarPinsDemo = () => {
-            alert("🔑 PINs de prueba para Complejos en Sáenz Peña:\n\n• 1010 → Complejo La Red\n• 2020 → El Predio Fútbol 5\n• 3030 → Cancha El Galpón\n• 4040 → Club Unión");
+            let listaPins = "🔑 PINs de complejos en Sáenz Peña:\n\n• 1010 → Complejo La Red\n• 2020 → El Predio Fútbol 5\n• 3030 → Cancha El Galpón\n• 4040 → Club Unión";
+            complejosAdminCache.forEach(c => {
+                listaPins += `\n• ${c.pin} → ${c.nombre}`;
+            });
+            alert(listaPins);
         };
 
         window.setFiltro = (filtro) => {
@@ -748,6 +906,14 @@
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), (snap) => {
                             canchasCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarCanchas();
+                        });
+
+                        // Escuchar Complejos Admin
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), (snap) => {
+                            complejosAdminCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
+                                renderizarAdminComplejos();
+                            }
                         });
                     }
                 });
