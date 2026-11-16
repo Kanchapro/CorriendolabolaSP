@@ -516,7 +516,6 @@
         function renderizarAdminComplejos() {
             const contenedor = document.getElementById('listaComplejosAdmin');
             
-            // Unimos los predeterminados y los de Firestore
             let todos = [
                 ...Object.keys(COMPLEJOS_AUTORIZADOS).map(pin => ({ pin, ...COMPLEJOS_AUTORIZADOS[pin] })),
                 ...complejosAdminCache
@@ -596,7 +595,6 @@
             const inputDir = document.getElementById('turnoDireccion');
             const inputWsp = document.getElementById('turnoWhatsapp');
 
-            // Combinar complejos estáticos y dinámicos
             let mapaComplejos = { ...COMPLEJOS_AUTORIZADOS };
             complejosAdminCache.forEach(c => {
                 mapaComplejos[c.pin] = c;
@@ -793,13 +791,16 @@
         // ==================== GUARDADO EN FIRESTORE ====================
         window.guardarPartido = async (e) => {
             e.preventDefault();
-            if (!db) return alert("Conectando a la base de datos, intentá en unos segundos.");
+            if (!db) {
+                alert("Conectando a la base de datos, intentá en unos segundos.");
+                return;
+            }
 
             const canchaSel = document.getElementById('canchaSelect').value;
             const cancha = canchaSel === 'otra' ? document.getElementById('canchaCustom').value.trim() : canchaSel;
 
             const nuevoPartido = {
-                cancha,
+                cancha: cancha,
                 dia: document.getElementById('dia').value,
                 hora: document.getElementById('hora').value,
                 modalidad: document.getElementById('modalidad').value,
@@ -817,17 +818,21 @@
                 document.getElementById('formPartido').reset();
                 window.cerrarModalPartido();
             } catch (err) {
-                console.error(err);
-                alert("Error al publicar el partido. Verificá tu configuración de Firebase.");
+                console.error("Error detallado al guardar partido:", err);
+                alert("Error al publicar el partido. Verificá la consola para más detalles.");
             }
         };
 
         window.guardarTurno = async (e) => {
             e.preventDefault();
-            if (!db) return alert("Conectando a la base de datos, intentá en unos segundos.");
+            if (!db) {
+                alert("Conectando a la base de datos, intentá en unos segundos.");
+                return;
+            }
 
             if (modoTurnoActual === 'complejo' && !complejoVerificadoActual) {
-                return alert("⚠️ Ingresá un PIN válido de 4 dígitos para publicar como Complejo Verificado (o cambiá a modo 'Jugador').");
+                alert("⚠️ Ingresá un PIN válido de 4 dígitos para publicar como Complejo Verificado (o cambiá a modo 'Jugador').");
+                return;
             }
 
             const nuevoTurno = {
@@ -848,15 +853,18 @@
                 document.getElementById('formTurno').reset();
                 window.cerrarModalTurno();
             } catch (err) {
-                console.error(err);
-                alert("Error al publicar el turno. Verificá las reglas de Firestore.");
+                console.error("Error detallado al guardar turno:", err);
+                alert("Error al publicar el turno. Verificá la consola para más detalles.");
             }
         };
 
         window.confirmarSumarse = async () => {
             const id = document.getElementById('partidoIdSumarse').value;
             const nombre = document.getElementById('nombreJugadorSumarse').value.trim();
-            if (!nombre) return alert("Escribí tu nombre o apodo para anotarte.");
+            if (!nombre) {
+                alert("Escribí tu nombre o apodo para anotarte.");
+                return;
+            }
 
             localStorage.setItem('clb_apodo', nombre);
             try {
@@ -866,7 +874,7 @@
                 });
                 window.cerrarModalSumarse();
             } catch (err) {
-                console.error(err);
+                console.error("Error al sumarse:", err);
                 alert("No se pudo registrar tu lugar.");
             }
         };
@@ -878,7 +886,7 @@
 
             if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "TU_API_KEY") {
                 statusDot.className = "w-2 h-2 rounded-full bg-rose-500";
-                statusText.textContent = "Falta configurar firebaseConfig en el código para sincronizar en GitHub";
+                statusText.textContent = "Falta configurar firebaseConfig en el código";
                 renderizarPartidos();
                 renderizarCanchas();
                 return;
@@ -900,12 +908,16 @@
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
                             partidosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarPartidos();
+                        }, (error) => {
+                            console.error("Error en snapshot matches:", error);
                         });
 
                         // Escuchar Canchas Libres
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), (snap) => {
                             canchasCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarCanchas();
+                        }, (error) => {
+                            console.error("Error en snapshot courts:", error);
                         });
 
                         // Escuchar Complejos Admin
@@ -914,16 +926,19 @@
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
                                 renderizarAdminComplejos();
                             }
+                        }, (error) => {
+                            console.error("Error en snapshot admin_complexes:", error);
                         });
                     }
                 });
             } catch (error) {
-                console.error("Error Firebase:", error);
+                console.error("Error general de Firebase:", error);
                 statusDot.className = "w-2 h-2 rounded-full bg-rose-500";
                 statusText.textContent = "Error de conexión con Firebase";
             }
         }
 
+        ininarApp = iniciarApp;
         iniciarApp();
     </script>
 </body>
