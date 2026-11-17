@@ -119,7 +119,7 @@
             </div>
         </section>
 
-        <!-- ==================== SECCIÓN 2: CANCHAS LIBRES ORDENADAS POR DÍA ==================== -->
+        <!-- ==================== SECCIÓN 2: CANCHAS LIBRES ==================== -->
         <section id="vista-canchas" class="hidden">
             <div class="flex items-center justify-between mb-4 bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-4 shadow-sm">
                 <div>
@@ -131,7 +131,6 @@
                 </button>
             </div>
 
-            <!-- Lista de Turnos Agrupados por Fecha -->
             <div id="listaCanchas" class="space-y-6">
                 <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos disponibles...</div>
             </div>
@@ -149,7 +148,7 @@
                 </div>
             </div>
 
-            <!-- Banner 2: Tercer Tiempo (Kioscos / Promos) -->
+            <!-- Banner 2: Tercer Tiempo -->
             <div class="bg-slate-900/80 border border-amber-500/30 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
                 <div id="contenedorBanner2" class="w-full transition-opacity duration-500">
                     <p class="text-[10px] text-amber-500/70">🍻 Tercer Tiempo</p>
@@ -202,7 +201,7 @@
                     </div>
                     <div id="campoFaltanContainer">
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
                     </div>
                     <div id="campoPuestoContainer">
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
@@ -334,7 +333,6 @@
                 <button onclick="cerrarPanelAdmin()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <!-- Pestañas del Admin -->
             <div class="grid grid-cols-3 gap-1.5 bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
                 <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
                 <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition">Sponsors</button>
@@ -369,8 +367,6 @@
                         Guardar y Habilitar Complejo
                     </button>
                 </form>
-
-                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Complejos Activos en la Ciudad</h3>
                 <div id="listaComplejosAdmin" class="space-y-2.5"></div>
             </div>
 
@@ -379,16 +375,16 @@
                 <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event, 'ads_banners', 'Banner 1')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
                     <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Anuncio (Banner 1 Izquierdo)</h3>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local / Negocio</label>
-                        <input type="text" id="adminAdTitle" placeholder="Ej: Proveeduría Deportiva" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local</label>
+                        <input type="text" id="adminAdTitle" placeholder="Ej: Proveeduría" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF (Recomendado 800x200px)</label>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF</label>
                         <input type="url" id="adminAdImgUrl" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp</label>
                             <input type="tel" id="adminAdWsp" placeholder="3644..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                         <div>
@@ -398,31 +394,28 @@
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje de WhatsApp</label>
-                        <input type="text" id="adminAdMsg" placeholder="Hola, los vi en Falta Uno SP..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="adminAdMsg" placeholder="Hola..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">
-                        Guardar Banner 🖼️
-                    </button>
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">Guardar Banner</button>
                 </form>
-                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Anuncios Activos (Banner 1)</h3>
                 <div id="listaAdsAdmin" class="space-y-2.5"></div>
             </div>
 
             <!-- CONTENIDO TAB 3: TERCER TIEMPO -->
             <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
                 <form id="formAgregarTtAdmin" onsubmit="guardarAdAdmin(event, 'tercer_tiempo_banners', 'Tercer Tiempo')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-amber-500/30">
-                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">🍻 Agregar Promo / Kiosco (Banner 2 Derecho)</h3>
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">🍻 Agregar Promo / Kiosco</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Kiosco / Bar</label>
-                        <input type="text" id="ttTitle" placeholder="Ej: Kiosco Don Pedro / Cervecería" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="ttTitle" placeholder="Ej: Cervecería" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF (Recomendado 800x200px)</label>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF</label>
                         <input type="url" id="ttImgUrl" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp</label>
                             <input type="tel" id="ttWsp" placeholder="3644..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                         <div>
@@ -431,14 +424,11 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje de Pedido / Promo</label>
-                        <input type="text" id="ttMsg" placeholder="Hola, quiero encargar la promo del 3er tiempo..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje</label>
+                        <input type="text" id="ttMsg" placeholder="Hola, quiero la promo..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">
-                        Guardar en Tercer Tiempo 🍻
-                    </button>
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">Guardar en Tercer Tiempo</button>
                 </form>
-                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Promos Activas (Tercer Tiempo)</h3>
                 <div id="listaTtAdmin" class="space-y-2.5"></div>
             </div>
         </div>
@@ -538,7 +528,6 @@
         let timerAd1 = null;
         let timerAd2 = null;
 
-        // Variables para captura de instalación PWA
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -550,9 +539,6 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('Usuario aceptó instalar la PWA');
-                }
                 deferredPrompt = null;
                 document.getElementById('bannerInstalacion').classList.add('hidden');
             }
@@ -943,6 +929,31 @@
             } catch (err) { console.error(err); alert("Error al borrar."); }
         };
 
+        // Función para compartir directo a grupos o chats de WhatsApp
+        window.compartirWhatsApp = (cancha, fecha, hora, modalidad, faltan, puesto, nota, organizador, esTorneo, esRival) => {
+            const [anio, mes, dia] = fecha.split('-');
+            const fechaFmt = `${dia}/${mes}`;
+            
+            let titulo = `⚽ *¡Falta Uno en Falta Uno SP!* ⚽`;
+            if (esTorneo) titulo = `🏆 *¡Convocatoria para Torneo!* 🏆`;
+            if (esRival) titulo = `🤝 *¡Buscamos Rival / Amistoso!* 🤝`;
+
+            let detalleFaltan = esRival ? `` : `🥅 *Faltan:* ${faltan} jugador(es)${puesto && puesto !== 'Cualquiera' ? ` (Puesto: *${puesto}*)` : ''}\n`;
+            let textoNota = nota ? `💬 _"${nota}"_\n` : '';
+
+            let mensaje = `${titulo}\n\n` +
+                          `📍 *Lugar:* ${cancha}\n` +
+                          `📅 *Fecha:* ${fechaFmt} • ${hora} hs\n` +
+                          `📌 *Modalidad:* ${modalidad}\n` +
+                          detalleFaltan +
+                          textoNota +
+                          `👤 *Organiza:* ${organizador}\n\n` +
+                          `📱 ¡Entrá a la app para sumarte al toque!`;
+
+            const urlWsp = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+            window.open(urlWsp, '_blank');
+        };
+
         function renderizarPartidos() {
             const contenedor = document.getElementById('listaPartidos');
             const ahora = new Date();
@@ -1016,20 +1027,25 @@
                         </div>
                     ` : ''}
 
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-800 gap-2">
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-800 gap-2 flex-wrap">
                         <div class="flex items-center gap-2">
                             <span class="text-xs text-slate-400">Org: <strong class="text-slate-200">${p.organizador}</strong></span>
                             <button onclick="pedirPinBorrar('${p.id}', 'partido')" class="text-[10px] text-rose-400 hover:underline">🗑️ Borrar</button>
                             <button onclick="abrirModalCalificar('${p.id}')" class="text-[10px] text-amber-400 hover:underline">⭐ Calificar</button>
                         </div>
                         <div class="flex gap-2">
+                            <!-- Botón de Compartir a Grupos de WhatsApp -->
+                            <button onclick="compartirWhatsApp('${p.cancha}', '${p.fecha}', '${p.hora}', '${p.modalidad}', ${p.faltan || 1}, '${p.puesto || ''}', '${p.nota || ''}', '${p.organizador}', ${p.esTorneo || false}, ${p.esRival || false})" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1">
+                                📢 Compartir
+                            </button>
+
                             ${!completo && !p.esRival ? `
-                                <button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
+                                <button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow">
                                     🙋‍♂️ ¡Me sumo!
                                 </button>
                             ` : ''}
                             <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero coordinar.`)}" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1">
-                                WhatsApp
+                                Chat Org.
                             </a>
                         </div>
                     </div>
