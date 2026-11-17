@@ -160,7 +160,7 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad</label>
                         <select id="modalidad" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
-                            <!-- Se actualiza dinámicamente -->
+                            <!-- Dinámico -->
                         </select>
                     </div>
                     <div>
@@ -168,12 +168,9 @@
                         <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
                         <select id="puesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                            <option value="Cualquiera">Cualquiera</option>
-                            <option value="Arquero">🧤 Arquero</option>
-                            <option value="Defensor">🛡️ Defensor</option>
-                            <option value="Delantero">⚡ Delantero</option>
+                            <!-- Dinámico -->
                         </select>
                     </div>
                 </div>
@@ -479,7 +476,7 @@
 
         window.abrirModalPartido = () => {
             document.getElementById('fechaPartido').value = hoyStr;
-            window.toggleCamposTorneo(); // Actualiza las opciones de modalidad al abrir
+            window.toggleCamposTorneo(); // Actualiza las opciones dinámicas al abrir
             document.getElementById('modalPublicar').classList.remove('hidden');
         };
 
@@ -511,13 +508,17 @@
             const inputLugar = document.getElementById('canchaCustom');
             const labelFaltan = document.getElementById('labelFaltanTexto');
             const selectModalidad = document.getElementById('modalidad');
+            const selectPuesto = document.getElementById('puesto');
+            const labelPuesto = document.getElementById('labelPuestoTexto');
 
             selectModalidad.innerHTML = "";
+            selectPuesto.innerHTML = "";
 
             if (tipo === 'torneo') {
                 labelTexto.textContent = "Nombre del Torneo / Competencia";
                 inputLugar.placeholder = "Ej: Torneo Comercial / Club Unión";
                 labelFaltan.textContent = "Jugadores que faltan";
+                labelPuesto.textContent = "Puesto / Posición";
                 
                 ['Fútbol 5', 'Fútbol 7', 'Fútbol 8', 'Fútbol 11', 'Futsal', 'Pádel Dobles', 'Pádel Single'].forEach(mod => {
                     const opt = document.createElement('option');
@@ -525,10 +526,19 @@
                     opt.textContent = mod;
                     selectModalidad.appendChild(opt);
                 });
+
+                ['Cualquiera', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero', 'Revés', 'Drive', 'Izquierdo', 'Derecho'].forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    selectPuesto.appendChild(opt);
+                });
+
             } else if (tipo === 'falta1_futbol') {
                 labelTexto.textContent = "Complejo / Cancha en Sáenz Peña";
                 inputLugar.placeholder = "Ej: Complejo La Red, Club Unión...";
                 labelFaltan.textContent = "¿Cuántos faltan?";
+                labelPuesto.textContent = "Puesto";
 
                 ['Fútbol 5', 'Fútbol 8', 'Fútbol 11', 'Futsal'].forEach(mod => {
                     const opt = document.createElement('option');
@@ -536,16 +546,32 @@
                     opt.textContent = mod;
                     selectModalidad.appendChild(opt);
                 });
+
+                ['Cualquiera', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero'].forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    selectPuesto.appendChild(opt);
+                });
+
             } else if (tipo === 'falta1_padel') {
                 labelTexto.textContent = "Complejo / Cancha en Sáenz Peña";
                 inputLugar.placeholder = "Ej: Complejo La Red, Club Unión...";
                 labelFaltan.textContent = "¿Cuántos faltan?";
+                labelPuesto.textContent = "Posición";
 
                 ['Pádel Single', 'Pádel Dobles'].forEach(mod => {
                     const opt = document.createElement('option');
                     opt.value = mod;
                     opt.textContent = mod;
                     selectModalidad.appendChild(opt);
+                });
+
+                ['Cualquiera', 'Revés', 'Drive', 'Izquierdo', 'Derecho'].forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    selectPuesto.appendChild(opt);
                 });
             }
         };
