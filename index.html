@@ -95,7 +95,7 @@
             <div class="flex items-center justify-between mb-4 bg-slate-800/60 border border-slate-700/60 rounded-xl p-3">
                 <div>
                     <h2 class="text-sm font-bold text-white">Turnos disponibles en la ciudad</h2>
-                    <p class="text-xs text-slate-400">Reservá directo por WhatsApp con el complejo o jugador</p>
+                    <p class="text-xs text-slate-400">Reservá directo por WhatsApp con el complejo</p>
                 </div>
                 <button onclick="abrirModalTurno()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-2 rounded-lg transition shadow">
                     + Cargar Turno
@@ -126,15 +126,7 @@
             <form id="formPartido" onsubmit="guardarPartido(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Complejo / Cancha en Sáenz Peña</label>
-                    <select id="canchaSelect" onchange="toggleCanchaCustom()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <option value="Complejo La Red">Complejo La Red</option>
-                        <option value="El Predio Fútbol 5">El Predio Fútbol 5</option>
-                        <option value="Cancha El Galpón">Cancha El Galpón</option>
-                        <option value="Club Unión (Auxiliar)">Club Unión (Auxiliar)</option>
-                        <option value="Complejo La Esquina">Complejo La Esquina</option>
-                        <option value="otra">Otra cancha / Dirección...</option>
-                    </select>
-                    <input type="text" id="canchaCustom" placeholder="Escribí el nombre o dirección de la cancha" class="hidden mt-2 w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="canchaCustom" placeholder="Ej: Complejo La Red, Cancha El Galpón..." required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -206,43 +198,31 @@
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-2">
                     <h2 class="text-lg font-extrabold text-white">🏟️ Publicar Turno Libre</h2>
-                    <button type="button" onclick="mostrarPinsDemo()" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-semibold">
-                        🔑 PINs Demo
-                    </button>
                 </div>
                 <button onclick="cerrarModalTurno()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <!-- Selector de Tipo de Publicante -->
-            <div class="grid grid-cols-2 gap-2 bg-slate-800 p-1 rounded-xl mb-4">
-                <button type="button" id="modo-complejo" onclick="setModoTurno('complejo')" class="py-2 px-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition">
-                    ✅ Complejo (con PIN)
-                </button>
-                <button type="button" id="modo-jugador" onclick="setModoTurno('jugador')" class="py-2 px-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">
-                    🤝 Jugador (cedo turno)
-                </button>
-            </div>
-
             <form id="formTurno" onsubmit="guardarTurno(event)" class="space-y-4">
                 <!-- Bloque PIN para Complejos -->
-                <div id="bloquePin" class="bg-slate-800/80 border border-emerald-500/30 rounded-xl p-3.5">
+                <div class="bg-slate-800/80 border border-emerald-500/30 rounded-xl p-3.5">
                     <label class="block text-xs font-bold text-emerald-400 mb-1">Código PIN de Complejo Autorizado (4 dígitos)</label>
                     <div class="flex gap-2">
-                        <input type="password" id="pinComplejo" maxlength="4" placeholder="Ej: 1010" oninput="verificarPin()" class="w-32 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-center tracking-widest font-bold text-white focus:outline-none focus:border-emerald-500">
+                        <input type="password" id="pinComplejo" maxlength="4" placeholder="Ej: 1010" oninput="verificarPin()" class="w-32 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-center tracking-widest font-bold text-white focus:outline-none focus:border-emerald-500" required>
                         <div id="estadoPin" class="flex-1 flex items-center text-xs text-slate-400">
                             Ingresá tu PIN para validar el complejo
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre del Complejo / Cancha</label>
-                    <input type="text" id="turnoComplejo" placeholder="Se completa con PIN o escribí el lugar" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                </div>
-
-                <div id="bloqueNombreCedente" class="hidden">
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Nombre (quien cede la reserva)</label>
-                    <input type="text" id="turnoCedente" placeholder="Ej: Lucas Gómez" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre del Complejo</label>
+                        <input type="text" id="turnoComplejo" placeholder="Se completa con el PIN" readonly required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cancha (Ej: Cancha 1)</label>
+                        <input type="text" id="turnoNumeroCancha" placeholder="Ej: Cancha 1" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -256,34 +236,37 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Cancha</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Descripción de Cancha</label>
                         <select id="turnoTipo" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
                             <option value="Fútbol 5 (Sintético)">Fútbol 5 (Sintético)</option>
                             <option value="Fútbol 7 (Sintético)">Fútbol 7 (Sintético)</option>
+                            <option value="Fútbol 8 (Sintético)">Fútbol 8 (Sintético)</option>
+                            <option value="Fútbol 11 (Césped)">Fútbol 11 (Césped)</option>
                             <option value="Fútbol 5 (Techada)">Fútbol 5 (Techada)</option>
                         </select>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Horarios disponibles (separados por coma)</label>
-                    <input type="text" id="turnoHorarios" placeholder="Ej: 20:00, 21:00, 22:00" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Horario (Ej: De 21 a 22 hs)</label>
+                        <input type="text" id="turnoHorarios" placeholder="Ej: De 21 a 22 hs" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Valor del Turno ($)</label>
+                        <input type="text" id="turnoPrecio" placeholder="Ej: $28.000" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Valor turno completo ($)</label>
-                        <input type="text" id="turnoPrecio" placeholder="Ej: $28.000" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp de reservas</label>
+                        <input type="tel" id="turnoWhatsapp" placeholder="Ej: 3644123456" readonly required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp de reservas</label>
-                        <input type="tel" id="turnoWhatsapp" placeholder="Ej: 3644123456" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Dirección / Referencia</label>
+                        <input type="text" id="turnoDireccion" placeholder="Dirección del complejo" readonly required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Dirección / Referencia</label>
-                    <input type="text" id="turnoDireccion" placeholder="Ej: Calle 12 esq. 15, Centro" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
                 </div>
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition mt-2">
@@ -385,21 +368,12 @@
 
         const appId = (typeof __app_id !== 'undefined') ? __app_id : 'corriendo-la-bola-sp';
 
-        // Base por defecto (se complementa con Firestore en tiempo real)
-        let COMPLEJOS_AUTORIZADOS = {
-            "1010": { id: "default_1", nombre: "Complejo La Red", direccion: "Calle 14 y 21, Sáenz Peña", whatsapp: "3644111111" },
-            "2020": { id: "default_2", nombre: "El Predio Fútbol 5", direccion: "Ruta 16 Km 174, Sáenz Peña", whatsapp: "3644222222" },
-            "3030": { id: "default_3", nombre: "Cancha El Galpón", direccion: "Calle 9 e/ 12 y 14, Sáenz Peña", whatsapp: "3644333333" },
-            "4040": { id: "default_4", nombre: "Club Unión (Canchas Auxiliares)", direccion: "Av. 1 y Calle 18, Sáenz Peña", whatsapp: "3644444444" }
-        };
-
         let db, auth;
         let tabActual = 'falta-uno';
         let filtroActual = 'todos';
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
-        let modoTurnoActual = 'complejo';
         let complejoVerificadoActual = null;
 
         // ==================== FUNCIONES DE INTERFAZ (GLOBALES) ====================
@@ -444,7 +418,15 @@
 
         window.abrirModalTurno = () => {
             document.getElementById('modalTurno').classList.remove('hidden');
-            window.setModoTurno('complejo');
+            document.getElementById('pinComplejo').value = "";
+            document.getElementById('turnoComplejo').value = "";
+            document.getElementById('turnoNumeroCancha').value = "";
+            document.getElementById('turnoHorarios').value = "";
+            document.getElementById('turnoPrecio').value = "";
+            document.getElementById('turnoWhatsapp').value = "";
+            document.getElementById('turnoDireccion').value = "";
+            document.getElementById('estadoPin').innerHTML = '<span class="text-slate-400">Ingresá tu PIN para validar el complejo</span>';
+            complejoVerificadoActual = null;
         };
 
         window.cerrarModalTurno = () => {
@@ -516,77 +498,26 @@
         function renderizarAdminComplejos() {
             const contenedor = document.getElementById('listaComplejosAdmin');
             
-            let todos = [
-                ...Object.keys(COMPLEJOS_AUTORIZADOS).map(pin => ({ pin, ...COMPLEJOS_AUTORIZADOS[pin] })),
-                ...complejosAdminCache
-            ];
+            if (complejosAdminCache.length === 0) {
+                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay complejos cargados. Agregá el primero arriba.</div>`;
+                return;
+            }
 
-            contenedor.innerHTML = todos.map(c => `
+            contenedor.innerHTML = complejosAdminCache.map(c => `
                 <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-bold px-2 py-0.5 rounded">PIN: ${c.pin || 'Predeterminado'}</span>
+                            <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-bold px-2 py-0.5 rounded">PIN: ${c.pin}</span>
                             <h4 class="text-xs font-bold text-white">${c.nombre}</h4>
                         </div>
                         <p class="text-[11px] text-slate-400 mt-0.5">📍 ${c.direccion} • 📱 ${c.whatsapp}</p>
                     </div>
-                    ${c.id && !c.id.startsWith('default') ? `
-                        <button onclick="eliminarComplejoAdmin('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold">
-                            Eliminar
-                        </button>
-                    ` : `<span class="text-[10px] text-slate-500 italic">Sistema</span>`}
+                    <button onclick="eliminarComplejoAdmin('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold">
+                        Eliminar
+                    </button>
                 </div>
             `).join('');
         }
-
-        window.toggleCanchaCustom = () => {
-            const val = document.getElementById('canchaSelect').value;
-            const custom = document.getElementById('canchaCustom');
-            if (val === 'otra') {
-                custom.classList.remove('hidden');
-                custom.required = true;
-            } else {
-                custom.classList.add('hidden');
-                custom.required = false;
-            }
-        };
-
-        window.setModoTurno = (modo) => {
-            modoTurnoActual = modo;
-            const btnComp = document.getElementById('modo-complejo');
-            const btnJug = document.getElementById('modo-jugador');
-            const bloquePin = document.getElementById('bloquePin');
-            const bloqueCedente = document.getElementById('bloqueNombreCedente');
-            const inputComp = document.getElementById('turnoComplejo');
-            const inputDir = document.getElementById('turnoDireccion');
-            const inputWsp = document.getElementById('turnoWhatsapp');
-
-            if (modo === 'complejo') {
-                btnComp.className = "py-2 px-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition";
-                btnJug.className = "py-2 px-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
-                bloquePin.classList.remove('hidden');
-                bloqueCedente.classList.add('hidden');
-                inputComp.readOnly = true;
-                inputDir.readOnly = true;
-                inputComp.value = "";
-                inputDir.value = "";
-                inputWsp.value = "";
-                document.getElementById('pinComplejo').value = "";
-                document.getElementById('estadoPin').innerHTML = '<span class="text-slate-400">Ingresá tu PIN para validar el complejo</span>';
-                complejoVerificadoActual = null;
-            } else {
-                btnJug.className = "py-2 px-2 rounded-lg text-xs font-bold bg-amber-600 text-white transition";
-                btnComp.className = "py-2 px-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
-                bloquePin.classList.add('hidden');
-                bloqueCedente.classList.remove('hidden');
-                inputComp.readOnly = false;
-                inputDir.readOnly = false;
-                inputComp.value = "";
-                inputDir.value = "";
-                inputWsp.value = "";
-                complejoVerificadoActual = null;
-            }
-        };
 
         window.verificarPin = () => {
             const pin = document.getElementById('pinComplejo').value.trim();
@@ -595,36 +526,25 @@
             const inputDir = document.getElementById('turnoDireccion');
             const inputWsp = document.getElementById('turnoWhatsapp');
 
-            let mapaComplejos = { ...COMPLEJOS_AUTORIZADOS };
-            complejosAdminCache.forEach(c => {
-                mapaComplejos[c.pin] = c;
-            });
+            let encontrado = complejosAdminCache.find(c => c.pin === pin);
 
-            if (mapaComplejos[pin]) {
-                const datos = mapaComplejos[pin];
-                complejoVerificadoActual = datos;
-                inputComp.value = datos.nombre;
-                inputDir.value = datos.direccion;
-                inputWsp.value = datos.whatsapp;
-                estado.innerHTML = '<span class="text-emerald-400 font-bold">✅ Verificado: ' + datos.nombre + '</span>';
+            if (encontrado) {
+                complejoVerificadoActual = encontrado;
+                inputComp.value = encontrado.nombre;
+                inputDir.value = encontrado.direccion;
+                inputWsp.value = encontrado.whatsapp;
+                estado.innerHTML = '<span class="text-emerald-400 font-bold">✅ ' + encontrado.nombre + '</span>';
             } else {
                 complejoVerificadoActual = null;
                 inputComp.value = "";
                 inputDir.value = "";
+                inputWsp.value = "";
                 if (pin.length === 4) {
-                    estado.innerHTML = '<span class="text-rose-400 font-semibold">❌ PIN inválido</span>';
+                    estado.innerHTML = '<span class="text-rose-400 font-semibold">❌ PIN incorrecto</span>';
                 } else {
                     estado.innerHTML = '<span class="text-slate-400">Ingresá los 4 dígitos...</span>';
                 }
             }
-        };
-
-        window.mostrarPinsDemo = () => {
-            let listaPins = "🔑 PINs de complejos en Sáenz Peña:\n\n• 1010 → Complejo La Red\n• 2020 → El Predio Fútbol 5\n• 3030 → Cancha El Galpón\n• 4040 → Club Unión";
-            complejosAdminCache.forEach(c => {
-                listaPins += `\n• ${c.pin} → ${c.nombre}`;
-            });
-            alert(listaPins);
         };
 
         window.setFiltro = (filtro) => {
@@ -742,47 +662,40 @@
                     <div class="card-glass rounded-2xl p-8 text-center">
                         <div class="text-4xl mb-2">🏟️</div>
                         <h3 class="font-bold text-slate-200">No hay turnos libres cargados aún</h3>
-                        <p class="text-xs text-slate-400 mt-1">Tocá "+ Cargar Turno" para publicar horarios disponibles en Sáenz Peña.</p>
+                        <p class="text-xs text-slate-400 mt-1">Los complejos autorizados pueden publicar sus canchas ingresando su PIN.</p>
                     </div>`;
                 return;
             }
 
             contenedor.innerHTML = canchasCache.map(c => {
                 const telLimpio = (c.whatsapp || '').replace(/\D/g, '');
-                const horariosLista = (c.horarios || '').split(',').map(h => h.trim()).filter(Boolean);
+                const msg = encodeURIComponent(`¡Hola! Vi en *Corriendo la Bola* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para ${c.dia} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
 
                 return `
-                <div class="card-glass rounded-2xl p-5 shadow-lg border ${c.verificado ? 'border-emerald-500/30' : 'border-amber-500/30'}">
+                <div class="card-glass rounded-2xl p-5 shadow-lg border border-emerald-500/30">
                     <div class="flex justify-between items-start gap-2 mb-2">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap mb-1.5">
-                                ${c.verificado
-                                    ? `<span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ Complejo Verificado</span>`
-                                    : `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🤝 Turno cedido por jugador</span>`
-                                }
+                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ ${c.complejo}</span>
                                 <span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">${c.dia}</span>
                             </div>
-                            <h3 class="text-base font-extrabold text-white">${c.complejo}</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">📍 ${c.direccion} • ${c.tipo}</p>
+                            <h3 class="text-base font-extrabold text-white">🏟️ ${c.numeroCancha} • <span class="text-emerald-400">${c.tipo}</span></h3>
+                            <p class="text-xs text-slate-400 mt-0.5">📍 ${c.direccion}</p>
                         </div>
                         <div class="text-right shrink-0">
-                            <span class="block text-sm font-black text-emerald-400">${c.precio}</span>
+                            <span class="block text-base font-black text-emerald-400">${c.precio}</span>
                             <span class="text-[10px] text-slate-400">turno completo</span>
                         </div>
                     </div>
 
-                    ${!c.verificado && c.cedente ? `<p class="text-xs text-amber-200/80 mb-2">Cede la reserva: <strong>${c.cedente}</strong></p>` : ''}
-
-                    <div class="mt-3 pt-3 border-t border-slate-800">
-                        <span class="block text-[11px] font-semibold text-slate-400 mb-2">Tocá un horario para reservar por WhatsApp:</span>
-                        <div class="flex flex-wrap gap-2">
-                            ${horariosLista.map(h => {
-                                const msg = encodeURIComponent(`¡Hola! Vi en *Corriendo la Bola* que tienen turno libre en *${c.complejo}* (${c.tipo}) para ${c.dia} a las *${h} hs*. ¿Sigue disponible?`);
-                                return `<a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1 shadow">
-                                    ⏰ ${h} hs
-                                </a>`;
-                            }).join('')}
+                    <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-400">Horario disponible:</span>
+                            <p class="text-sm font-bold text-white">⏰ ${c.horarios}</p>
                         </div>
+                        <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">
+                            📲 Reservar
+                        </a>
                     </div>
                 </div>`;
             }).join('');
@@ -791,16 +704,10 @@
         // ==================== GUARDADO EN FIRESTORE ====================
         window.guardarPartido = async (e) => {
             e.preventDefault();
-            if (!db) {
-                alert("Conectando a la base de datos, intentá en unos segundos.");
-                return;
-            }
-
-            const canchaSel = document.getElementById('canchaSelect').value;
-            const cancha = canchaSel === 'otra' ? document.getElementById('canchaCustom').value.trim() : canchaSel;
+            if (!db) return alert("Conectando a base de datos...");
 
             const nuevoPartido = {
-                cancha: cancha,
+                cancha: document.getElementById('canchaCustom').value.trim(),
                 dia: document.getElementById('dia').value,
                 hora: document.getElementById('hora').value,
                 modalidad: document.getElementById('modalidad').value,
@@ -818,33 +725,29 @@
                 document.getElementById('formPartido').reset();
                 window.cerrarModalPartido();
             } catch (err) {
-                console.error("Error detallado al guardar partido:", err);
-                alert("Error al publicar el partido. Verificá la consola para más detalles.");
+                console.error(err);
+                alert("Error al publicar el partido.");
             }
         };
 
         window.guardarTurno = async (e) => {
             e.preventDefault();
-            if (!db) {
-                alert("Conectando a la base de datos, intentá en unos segundos.");
-                return;
-            }
+            if (!db) return alert("Conectando a base de datos...");
 
-            if (modoTurnoActual === 'complejo' && !complejoVerificadoActual) {
-                alert("⚠️ Ingresá un PIN válido de 4 dígitos para publicar como Complejo Verificado (o cambiá a modo 'Jugador').");
+            if (!complejoVerificadoActual) {
+                alert("⚠️ Ingresá un PIN válido de 4 dígitos para validar el complejo.");
                 return;
             }
 
             const nuevoTurno = {
-                verificado: modoTurnoActual === 'complejo',
-                complejo: document.getElementById('turnoComplejo').value.trim(),
-                cedente: modoTurnoActual === 'jugador' ? document.getElementById('turnoCedente').value.trim() : '',
+                complejo: complejoVerificadoActual.nombre,
+                numeroCancha: document.getElementById('turnoNumeroCancha').value.trim(),
                 dia: document.getElementById('turnoDia').value,
                 tipo: document.getElementById('turnoTipo').value,
                 horarios: document.getElementById('turnoHorarios').value.trim(),
                 precio: document.getElementById('turnoPrecio').value.trim(),
-                whatsapp: document.getElementById('turnoWhatsapp').value.trim(),
-                direccion: document.getElementById('turnoDireccion').value.trim(),
+                whatsapp: complejoVerificadoActual.whatsapp,
+                direccion: complejoVerificadoActual.direccion,
                 creadoEn: serverTimestamp()
             };
 
@@ -853,28 +756,23 @@
                 document.getElementById('formTurno').reset();
                 window.cerrarModalTurno();
             } catch (err) {
-                console.error("Error detallado al guardar turno:", err);
-                alert("Error al publicar el turno. Verificá la consola para más detalles.");
+                console.error(err);
+                alert("Error al publicar el turno.");
             }
         };
 
         window.confirmarSumarse = async () => {
             const id = document.getElementById('partidoIdSumarse').value;
             const nombre = document.getElementById('nombreJugadorSumarse').value.trim();
-            if (!nombre) {
-                alert("Escribí tu nombre o apodo para anotarte.");
-                return;
-            }
+            if (!nombre) return alert("Escribí tu nombre o apodo.");
 
             localStorage.setItem('clb_apodo', nombre);
             try {
                 const ref = doc(db, 'artifacts', appId, 'public', 'data', 'matches', id);
-                await updateDoc(ref, {
-                    anotados: arrayUnion(nombre)
-                });
+                await updateDoc(ref, { anotados: arrayUnion(nombre) });
                 window.cerrarModalSumarse();
             } catch (err) {
-                console.error("Error al sumarse:", err);
+                console.error(err);
                 alert("No se pudo registrar tu lugar.");
             }
         };
@@ -883,14 +781,6 @@
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
-
-            if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "TU_API_KEY") {
-                statusDot.className = "w-2 h-2 rounded-full bg-rose-500";
-                statusText.textContent = "Falta configurar firebaseConfig en el código";
-                renderizarPartidos();
-                renderizarCanchas();
-                return;
-            }
 
             try {
                 const app = initializeApp(firebaseConfig);
@@ -904,35 +794,29 @@
                         statusDot.className = "w-2 h-2 rounded-full bg-emerald-400";
                         statusText.textContent = "Tablero en vivo conectado • Sáenz Peña";
 
-                        // Escuchar Partidos
+                        // Partidos
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
                             partidosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarPartidos();
-                        }, (error) => {
-                            console.error("Error en snapshot matches:", error);
                         });
 
-                        // Escuchar Canchas Libres
+                        // Canchas
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), (snap) => {
                             canchasCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarCanchas();
-                        }, (error) => {
-                            console.error("Error en snapshot courts:", error);
                         });
 
-                        // Escuchar Complejos Admin
+                        // Complejos Admin
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), (snap) => {
                             complejosAdminCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
                                 renderizarAdminComplejos();
                             }
-                        }, (error) => {
-                            console.error("Error en snapshot admin_complexes:", error);
                         });
                     }
                 });
             } catch (error) {
-                console.error("Error general de Firebase:", error);
+                console.error(error);
                 statusDot.className = "w-2 h-2 rounded-full bg-rose-500";
                 statusText.textContent = "Error de conexión con Firebase";
             }
