@@ -9,7 +9,8 @@
     {
       "src": "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
