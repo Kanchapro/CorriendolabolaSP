@@ -79,13 +79,12 @@
 
         <!-- ==================== SECCIÓN 1: FALTA UNO / TORNEOS ==================== -->
         <section id="vista-falta-uno">
-            <!-- Filtros rápidos -->
-            <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar">
-                <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap shadow-sm transition">Todos</button>
-                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🏆 Jugadores para Torneo</button>
-                <button onclick="setFiltro('Fútbol')" id="filtro-Fútbol" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">⚽ Falta 1 Fútbol</button>
-                <button onclick="setFiltro('Pádel')" id="filtro-Pádel" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🥎 Falta 1 Pádel</button>
-                <button onclick="setFiltro('Arquero')" id="filtro-Arquero" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🧤 Buscan Arquero</button>
+            <!-- Filtros rápidos limpios (Sin scroll, sin Arquero individual) -->
+            <div class="grid grid-cols-4 gap-2 mb-4">
+                <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold py-2 px-2 rounded-xl text-center shadow-sm transition truncate">Todos</button>
+                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold py-2 px-2 rounded-xl text-center transition truncate">🏆 Torneos</button>
+                <button onclick="setFiltro('Fútbol')" id="filtro-Fútbol" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold py-2 px-2 rounded-xl text-center transition truncate">⚽ Fútbol</button>
+                <button onclick="setFiltro('Pádel')" id="filtro-Pádel" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold py-2 px-2 rounded-xl text-center transition truncate">🥎 Pádel</button>
             </div>
 
             <!-- Lista de Partidos -->
@@ -476,7 +475,7 @@
 
         window.abrirModalPartido = () => {
             document.getElementById('fechaPartido').value = hoyStr;
-            window.toggleCamposTorneo(); // Actualiza las opciones dinámicas al abrir
+            window.toggleCamposTorneo(); 
             document.getElementById('modalPublicar').classList.remove('hidden');
         };
 
@@ -880,8 +879,6 @@
                 filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Fútbol') && !p.esTorneo);
             } else if (filtroActual === 'Pádel') {
                 filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Pádel') && !p.esTorneo);
-            } else if (filtroActual === 'Arquero') {
-                filtrados = vigentes.filter(p => p.puesto === 'Arquero');
             }
 
             if (filtrados.length === 0) {
@@ -916,7 +913,7 @@
                                     📅 ${fechaFormateada} • ${p.hora} hs
                                 </span>
                                 ${badgeTipo}
-                                ${p.puesto !== 'Cualquiera' && !p.esTorneo ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Busca ${p.puesto}</span>` : ''}
+                                ${p.puesto && p.puesto !== 'Cualquiera' && !p.esTorneo ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Busca ${p.puesto}</span>` : ''}
                             </div>
                             <h3 class="text-base font-extrabold text-white mt-2">${p.esTorneo ? '🏆' : '📍'} ${p.cancha}</h3>
                         </div>
