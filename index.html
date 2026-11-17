@@ -31,57 +31,54 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header Profesional Rediseñado -->
+    <!-- Header Profesional Ultra Limpio -->
     <header class="header-gradient shadow-xl sticky top-0 z-40 border-b border-emerald-500/20">
-        <div class="max-w-3xl mx-auto px-4 py-3.5">
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-2xl shadow-inner">
+        <div class="max-w-3xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between gap-2 mb-3">
+                
+                <!-- Logo e Identidad -->
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-10 h-10 shrink-0 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-xl shadow-inner">
                         ⚽
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">Corriendo la Bola</h1>
-                            <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2 py-0.5 rounded-full">PRO</span>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white truncate leading-tight">Corriendo la Bola</h1>
+                            <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full shrink-0">PRO</span>
                         </div>
-                        <p class="text-[11px] text-emerald-100/80 font-medium flex items-center gap-1 mt-0.5">
-                            📍 Presidencia Roque Sáenz Peña
+                        <p class="text-[11px] text-emerald-100/80 font-medium truncate mt-0.5">
+                            📍 Sáenz Peña, Chaco
                         </p>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <!-- Estado de conexión integrado con diseño pro -->
-                    <div id="statusBadge" class="hidden sm:flex items-center gap-1.5 bg-black/25 border border-white/10 px-2.5 py-1.5 rounded-xl text-[11px] text-emerald-200">
-                        <span id="statusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                        <span id="statusText">Conectando...</span>
-                    </div>
-
-                    <button onclick="abrirModalAdmin()" class="bg-black/25 hover:bg-black/40 border border-white/1uo text-emerald-200 p-2.5 rounded-xl text-sm transition shadow-sm" title="Panel Administrador">
+                <!-- Botones de Acción Superior -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button onclick="abrirModalAdmin()" class="w-10 h-10 rounded-xl bg-black/25 hover:bg-black/40 border border-white/10 text-emerald-200 flex items-center justify-center text-sm transition shadow-sm" title="Panel Administrador">
                         ⚙️
                     </button>
-                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="bg-white text-emerald-950 hover:bg-emerald-50 active:scale-95 transition font-extrabold text-xs sm:text-sm px-3.5 py-2.5 rounded-xl shadow-lg flex items-center gap-1.5">
-                        <span class="text-base leading-none">+</span> <span id="textoBotonPrincipal">Falta Uno</span>
+                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="bg-white text-emerald-950 hover:bg-emerald-50 active:scale-95 transition font-extrabold text-xs px-3.5 h-10 rounded-xl shadow-md flex items-center gap-1.5">
+                        <span class="text-base leading-none font-black">+</span> <span id="textoBotonPrincipal">Falta Uno</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Selector de Secciones (Tabs) Moderno -->
-            <div class="grid grid-cols-2 gap-1.5 bg-black/3ode border border-white/10 p-1 rounded-xl">
-                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-2">
+            <!-- Selector de Secciones (Tabs) Rediseñado Pro -->
+            <div class="grid grid-cols-2 gap-1.5 bg-black/30 border border-white/10 p-1 rounded-xl">
+                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2 px-3 rounded-lg text-xs font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Falta Uno / Torneos
                 </button>
-                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-2">
+                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2 px-3 rounded-lg text-xs font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-1.5">
                     <span>🏟️</span> Canchas Libres
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Barra de estado móvil (solo visible en pantallas chicas si fuera necesario, o integrada) -->
-    <div class="sm:hidden bg-slate-900/90 border-b border-slate-800/80 py-1.5 px-4 text-center text-[11px] text-slate-400 flex items-center justify-center gap-2">
-        <span id="statusDotMobile" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-        <span id="statusTextMobile">Conectando al tablero en vivo...</span>
+    <!-- Estado de conexión móvil sutil -->
+    <div class="bg-slate-900/90 border-b border-slate-800/80 py-1 px-4 text-center text-[10px] text-slate-400 flex items-center justify-center gap-1.5">
+        <span id="statusDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span id="statusText">Conectando al tablero en vivo...</span>
     </div>
 
     <!-- Contenido Principal -->
@@ -411,14 +408,14 @@
             if (tab === 'falta-uno') {
                 vistaFalta.classList.remove('hidden');
                 vistaCanchas.classList.add('hidden');
-                btnTabFalta.className = "py-2 px-3 rounded-lg text-xs sm:text-sm font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-2";
-                btnTabCanchas.className = "py-2 px-3 rounded-lg text-xs sm:text-sm font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-2";
+                btnTabFalta.className = "py-2 px-3 rounded-lg text-xs font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-1.5";
+                btnTabCanchas.className = "py-2 px-3 rounded-lg text-xs font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Falta Uno";
             } else {
                 vistaFalta.classList.add('hidden');
                 vistaCanchas.classList.remove('hidden');
-                btnTabCanchas.className = "py-2 px-3 rounded-lg text-xs sm:text-sm font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-2";
-                btnTabFalta.className = "py-2 px-3 rounded-lg text-xs sm:text-sm font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-2";
+                btnTabCanchas.className = "py-2 px-3 rounded-lg text-xs font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-1.5";
+                btnTabFalta.className = "py-2 px-3 rounded-lg text-xs font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Cargar Turno";
             }
         };
@@ -892,8 +889,6 @@
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
-            const statusDotMobile = document.getElementById('statusDotMobile');
-            const statusTextMobile = document.getElementById('statusTextMobile');
 
             try {
                 const app = initializeApp(firebaseConfig);
@@ -904,14 +899,9 @@
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
-                        const estadoConectadoHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>Conectado</span>';
                         if (statusDot) {
-                            statusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                            statusDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
                             statusText.textContent = "Tablero en vivo conectado";
-                        }
-                        if (statusDotMobile) {
-                            statusDotMobile.className = "w-1.5 h-1.5 rounded-full bg-emerald-400";
-                            statusTextMobile.textContent = "Tablero en vivo conectado";
                         }
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
@@ -935,12 +925,8 @@
             } catch (error) {
                 console.error(error);
                 if (statusDot) {
-                    statusDot.className = "w-2 h-2 rounded-full bg-rose-500";
+                    statusDot.className = "w-1.5 h-1.5 rounded-full bg-rose-500";
                     statusText.textContent = "Error de conexión";
-                }
-                if (statusDotMobile) {
-                    statusDotMobile.className = "w-1.5 h-1.5 rounded-full bg-rose-500";
-                    statusTextMobile.textContent = "Error de conexión";
                 }
             }
         }
