@@ -27,10 +27,6 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        /* Transición suave para el banner rotativo */
-        .ad-slide {
-            transition: opacity 0.5s ease-in-out;
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col pb-20">
@@ -117,13 +113,12 @@
             </div>
         </section>
 
-        <!-- Espacio Publicitario Rotativo Inferior (Google AdSense / Banners) -->
-        <div class="mt-8 bg-slate-900/60 border border-slate-800 rounded-2xl p-3 text-center shadow-inner relative overflow-hidden min-h-[95px] flex flex-col justify-center items-center">
+        <!-- Espacio Publicitario Rotativo Inferior -->
+        <div class="mt-8 bg-slate-900/60 border border-slate-800 rounded-2xl p-3 text-center shadow-inner relative overflow-hidden min-h-[85px] flex flex-col justify-center items-center">
             <div class="absolute top-1 left-3 text-[9px] uppercase tracking-widest text-slate-500 font-bold flex items-center gap-1">
                 <span>Publicidad</span> • <span id="adRotatorTimer">Rotando...</span>
             </div>
             <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 mt-2">
-                <!-- Se inyecta dinámicamente con JS -->
                 <p class="text-xs text-slate-500">Cargando anuncios...</p>
             </div>
         </div>
@@ -177,7 +172,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto</label>
-                        <select id="puesto" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <select id="puesto" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
                             <option value="Cualquiera">Cualquiera</option>
                             <option value="Arquero">🧤 Arquero</option>
                             <option value="Defensor">🛡️ Defensor</option>
@@ -310,7 +305,7 @@
             <!-- Sección Pestañas del Admin -->
             <div class="grid grid-cols-2 gap-2 bg-slate-800/80 p-1 rounded-xl mb-4">
                 <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition">Complejos & PINs</button>
-                <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">Google Ads / Sponsors</button>
+                <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">Gestor de Sponsors 🖼️</button>
             </div>
 
             <!-- CONTENIDO TAB 1: COMPLEJOS -->
@@ -346,36 +341,44 @@
                 <div id="listaComplejosAdmin" class="space-y-2.5"></div>
             </div>
 
-            <!-- CONTENIDO TAB 2: SPONSORS Y ADSENSE -->
+            <!-- CONTENIDO TAB 2: SPONSORS PRÁCTICO -->
             <div id="seccionAdminSponsors" class="space-y-4 hidden">
                 <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700">
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Banner Rotativo / Google AdSense</h3>
-                    <p class="text-[11px] text-slate-400">Podés pegar código HTML de AdSense (&lt;ins&gt;...), script o un banner con imagen/texto personalizado.</p>
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Banner Sponsor Directo</h3>
+                    <p class="text-[11px] text-slate-400">Completá los datos y el sistema arma el banner con enlace automático a WhatsApp.</p>
                     
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Título de referencia (interno)</label>
-                        <input type="text" id="adminAdTitle" placeholder="Ej: Anuncio AdSense Inferior / Sponsor Kiosco" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local / Negocio</label>
+                        <input type="text" id="adminAdTitle" placeholder="Ej: Pere y el Flaco" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Código HTML / Script del Anuncio o Banner</label>
-                        <textarea id="adminAdHtml" rows="3" placeholder='Ej: <a href="https://wa.me/..." target="_blank"><div class="text-xs text-emerald-400 font-bold">¡Visitá Kiosco Central!</div><span class="text-[10px] text-slate-300">Bebidas frías y picadas</span></div></a>' required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono"></textarea>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL / Enlace de la Imagen del Banner</label>
+                        <input type="url" id="adminAdImgUrl" placeholder="Ej: https://... o ruta de tu imagen subida" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Tiempo en pantalla (segundos)</label>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp de contacto (sin 0 ni 15)</label>
+                            <input type="tel" id="adminAdWsp" placeholder="Ej: 3644356291" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Segundos en pantalla</label>
                             <input type="number" id="adminAdSeconds" min="3" max="60" value="6" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
-                        <div class="flex items-end">
-                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs transition shadow">
-                                Guardar Anuncio
-                            </button>
-                        </div>
                     </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje que llega al WhatsApp</label>
+                        <input type="text" id="adminAdMsg" placeholder="Ej: Hola Pere y el Flaco, los vi en Corriendo la Bola y quiero hacer un pedido." required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                        Guardar Sponsor 🖼️
+                    </button>
                 </form>
 
-                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Anuncios Rotativos Activos</h3>
+                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Sponsors Activos en Rotación</h3>
                 <div id="listaAdsAdmin" class="space-y-2.5"></div>
             </div>
         </div>
@@ -439,7 +442,6 @@
         let adsCache = [];
         let complejoVerificadoActual = null;
 
-        // Variables para la rotación de anuncios
         let indiceAdActual = 0;
         let adIntervalTimer = null;
 
@@ -606,7 +608,9 @@
 
             const nuevoAd = {
                 titulo: document.getElementById('adminAdTitle').value.trim(),
-                html: document.getElementById('adminAdHtml').value.trim(),
+                imgUrl: document.getElementById('adminAdImgUrl').value.trim(),
+                whatsapp: document.getElementById('adminAdWsp').value.trim().replace(/\D/g, ''),
+                mensaje: document.getElementById('adminAdMsg').value.trim(),
                 segundos: parseInt(document.getElementById('adminAdSeconds').value, 10) || 6,
                 creadoEn: serverTimestamp()
             };
@@ -614,15 +618,15 @@
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), nuevoAd);
                 document.getElementById('formAgregarAdAdmin').reset();
-                alert("✅ Anuncio / Banner guardado con éxito.");
+                alert("✅ Sponsor guardado con éxito.");
             } catch (err) {
                 console.error(err);
-                alert("Error al guardar el anuncio.");
+                alert("Error al guardar el sponsor.");
             }
         };
 
         window.eliminarAdAdmin = async (id) => {
-            if (confirm("¿Estás seguro de eliminar este anuncio rotativo?")) {
+            if (confirm("¿Estás seguro de eliminar este sponsor?")) {
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads_banners', id));
                 } catch (err) {
@@ -657,18 +661,18 @@
         function renderizarAdminAds() {
             const contenedor = document.getElementById('listaAdsAdmin');
             if (adsCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay anuncios cargados.</div>`;
+                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay sponsors cargados.</div>`;
                 return;
             }
 
             contenedor.innerHTML = adsCache.map(a => `
                 <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center justify-between gap-2">
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded">⏱️ ${a.segundos} segs</span>
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img src="${a.imgUrl}" class="w-12 h-8 object-cover rounded border border-slate-700 shrink-0">
+                        <div class="min-w-0">
                             <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                            <p class="text-[10px] text-slate-400 truncate">📱 549${a.whatsapp} • ⏱️ ${a.segundos}s</p>
                         </div>
-                        <p class="text-[10px] text-slate-400 font-mono mt-1 truncate">${a.html}</p>
                     </div>
                     <button onclick="eliminarAdAdmin('${a.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold shrink-0">
                         Eliminar
@@ -677,7 +681,6 @@
             `).join('');
         }
 
-        // Sistema de Rotación de Banners de Publicidad Inferior
         function iniciarRotacionAds() {
             if (adIntervalTimer) clearInterval(adIntervalTimer);
 
@@ -687,7 +690,7 @@
             if (adsCache.length === 0) {
                 contenedor.innerHTML = `
                     <div class="text-center py-1">
-                        <span class="text-xs text-slate-400">¿Querés tu publicidad acá? </span>
+                        <span class="text-xs text-slate-400">¿Querés tu local acá? </span>
                         <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Corriendo la Bola.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
                     </div>`;
                 if (timerLabel) timerLabel.textContent = "Sponsor Oficial";
@@ -701,8 +704,13 @@
             const anuncio = adsCache[indiceAdActual];
             contenedor.style.opacity = '0';
             
+            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola, los vi en Corriendo la Bola.')}`;
+
             setTimeout(() => {
-                contenedor.innerHTML = anuncio.html;
+                contenedor.innerHTML = `
+                    <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
+                        <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="max-h-14 mx-auto rounded-xl shadow group-hover:scale-[1.01] transition">
+                    </a>`;
                 contenedor.style.opacity = '1';
                 if (timerLabel) timerLabel.textContent = `Rotando en ${anuncio.segundos}s (${indiceAdActual + 1}/${adsCache.length})`;
             }, 300);
