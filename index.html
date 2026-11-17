@@ -111,28 +111,21 @@
         </section>
     </main>
 
-    <!-- ==================== TRES BANNERS PUBLICITARIOS FIJOS ABAJO ==================== -->
+    <!-- ==================== DOS BANNERS PUBLICITARIOS FIJOS ABAJO ==================== -->
     <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 shadow-2xl py-1 px-3">
-        <div class="max-w-3xl mx-auto grid grid-cols-3 gap-2 items-center">
+        <div class="max-w-3xl mx-auto grid grid-cols-2 gap-2 items-center">
             
-            <!-- Banner 1: Espacio General / Sponsor -->
+            <!-- Banner 1: Sponsors / Deportes -->
             <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
                 <div id="contenedorBanner1" class="w-full transition-opacity duration-500">
-                    <p class="text-[10px] text-slate-500">Cargando...</p>
+                    <p class="text-[10px] text-slate-500">Cargando sponsors...</p>
                 </div>
             </div>
 
-            <!-- Banner 2: Espacio Tercer Tiempo (Kioscos / Promos) -->
+            <!-- Banner 2: Tercer Tiempo (Kioscos / Promos) -->
             <div class="bg-slate-900/80 border border-amber-500/30 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
                 <div id="contenedorBanner2" class="w-full transition-opacity duration-500">
                     <p class="text-[10px] text-amber-500/70">🍻 Tercer Tiempo</p>
-                </div>
-            </div>
-
-            <!-- Banner 3: Tercer Espacio / Promos -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
-                <div id="contenedorBanner3" class="w-full transition-opacity duration-500">
-                    <p class="text-[10px] text-slate-500">Cargando...</p>
                 </div>
             </div>
 
@@ -181,7 +174,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
@@ -355,14 +348,14 @@
 
             <!-- CONTENIDO TAB 2: SPONSORS -->
             <div id="seccionAdminSponsors" class="space-y-4 hidden">
-                <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event, 'ads_banners', 'Banner 1 y 3')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Anuncio (Banner 1 o 3)</h3>
+                <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event, 'ads_banners', 'Banner 1')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Anuncio (Banner 1 Izquierdo)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local / Negocio</label>
                         <input type="text" id="adminAdTitle" placeholder="Ej: Proveeduría Deportiva" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF</label>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF (Recomendado 800x200px)</label>
                         <input type="url" id="adminAdImgUrl" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
@@ -383,20 +376,20 @@
                         Guardar Banner 🖼️
                     </button>
                 </form>
-                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Anuncios Activos (Banners 1 y 3)</h3>
+                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Anuncios Activos (Banner 1)</h3>
                 <div id="listaAdsAdmin" class="space-y-2.5"></div>
             </div>
 
             <!-- CONTENIDO TAB 3: TERCER TIEMPO (Kioscos / Promos) -->
             <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
                 <form id="formAgregarTtAdmin" onsubmit="guardarAdAdmin(event, 'tercer_tiempo_banners', 'Tercer Tiempo')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-amber-500/30">
-                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">🍻 Agregar Promo / Kiosco (Banner 2 Central)</h3>
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">🍻 Agregar Promo / Kiosco (Banner 2 Derecho)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Kiosco / Bar</label>
                         <input type="text" id="ttTitle" placeholder="Ej: Kiosco Don Pedro / Cervecería" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF de la Promo</label>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF (Recomendado 800x200px)</label>
                         <input type="url" id="ttImgUrl" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
@@ -789,16 +782,13 @@
             `).join('');
         }
 
-        // Rotador independiente para Banner 1 y 3 (Sponsors)
-        function iniciarRotacionAds() {
+        // Rotador para Banner 1 (Izquierdo)
+        function iniciarRotacionBanner1() {
             if (timerAd1) clearTimeout(timerAd1);
             const cont1 = document.getElementById('contenedorBanner1');
-            const cont3 = document.getElementById('contenedorBanner3');
 
             if (adsCache.length === 0) {
-                const htmlVacio = `<div class="text-center py-1"><span class="text-[10px] text-slate-500">Tu espacio</span></div>`;
-                cont1.innerHTML = htmlVacio;
-                cont3.innerHTML = htmlVacio;
+                cont1.innerHTML = `<div class="text-center py-1"><span class="text-[10px] text-slate-500">Tu espacio</span></div>`;
                 return;
             }
 
@@ -806,28 +796,19 @@
             const anuncio = adsCache[indiceAd1];
             const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola!')}`;
 
-            const htmlAnuncio = `
+            cont1.innerHTML = `
                 <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
                     <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition">
                 </a>`;
 
-            cont1.innerHTML = htmlAnuncio;
-            // Para el banner 3 mostramos el siguiente de la lista (o el mismo si hay 1 solo)
-            const anuncio3 = adsCache[(indiceAd1 + 1) % adsCache.length];
-            const linkWsp3 = `https://wa.me/549${anuncio3.whatsapp}?text=${encodeURIComponent(anuncio3.mensaje || 'Hola!')}`;
-            cont3.innerHTML = `
-                <a href="${linkWsp3}" target="_blank" class="block w-full text-center group">
-                    <img src="${anuncio3.imgUrl}" alt="${anuncio3.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition">
-                </a>`;
-
             timerAd1 = setTimeout(() => {
                 indiceAd1++;
-                iniciarRotacionAds();
+                iniciarRotacionBanner1();
             }, (anuncio.segundos || 6) * 1000);
         }
 
-        // Rotador independiente para Banner 2 (Tercer Tiempo / Kioscos)
-        function iniciarRotacionTercerTiempo() {
+        // Rotador para Banner 2 (Derecho - Tercer Tiempo)
+        function iniciarRotacionBanner2() {
             if (timerAd2) clearTimeout(timerAd2);
             const cont2 = document.getElementById('contenedorBanner2');
 
@@ -847,7 +828,7 @@
 
             timerAd2 = setTimeout(() => {
                 indiceAd2++;
-                iniciarRotacionTercerTiempo();
+                iniciarRotacionBanner2();
             }, (anuncio.segundos || 6) * 1000);
         }
 
@@ -1118,13 +1099,13 @@
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), (snap) => {
                             adsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminAds();
-                            iniciarRotacionAds();
+                            iniciarRotacionBanner1();
                         });
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo_banners'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
-                            iniciarRotacionTercerTiempo();
+                            iniciarRotacionBanner2();
                         });
                     }
                 });
