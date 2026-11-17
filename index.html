@@ -83,8 +83,8 @@
             <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar">
                 <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap shadow-sm transition">Todos</button>
                 <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🏆 Jugadores para Torneo</button>
-                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">⚽ Falta 1 Fútbol</button>
-                <button onclick="setFiltro('Pádel Dobles')" id="filtro-Pádel Dobles" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🥎 Falta 1 Pádel</button>
+                <button onclick="setFiltro('Fútbol')" id="filtro-Fútbol" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">⚽ Falta 1 Fútbol</button>
+                <button onclick="setFiltro('Pádel')" id="filtro-Pádel" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🥎 Falta 1 Pádel</button>
                 <button onclick="setFiltro('Arquero')" id="filtro-Arquero" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🧤 Buscan Arquero</button>
             </div>
 
@@ -134,7 +134,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Publicación</label>
                     <select id="tipoConvocatoria" onchange="toggleCamposTorneo()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <option value="falta1_ futbol">⚽ Falta 1 (para Fútbol)</option>
+                        <option value="falta1_futbol">⚽ Falta 1 (para Fútbol)</option>
                         <option value="falta1_padel">🥎 Falta 1 (para Pádel)</option>
                         <option value="torneo">🏆 Jugadores para Torneo</option>
                     </select>
@@ -160,11 +160,7 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad</label>
                         <select id="modalidad" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
-                            <option value="Fútbol 5">Fútbol 5</option>
-                            <option value="Fútbol 7">Fútbol 7</option>
-                            <option value="Fútbol 11">Fútbol 11</option>
-                            <option value="Pádel Dobles">Pádel Dobles</option>
-                            <option value="Pádel Single">Pádel Single</option>
+                            <!-- Se actualiza dinámicamente -->
                         </select>
                     </div>
                     <div>
@@ -249,7 +245,7 @@
                             <option value="Fútbol 7 (Sintético)">Fútbol 7 (Sintético)</option>
                             <option value="Fútbol 8 (Sintético)">Fútbol 8 (Sintético)</option>
                             <option value="Fútbol 11 (Césped)">Fútbol 11 (Césped)</option>
-                            <option value="Fútbol 5 (Techada)">Fútbol 5 (Techada)</option>
+                            <option value="Futsal">Futsal</option>
                             <option value="Pádel (Vidriada)">Pádel (Vidriada)</option>
                             <option value="Pádel (Muro)">Pádel (Muro)</option>
                         </select>
@@ -483,6 +479,7 @@
 
         window.abrirModalPartido = () => {
             document.getElementById('fechaPartido').value = hoyStr;
+            window.toggleCamposTorneo(); // Actualiza las opciones de modalidad al abrir
             document.getElementById('modalPublicar').classList.remove('hidden');
         };
 
@@ -513,15 +510,43 @@
             const labelTexto = document.getElementById('labelLugarTexto');
             const inputLugar = document.getElementById('canchaCustom');
             const labelFaltan = document.getElementById('labelFaltanTexto');
+            const selectModalidad = document.getElementById('modalidad');
+
+            selectModalidad.innerHTML = "";
 
             if (tipo === 'torneo') {
                 labelTexto.textContent = "Nombre del Torneo / Competencia";
                 inputLugar.placeholder = "Ej: Torneo Comercial / Club Unión";
                 labelFaltan.textContent = "Jugadores que faltan";
-            } else {
+                
+                ['Fútbol 5', 'Fútbol 7', 'Fútbol 8', 'Fútbol 11', 'Futsal', 'Pádel Dobles', 'Pádel Single'].forEach(mod => {
+                    const opt = document.createElement('option');
+                    opt.value = mod;
+                    opt.textContent = mod;
+                    selectModalidad.appendChild(opt);
+                });
+            } else if (tipo === 'falta1_futbol') {
                 labelTexto.textContent = "Complejo / Cancha en Sáenz Peña";
                 inputLugar.placeholder = "Ej: Complejo La Red, Club Unión...";
                 labelFaltan.textContent = "¿Cuántos faltan?";
+
+                ['Fútbol 5', 'Fútbol 8', 'Fútbol 11', 'Futsal'].forEach(mod => {
+                    const opt = document.createElement('option');
+                    opt.value = mod;
+                    opt.textContent = mod;
+                    selectModalidad.appendChild(opt);
+                });
+            } else if (tipo === 'falta1_padel') {
+                labelTexto.textContent = "Complejo / Cancha en Sáenz Peña";
+                inputLugar.placeholder = "Ej: Complejo La Red, Club Unión...";
+                labelFaltan.textContent = "¿Cuántos faltan?";
+
+                ['Pádel Single', 'Pádel Dobles'].forEach(mod => {
+                    const opt = document.createElement('option');
+                    opt.value = mod;
+                    opt.textContent = mod;
+                    selectModalidad.appendChild(opt);
+                });
             }
         };
 
@@ -825,9 +850,9 @@
 
             if (filtroActual === 'Torneo') {
                 filtrados = vigentes.filter(p => p.esTorneo === true);
-            } else if (filtroActual === 'Fútbol 5') {
+            } else if (filtroActual === 'Fútbol') {
                 filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Fútbol') && !p.esTorneo);
-            } else if (filtroActual === 'Pádel Dobles') {
+            } else if (filtroActual === 'Pádel') {
                 filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Pádel') && !p.esTorneo);
             } else if (filtroActual === 'Arquero') {
                 filtrados = vigentes.filter(p => p.puesto === 'Arquero');
