@@ -1,0 +1,15 @@
+{
+  "name": "Falta Uno SP",
+  "short_name": "Falta Uno",
+  "start_url": "/CorriendolabolaSP/",
+  "display": "standalone",
+  "background_color": "#061021",
+  "theme_color": "#041b18",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
