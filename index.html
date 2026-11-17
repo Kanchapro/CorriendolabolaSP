@@ -82,10 +82,9 @@
             <!-- Filtros rápidos -->
             <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar">
                 <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap shadow-sm transition">Todos</button>
-                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🏆 Armar Equipo Torneo</button>
-                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">Fútbol 5</button>
-                <button onclick="setFiltro('Fútbol 7')" id="filtro-Fútbol 7" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">Fútbol 7</button>
-                <button onclick="setFiltro('Pádel Dobles')" id="filtro-Pádel Dobles" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🎾 Pádel</button>
+                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🏆 Jugadores para Torneo</button>
+                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">⚽ Falta 1 Fútbol</button>
+                <button onclick="setFiltro('Pádel Dobles')" id="filtro-Pádel Dobles" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🥎 Falta 1 Pádel</button>
                 <button onclick="setFiltro('Arquero')" id="filtro-Arquero" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🧤 Buscan Arquero</button>
             </div>
 
@@ -135,8 +134,9 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Publicación</label>
                     <select id="tipoConvocatoria" onchange="toggleCamposTorneo()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <option value="picado">⚽ Falta Uno / Pareja para Partido</option>
-                        <option value="torneo">🏆 Completar Equipo para Torneo</option>
+                        <option value="falta1_ futbol">⚽ Falta 1 (para Fútbol)</option>
+                        <option value="falta1_padel">🥎 Falta 1 (para Pádel)</option>
+                        <option value="torneo">🏆 Jugadores para Torneo</option>
                     </select>
                 </div>
 
@@ -158,7 +158,7 @@
 
                 <div class="grid grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad / Deporte</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad</label>
                         <select id="modalidad" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
                             <option value="Fútbol 5">Fútbol 5</option>
                             <option value="Fútbol 7">Fútbol 7</option>
@@ -825,8 +825,8 @@
 
             if (filtroActual === 'Torneo') {
                 filtrados = vigentes.filter(p => p.esTorneo === true);
-            } else if (filtroActual === 'Fútbol 5' || filtroActual === 'Fútbol 7') {
-                filtrados = vigentes.filter(p => p.modalidad === filtroActual && !p.esTorneo);
+            } else if (filtroActual === 'Fútbol 5') {
+                filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Fútbol') && !p.esTorneo);
             } else if (filtroActual === 'Pádel Dobles') {
                 filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Pádel') && !p.esTorneo);
             } else if (filtroActual === 'Arquero') {
@@ -853,7 +853,7 @@
                 const fechaFormateada = `${dia}/${mes}`;
 
                 const badgeTipo = p.esTorneo 
-                    ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Equipo Torneo</span>`
+                    ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Torneo</span>`
                     : `<span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">${p.modalidad}</span>`;
 
                 return `
@@ -1044,7 +1044,7 @@
 
                 if (partidoActual) {
                     const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
-                    const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🤝`);
+                    const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎🏆`);
                     window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
                 }
             } catch (err) {
