@@ -29,7 +29,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-20">
+<body class="min-h-screen flex flex-col pb-28">
 
     <!-- Header Estético con el Verde Clásico -->
     <header class="pitch-gradient shadow-lg sticky top-0 z-40 border-b border-emerald-600/30">
@@ -112,17 +112,19 @@
                 <div class="text-center py-12 text-slate-500 text-sm">Buscando turnos disponibles...</div>
             </div>
         </section>
+    </main>
 
-        <!-- Espacio Publicitario Rotativo Inferior -->
-        <div class="mt-8 bg-slate-900/60 border border-slate-800 rounded-2xl p-3 text-center shadow-inner relative overflow-hidden min-h-[85px] flex flex-col justify-center items-center">
-            <div class="absolute top-1 left-3 text-[9px] uppercase tracking-widest text-slate-500 font-bold flex items-center gap-1">
-                <span>Publicidad</span> • <span id="adRotatorTimer">Rotando...</span>
+    <!-- ==================== BANNER PUBLICITARIO FIJO ABAJO ==================== -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 shadow-2xl py-2 px-4">
+        <div class="max-w-3xl mx-auto relative flex items-center justify-center">
+            <div class="absolute top-0.5 left-1 text-[8px] uppercase tracking-widest text-slate-400 font-bold flex items-center gap-1">
+                <span>Patrocinador</span> • <span id="adRotatorTimer">Rotando...</span>
             </div>
-            <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 mt-2">
+            <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 mt-2 text-center">
                 <p class="text-xs text-slate-500">Cargando anuncios...</p>
             </div>
         </div>
-    </main>
+    </div>
 
     <!-- ==================== MODAL 1: PUBLICAR FALTA UNO / TORNEO ==================== -->
     <div id="modalPublicar" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -172,7 +174,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto</label>
-                        <select id="puesto" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <select id="puesto" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
                             <option value="Cualquiera">Cualquiera</option>
                             <option value="Arquero">🧤 Arquero</option>
                             <option value="Defensor">🛡️ Defensor</option>
@@ -354,7 +356,7 @@
 
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL / Enlace de la Imagen del Banner</label>
-                        <input type="url" id="adminAdImgUrl" placeholder="Ej: https://... o ruta de tu imagen subida" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <input type="url" id="adminAdImgUrl" placeholder="Ej: enlace de imagen directo" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -709,7 +711,7 @@
             setTimeout(() => {
                 contenedor.innerHTML = `
                     <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
-                        <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="max-h-14 mx-auto rounded-xl shadow group-hover:scale-[1.01] transition">
+                        <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-12 sm:h-14 mx-auto rounded-lg shadow object-contain group-hover:scale-[1.01] transition">
                     </a>`;
                 contenedor.style.opacity = '1';
                 if (timerLabel) timerLabel.textContent = `Rotando en ${anuncio.segundos}s (${indiceAdActual + 1}/${adsCache.length})`;
