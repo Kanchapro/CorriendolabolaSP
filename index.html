@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #061021; /* Azul noche profundo extraído del logo */
+            background-color: #061021;
             color: #f8fafc;
         }
         .app-gradient {
@@ -83,8 +83,9 @@
             <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar">
                 <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap shadow-sm transition">Todos</button>
                 <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🏆 Armar Equipo Torneo</button>
-                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">Fútbol 5</button>
-                <button onclick="setFiltro('Fútbol 7')" id="filtro-Fútbol 7" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">Fútbol 7</button>
+                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">⚽ Fútbol 5</button>
+                <button onclick="setFiltro('Fútbol 7')" id="filtro-Fútbol 7" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">⚽ Fútbol 7</button>
+                <button onclick="setFiltro('Pádel Dobles')" id="filtro-Pádel Dobles" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🎾 Pádel</button>
                 <button onclick="setFiltro('Arquero')" id="filtro-Arquero" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition">🧤 Buscan Arquero</button>
             </div>
 
@@ -134,7 +135,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Publicación</label>
                     <select id="tipoConvocatoria" onchange="toggleCamposTorneo()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <option value="picado">⚽ Falta Uno para Picadito</option>
+                        <option value="picado">⚽ Falta Uno / Pareja para Partido</option>
                         <option value="torneo">🏆 Completar Equipo para Torneo</option>
                     </select>
                 </div>
@@ -157,11 +158,13 @@
 
                 <div class="grid grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Deporte / Modalidad</label>
                         <select id="modalidad" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
-                            <option value="Fútbol 5">Fútbol 5</option>
-                            <option value="Fútbol 7">Fútbol 7</option>
-                            <option value="Fútbol 11">Fútbol 11</option>
+                            <option value="Fútbol 5">⚽ Fútbol 5</option>
+                            <option value="Fútbol 7">⚽ Fútbol 7</option>
+                            <option value="Fútbol 11">⚽ Fútbol 11</option>
+                            <option value="Pádel Dobles">🎾 Pádel Dobles</option>
+                            <option value="Pádel Single">🎾 Pádel Single</option>
                         </select>
                     </div>
                     <div>
@@ -169,12 +172,13 @@
                         <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto / Detalle</label>
                         <select id="puesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                             <option value="Cualquiera">Cualquiera</option>
                             <option value="Arquero">🧤 Arquero</option>
                             <option value="Defensor">🛡️ Defensor</option>
                             <option value="Delantero">⚡ Delantero</option>
+                            <option value="Pareja Pádel">🎾 Pareja</option>
                         </select>
                     </div>
                 </div>
@@ -192,11 +196,11 @@
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Nota opcional (valor, categoría, etc.)</label>
-                    <input type="text" id="nota" placeholder="Ej: $3.500 c/u o inscripción libre" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                    <input type="text" id="nota" placeholder="Ej: $3.500 c/u o categoría 5ta" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                 </div>
 
                 <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg transition mt-2">
-                    Publicar en el Tablero ⚽
+                    Publicar en el Tablero 🚀
                 </button>
             </form>
         </div>
@@ -229,8 +233,8 @@
                         <input type="text" id="turnoComplejo" placeholder="Se completa con el PIN" readonly required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cancha (Ej: Cancha 1)</label>
-                        <input type="text" id="turnoNumeroCancha" placeholder="Ej: Cancha 1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cancha / Vidriada (Ej: Cancha 1)</label>
+                        <input type="text" id="turnoNumeroCancha" placeholder="Ej: Cancha 1 o Vidriada 2" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                 </div>
 
@@ -240,13 +244,12 @@
                         <input type="date" id="turnoFecha" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Descripción de Cancha</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Cancha</label>
                         <select id="turnoTipo" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                            <option value="Fútbol 5 (Sintético)">Fútbol 5 (Sintético)</option>
-                            <option value="Fútbol 7 (Sintético)">Fútbol 7 (Sintético)</option>
-                            <option value="Fútbol 8 (Sintético)">Fútbol 8 (Sintético)</option>
-                            <option value="Fútbol 11 (Césped)">Fútbol 11 (Césped)</option>
-                            <option value="Fútbol 5 (Techada)">Fútbol 5 (Techada)</option>
+                            <option value="Fútbol 5 (Sintético)">⚽ Fútbol 5 (Sintético)</option>
+                            <option value="Fútbol 7 (Sintético)">⚽ Fútbol 7 (Sintético)</option>
+                            <option value="Pádel (Blist/Vidrio)">🎾 Pádel (Vidriada)</option>
+                            <option value="Pádel (Muro)">🎾 Pádel (Muro)</option>
                         </select>
                     </div>
                 </div>
@@ -641,465 +644,4 @@
             }
 
             contenedor.innerHTML = complejosAdminCache.map(c => `
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-bold px-2 py-0.5 rounded">PIN: ${c.pin}</span>
-                            <h4 class="text-xs font-bold text-white">${c.nombre}</h4>
-                        </div>
-                        <p class="text-[11px] text-slate-400 mt-0.5">📍 ${c.direccion} • 📱 ${c.whatsapp}</p>
-                    </div>
-                    <button onclick="eliminarComplejoAdmin('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold">
-                        Eliminar
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function renderizarAdminAds() {
-            const contenedor = document.getElementById('listaAdsAdmin');
-            if (adsCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay sponsors cargados.</div>`;
-                return;
-            }
-
-            contenedor.innerHTML = adsCache.map(a => `
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <img src="${a.imgUrl}" class="w-12 h-8 object-cover rounded border border-slate-800 shrink-0">
-                        <div class="min-w-0">
-                            <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
-                            <p class="text-[10px] text-slate-400 truncate">📱 549${a.whatsapp} • ⏱️ ${a.segundos}s</p>
-                        </div>
-                    </div>
-                    <button onclick="eliminarAdAdmin('${a.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold shrink-0">
-                        Eliminar
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function iniciarRotacionAds() {
-            if (adIntervalTimer) clearInterval(adIntervalTimer);
-
-            const contenedor = document.getElementById('contenedorBannerRotativo');
-
-            if (adsCache.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="text-center py-1">
-                        <span class="text-xs text-slate-400">¿Querés tu local acá? </span>
-                        <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Falta Uno SP.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
-                    </div>`;
-                return;
-            }
-
-            if (indiceAdActual >= adsCache.length) {
-                indiceAdActual = 0;
-            }
-
-            const anuncio = adsCache[indiceAdActual];
-            contenedor.style.opacity = '0';
-            
-            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola, los vi en Falta Uno SP.')}`;
-
-            setTimeout(() => {
-                contenedor.innerHTML = `
-                    <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
-                        <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-11 sm:h-12 mx-auto rounded-lg shadow object-contain group-hover:scale-[1.01] transition">
-                    </a>`;
-                contenedor.style.opacity = '1';
-            }, 300);
-
-            adIntervalTimer = setTimeout(() => {
-                indiceAdActual++;
-                iniciarRotacionAds();
-            }, (anuncio.segundos || 6) * 1000);
-        }
-
-        window.verificarPin = () => {
-            const pin = document.getElementById('pinComplejo').value.trim();
-            const estado = document.getElementById('estadoPin');
-            const inputComp = document.getElementById('turnoComplejo');
-            const inputDir = document.getElementById('turnoDireccion');
-            const inputWsp = document.getElementById('turnoWhatsapp');
-
-            let encontrado = complejosAdminCache.find(c => c.pin === pin);
-
-            if (encontrado) {
-                complejoVerificadoActual = encontrado;
-                inputComp.value = encontrado.nombre;
-                inputDir.value = encontrado.direccion;
-                inputWsp.value = encontrado.whatsapp;
-                estado.innerHTML = '<span class="text-emerald-400 font-bold">✅ ' + encontrado.nombre + '</span>';
-            } else {
-                complejoVerificadoActual = null;
-                inputComp.value = "";
-                inputDir.value = "";
-                inputWsp.value = "";
-                if (pin.length === 4) {
-                    estado.innerHTML = '<span class="text-rose-400 font-semibold">❌ PIN incorrecto</span>';
-                } else {
-                    estado.innerHTML = '<span class="text-slate-400">Ingresá los 4 dígitos...</span>';
-                }
-            }
-        };
-
-        window.setFiltro = (filtro) => {
-            filtroActual = filtro;
-            document.querySelectorAll('.filtro-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-500', 'text-slate-950');
-                btn.classList.add('bg-slate-900', 'text-slate-300', 'border', 'border-slate-800');
-            });
-            const active = document.getElementById(`filtro-${filtro}`);
-            if (active) {
-                active.classList.remove('bg-slate-900', 'text-slate-300', 'border', 'border-slate-800');
-                active.classList.add('bg-emerald-500', 'text-slate-950', 'font-bold');
-            }
-            renderizarPartidos();
-        };
-
-        window.abrirModalSumarse = (id) => {
-            document.getElementById('partidoIdSumarse').value = id;
-            document.getElementById('nombreJugadorSumarse').value = localStorage.getItem('clb_apodo') || '';
-            document.getElementById('modalSumarse').classList.remove('hidden');
-        };
-
-        window.cerrarModalSumarse = () => {
-            document.getElementById('modalSumarse').classList.add('hidden');
-        };
-
-        window.pedirPinBorrarTurno = (id) => {
-            document.getElementById('turnoIdBorrar').value = id;
-            document.getElementById('pinBorrarInput').value = '';
-            document.getElementById('modalBorrarTurno').classList.remove('hidden');
-        };
-
-        window.cerrarModalBorrar = () => {
-            document.getElementById('modalBorrarTurno').classList.add('hidden');
-        };
-
-        window.ejecutarBorrarTurno = async () => {
-            const id = document.getElementById('turnoIdBorrar').value;
-            const pinIngresado = document.getElementById('pinBorrarInput').value.trim();
-
-            if (!pinIngresado) {
-                alert("Ingresá el PIN para borrar.");
-                return;
-            }
-
-            const turnoObj = canchasCache.find(c => c.id === id);
-            let complejoAsociado = complejosAdminCache.find(c => c.nombre === turnoObj?.complejo);
-            const esPinValido = (pinIngresado === 'atitomelero') || (complejoAsociado && pinIngresado === complejoAsociado.pin);
-
-            if (!esPinValido) {
-                alert("❌ PIN o contraseña incorrecta.");
-                return;
-            }
-
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courts', id));
-                cerrarModalBorrar();
-                alert("🗑️ Turno eliminado con éxito.");
-            } catch (err) {
-                console.error(err);
-                alert("Error al borrar el turno.");
-            }
-        };
-
-        function renderizarPartidos() {
-            const contenedor = document.getElementById('listaPartidos');
-            const ahora = new Date();
-
-            let vigentes = partidosCache.filter(p => {
-                if (!p.fecha || !p.hora) return true;
-                const fechaHoraPartido = new Date(`${p.fecha}T${p.hora}:00`);
-                return fechaHoraPartido >= ahora;
-            });
-
-            let filtrados = vigentes;
-
-            if (filtroActual === 'Torneo') {
-                filtrados = vigentes.filter(p => p.esTorneo === true);
-            } else if (filtroActual === 'Fútbol 5' || filtroActual === 'Fútbol 7') {
-                filtrados = vigentes.filter(p => p.modalidad === filtroActual && !p.esTorneo);
-            } else if (filtroActual === 'Arquero') {
-                filtrados = vigentes.filter(p => p.puesto === 'Arquero');
-            }
-
-            if (filtrados.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="card-glass rounded-2xl p-8 text-center">
-                        <div class="text-4xl mb-2">🥅</div>
-                        <h3 class="font-bold text-slate-200">No hay convocatorias activas</h3>
-                        <p class="text-xs text-slate-400 mt-1">¡Publicá la primera tocando "+ Falta Uno"!</p>
-                    </div>`;
-                return;
-            }
-
-            contenedor.innerHTML = filtrados.map(p => {
-                const anotados = p.anotados || [];
-                const restantes = Math.max(0, p.faltan - anotados.length);
-                const completo = restantes === 0;
-                const telLimpio = (p.whatsapp || '').replace(/\D/g, '');
-                
-                const [anio, mes, dia] = (p.fecha || hoyStr).split('-');
-                const fechaFormateada = `${dia}/${mes}`;
-
-                const badgeTipo = p.esTorneo 
-                    ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Equipo Torneo</span>`
-                    : `<span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">${p.modalidad}</span>`;
-
-                return `
-                <div class="card-glass rounded-2xl p-5 shadow-lg transition hover:border-emerald-500/40 ${completo ? 'opacity-70' : ''}">
-                    <div class="flex justify-between items-start gap-2 mb-3">
-                        <div>
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                                    📅 ${fechaFormateada} • ${p.hora} hs
-                                </span>
-                                ${badgeTipo}
-                                ${p.puesto !== 'Cualquiera' && !p.esTorneo ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Busca ${p.puesto}</span>` : ''}
-                            </div>
-                            <h3 class="text-base font-extrabold text-white mt-2">${p.esTorneo ? '🏆' : '📍'} ${p.cancha}</h3>
-                        </div>
-
-                        <div class="text-right shrink-0">
-                            ${completo
-                                ? `<span class="bg-slate-800 text-slate-300 text-xs font-extrabold px-3 py-1.5 rounded-xl border border-slate-700">✅ ¡Completo!</span>`
-                                : `<div class="bg-rose-500/20 border border-rose-500/40 text-rose-300 px-3 py-1 rounded-xl text-center">
-                                     <span class="block text-lg font-black leading-none">${restantes}</span>
-                                     <span class="text-[10px] uppercase font-bold">${restantes === 1 ? 'Falta' : 'Faltan'}</span>
-                                   </div>`
-                            }
-                        </div>
-                    </div>
-
-                    ${p.nota ? `<p class="text-xs text-slate-300 bg-slate-950/60 rounded-xl px-3 py-2 mb-3 border border-slate-800">💬 "${p.nota}"</p>` : ''}
-
-                    ${anotados.length > 0 ? `
-                        <div class="mb-3 flex flex-wrap items-center gap-1.5">
-                            <span class="text-[11px] text-slate-400">Se sumaron:</span>
-                            ${anotados.map(n => `<span class="bg-emerald-950 text-emerald-200 border border-emerald-500/30 text-[11px] font-semibold px-2 py-0.5 rounded-md">⚽ ${n}</span>`).join('')}
-                        </div>
-                    ` : ''}
-
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-800 gap-2">
-                        <span class="text-xs text-slate-400">Organiza: <strong class="text-slate-200">${p.organizador}</strong></span>
-                        <div class="flex gap-2">
-                            ${!completo ? `
-                                <button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
-                                    🙋‍♂️ ¡Me sumo!
-                                </button>
-                            ` : ''}
-                            <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero sumarme.`)}" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1">
-                                WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function renderizarCanchas() {
-            const contenedor = document.getElementById('listaCanchas');
-            const ahora = new Date();
-
-            let vigentes = canchasCache.filter(c => {
-                if (!c.fecha) return true;
-                const fechaTurno = new Date(`${c.fecha}T23:59:59`);
-                return fechaTurno >= ahora;
-            });
-
-            if (vigentes.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="card-glass rounded-2xl p-8 text-center">
-                        <div class="text-4xl mb-2">🏟️</div>
-                        <h3 class="font-bold text-slate-200">No hay turnos libres cargados aún</h3>
-                        <p class="text-xs text-slate-400 mt-1">Los complejos autorizados pueden publicar sus canchas ingresando su PIN.</p>
-                    </div>`;
-                return;
-            }
-
-            contenedor.innerHTML = vigentes.map(c => {
-                const telLimpio = (c.whatsapp || '').replace(/\D/g, '');
-                const [anio, mes, dia] = (c.fecha || hoyStr).split('-');
-                const fechaFormateada = `${dia}/${mes}`;
-                const msg = encodeURIComponent(`¡Hola! Vi en *Falta Uno SP* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
-
-                return `
-                <div class="card-glass rounded-2xl p-5 shadow-lg border border-emerald-500/30">
-                    <div class="flex justify-between items-start gap-2 mb-2">
-                        <div>
-                            <div class="flex items-center gap-2 flex-wrap mb-1.5">
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ ${c.complejo}</span>
-                                <span class="bg-slate-900 text-slate-300 border border-slate-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">📅 ${fechaFormateada}</span>
-                            </div>
-                            <h3 class="text-base font-extrabold text-white">🏟️ ${c.numeroCancha} • <span class="text-emerald-400">${c.tipo}</span></h3>
-                            <p class="text-xs text-slate-400 mt-0.5">📍 ${c.direccion}</p>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="block text-base font-black text-emerald-400">${c.precio}</span>
-                            <span class="text-[10px] text-slate-400">turno completo</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                        <div>
-                            <span class="text-xs text-slate-400">Horario disponible:</span>
-                            <p class="text-sm font-bold text-white">⏰ ${c.horarios}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-2.5 rounded-xl transition" title="Borrar turno">
-                                🗑️ Borrar
-                            </button>
-                            <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">
-                                📲 Reservar
-                            </a>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        window.guardarPartido = async (e) => {
-            e.preventDefault();
-            if (!db) return alert("Conectando a base de datos...");
-
-            const tipo = document.getElementById('tipoConvocatoria').value;
-            const nuevoPartido = {
-                esTorneo: tipo === 'torneo',
-                cancha: document.getElementById('canchaCustom').value.trim(),
-                fecha: document.getElementById('fechaPartido').value,
-                hora: document.getElementById('hora').value,
-                modalidad: document.getElementById('modalidad').value,
-                faltan: parseInt(document.getElementById('faltan').value, 10),
-                puesto: document.getElementById('puesto').value,
-                organizador: document.getElementById('organizador').value.trim(),
-                whatsapp: document.getElementById('whatsapp').value.trim(),
-                nota: document.getElementById('nota').value.trim(),
-                anotados: [],
-                creadoEn: serverTimestamp()
-            };
-
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), nuevoPartido);
-                document.getElementById('formPartido').reset();
-                window.cerrarModalPartido();
-            } catch (err) {
-                console.error(err);
-                alert("Error al publicar la convocatoria.");
-            }
-        };
-
-        window.guardarTurno = async (e) => {
-            e.preventDefault();
-            if (!db) return alert("Conectando a base de datos...");
-
-            if (!complejoVerificadoActual) {
-                alert("⚠️ Ingresá un PIN válido de 4 dígitos para validar el complejo.");
-                return;
-            }
-
-            const nuevoTurno = {
-                complejo: complejoVerificadoActual.nombre,
-                numeroCancha: document.getElementById('turnoNumeroCancha').value.trim(),
-                fecha: document.getElementById('turnoFecha').value,
-                tipo: document.getElementById('turnoTipo').value,
-                horarios: document.getElementById('turnoHorarios').value.trim(),
-                precio: document.getElementById('turnoPrecio').value.trim(),
-                whatsapp: complejoVerificadoActual.whatsapp,
-                direccion: complejoVerificadoActual.direccion,
-                creadoEn: serverTimestamp()
-            };
-
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
-                document.getElementById('formTurno').reset();
-                window.cerrarModalTurno();
-            } catch (err) {
-                console.error(err);
-                alert("Error al publicar el turno.");
-            }
-        };
-
-        window.confirmarSumarse = async () => {
-            const id = document.getElementById('partidoIdSumarse').value;
-            const nombre = document.getElementById('nombreJugadorSumarse').value.trim();
-            if (!nombre) return alert("Escribí tu nombre o apodo.");
-
-            localStorage.setItem('clb_apodo', nombre);
-            const partidoActual = partidosCache.find(p => p.id === id);
-            
-            try {
-                const ref = doc(db, 'artifacts', appId, 'public', 'data', 'matches', id);
-                await updateDoc(ref, { anotados: arrayUnion(nombre) });
-                window.cerrarModalSumarse();
-
-                if (partidoActual) {
-                    const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
-                    const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🤝`);
-                    window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
-                }
-            } catch (err) {
-                console.error(err);
-                alert("No se pudo registrar tu lugar.");
-            }
-        };
-
-        async function iniciarApp() {
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-
-            try {
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-
-                await signInAnonymously(auth);
-
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        if (statusDot) {
-                            statusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-                            statusText.textContent = "Tablero en vivo conectado";
-                        }
-
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
-                            partidosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            renderizarPartidos();
-                        });
-
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), (snap) => {
-                            canchasCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            renderizarCanchas();
-                        });
-
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), (snap) => {
-                            complejosAdminCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
-                                renderizarAdminComplejos();
-                            }
-                        });
-
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), (snap) => {
-                            adsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
-                                renderizarAdminAds();
-                            }
-                            iniciarRotacionAds();
-                        });
-                    }
-                });
-            } catch (error) {
-                console.error(error);
-                if (statusDot) {
-                    statusDot.className = "w-2 h-2 rounded-full bg-rose-400";
-                    statusText.textContent = "Error de conexión";
-                }
-            }
-        }
-
-        iniciarApp();
-    </script>
-</body>
-</html>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-
