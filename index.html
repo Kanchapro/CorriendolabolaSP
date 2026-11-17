@@ -30,7 +30,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-24">
+<body class="min-h-screen flex flex-col pb-36">
 
     <!-- Header Estético con la Identidad del Logo -->
     <header class="app-gradient shadow-xl sticky top-0 z-40">
@@ -79,7 +79,6 @@
 
         <!-- ==================== SECCIÓN 1: FALTA UNO / TORNEOS ==================== -->
         <section id="vista-falta-uno">
-            <!-- Filtros rápidos limpios (Sin scroll, sin Arquero individual) -->
             <div class="grid grid-cols-4 gap-2 mb-4">
                 <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold py-2 px-2 rounded-xl text-center shadow-sm transition truncate">Todos</button>
                 <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 text-xs font-semibold py-2 px-2 rounded-xl text-center transition truncate">🏆 Torneos</button>
@@ -112,12 +111,31 @@
         </section>
     </main>
 
-    <!-- ==================== BANNER PUBLICITARIO FIJO ABAJO (LIMPIO) ==================== -->
-    <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 shadow-2xl py-1.5 px-4">
-        <div class="max-w-3xl mx-auto flex items-center justify-center">
-            <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 text-center">
-                <p class="text-xs text-slate-500">Cargando anuncios...</p>
+    <!-- ==================== TRES BANNERS PUBLICITARIOS FIJOS ABAJO ==================== -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 shadow-2xl py-1 px-3">
+        <div class="max-w-3xl mx-auto grid grid-cols-3 gap-2 items-center">
+            
+            <!-- Banner 1: Espacio General / Sponsor -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
+                <div id="contenedorBanner1" class="w-full transition-opacity duration-500">
+                    <p class="text-[10px] text-slate-500">Cargando...</p>
+                </div>
             </div>
+
+            <!-- Banner 2: Espacio Tercer Tiempo (Kioscos / Promos) -->
+            <div class="bg-slate-900/80 border border-amber-500/30 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
+                <div id="contenedorBanner2" class="w-full transition-opacity duration-500">
+                    <p class="text-[10px] text-amber-500/70">🍻 Tercer Tiempo</p>
+                </div>
+            </div>
+
+            <!-- Banner 3: Tercer Espacio / Promos -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
+                <div id="contenedorBanner3" class="w-full transition-opacity duration-500">
+                    <p class="text-[10px] text-slate-500">Cargando...</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -159,17 +177,15 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad</label>
                         <select id="modalidad" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
-                            <!-- Dinámico -->
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
                         <select id="puesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                            <!-- Dinámico -->
                         </select>
                     </div>
                 </div>
@@ -297,10 +313,11 @@
                 <button onclick="cerrarPanelAdmin()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <!-- Sección Pestañas del Admin -->
-            <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
-                <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition">Complejos & PINs</button>
-                <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">Gestor de Sponsors 🖼️</button>
+            <!-- Pestañas del Admin -->
+            <div class="grid grid-cols-3 gap-1.5 bg-slate-950 p-1 rounded-xl mb-4 border border-slate-800">
+                <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
+                <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition">Sponsors</button>
+                <button onclick="cambiarTabAdmin('tercerTiempo')" id="tabAdminTercerTiempo" class="py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition">🍻 3er Tiempo</button>
             </div>
 
             <!-- CONTENIDO TAB 1: COMPLEJOS -->
@@ -336,45 +353,72 @@
                 <div id="listaComplejosAdmin" class="space-y-2.5"></div>
             </div>
 
-            <!-- CONTENIDO TAB 2: SPONSORS PRÁCTICO -->
+            <!-- CONTENIDO TAB 2: SPONSORS -->
             <div id="seccionAdminSponsors" class="space-y-4 hidden">
-                <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event)" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Banner Sponsor Directo</h3>
-                    <p class="text-[11px] text-slate-400">Completá los datos y el sistema arma el banner con enlace automático a WhatsApp.</p>
-                    
+                <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event, 'ads_banners', 'Banner 1 y 3')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Anuncio (Banner 1 o 3)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local / Negocio</label>
-                        <input type="text" id="adminAdTitle" placeholder="Ej: Pere y el Flaco" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="adminAdTitle" placeholder="Ej: Proveeduría Deportiva" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL / Enlace de la Imagen del Banner</label>
-                        <input type="url" id="adminAdImgUrl" placeholder="Ej: enlace de imagen directo" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF</label>
+                        <input type="url" id="adminAdImgUrl" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
-
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp de contacto (sin 0 ni 15)</label>
-                            <input type="tel" id="adminAdWsp" placeholder="Ej: 3644356291" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
+                            <input type="tel" id="adminAdWsp" placeholder="3644..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Segundos en pantalla</label>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Segundos</label>
                             <input type="number" id="adminAdSeconds" min="3" max="60" value="6" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                     </div>
-
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje que llega al WhatsApp</label>
-                        <input type="text" id="adminAdMsg" placeholder="Ej: Hola Pere y el Flaco, los vi en Falta Uno SP y quiero hacer un pedido." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje de WhatsApp</label>
+                        <input type="text" id="adminAdMsg" placeholder="Hola, los vi en Falta Uno SP..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-
                     <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">
-                        Guardar Sponsor 🖼️
+                        Guardar Banner 🖼️
                     </button>
                 </form>
-
-                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Sponsors Activos en Rotación</h3>
+                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Anuncios Activos (Banners 1 y 3)</h3>
                 <div id="listaAdsAdmin" class="space-y-2.5"></div>
+            </div>
+
+            <!-- CONTENIDO TAB 3: TERCER TIEMPO (Kioscos / Promos) -->
+            <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
+                <form id="formAgregarTtAdmin" onsubmit="guardarAdAdmin(event, 'tercer_tiempo_banners', 'Tercer Tiempo')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-amber-500/30">
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">🍻 Agregar Promo / Kiosco (Banner 2 Central)</h3>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Kiosco / Bar</label>
+                        <input type="text" id="ttTitle" placeholder="Ej: Kiosco Don Pedro / Cervecería" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen o .GIF de la Promo</label>
+                        <input type="url" id="ttImgUrl" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
+                            <input type="tel" id="ttWsp" placeholder="3644..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Segundos</label>
+                            <input type="number" id="ttSeconds" min="3" max="60" value="6" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje de Pedido / Promo</label>
+                        <input type="text" id="ttMsg" placeholder="Hola, quiero encargar la promo del 3er tiempo..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">
+                        Guardar en Tercer Tiempo 🍻
+                    </button>
+                </form>
+                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Promos Activas (Tercer Tiempo)</h3>
+                <div id="listaTtAdmin" class="space-y-2.5"></div>
             </div>
         </div>
     </div>
@@ -435,10 +479,13 @@
         let canchasCache = [];
         let complejosAdminCache = [];
         let adsCache = [];
+        let tercerTiempoCache = [];
         let complejoVerificadoActual = null;
 
-        let indiceAdActual = 0;
-        let adIntervalTimer = null;
+        let indiceAd1 = 0;
+        let indiceAd2 = 0;
+        let timerAd1 = null;
+        let timerAd2 = null;
 
         const hoyStr = new Date().toISOString().split('T')[0];
 
@@ -591,6 +638,7 @@
                 document.getElementById('modalAdminPanel').classList.remove('hidden');
                 renderizarAdminComplejos();
                 renderizarAdminAds();
+                renderizarAdminTercerTiempo();
             } else {
                 alert("❌ Contraseña incorrecta");
             }
@@ -603,19 +651,27 @@
         window.cambiarTabAdmin = (tab) => {
             const secComp = document.getElementById('seccionAdminComplejos');
             const secAds = document.getElementById('seccionAdminSponsors');
+            const secTt = document.getElementById('seccionAdminTercerTiempo');
             const btnComp = document.getElementById('tabAdminComplejos');
             const btnAds = document.getElementById('tabAdminSponsors');
+            const btnTt = document.getElementById('tabAdminTercerTiempo');
+
+            secComp.classList.add('hidden');
+            secAds.classList.add('hidden');
+            secTt.classList.add('hidden');
+            btnComp.className = "py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition";
+            btnAds.className = "py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition";
+            btnTt.className = "py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition";
 
             if (tab === 'complejos') {
                 secComp.classList.remove('hidden');
-                secAds.classList.add('hidden');
-                btnComp.className = "py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition";
-                btnAds.className = "py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition";
-            } else {
-                secComp.classList.add('hidden');
+                btnComp.className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
+            } else if (tab === 'sponsors') {
                 secAds.classList.remove('hidden');
-                btnAds.className = "py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition";
-                btnComp.className = "py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition";
+                btnAds.className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
+            } else if (tab === 'tercerTiempo') {
+                secTt.classList.remove('hidden');
+                btnTt.className = "py-2 rounded-lg text-[11px] font-bold bg-amber-500 text-slate-950 transition";
             }
         };
 
@@ -631,60 +687,45 @@
                 creadoEn: serverTimestamp()
             };
 
-            if (nuevo.pin.length !== 4) {
-                return alert("El PIN debe tener exactamente 4 dígitos.");
-            }
+            if (nuevo.pin.length !== 4) return alert("El PIN debe tener exactamente 4 dígitos.");
 
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), nuevo);
                 document.getElementById('formAgregarComplejoAdmin').reset();
-                alert("✅ Complejo guardado y habilitado con éxito.");
-            } catch (err) {
-                console.error(err);
-                alert("Error al guardar en Firestore.");
-            }
+                alert("✅ Complejo guardado con éxito.");
+            } catch (err) { console.error(err); alert("Error al guardar."); }
         };
 
         window.eliminarComplejoAdmin = async (id) => {
             if (confirm("¿Estás seguro de eliminar este complejo?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_complexes', id));
-                } catch (err) {
-                    console.error(err);
-                }
+                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_complexes', id)); } catch (err) { console.error(err); }
             }
         };
 
-        window.guardarAdAdmin = async (e) => {
+        window.guardarAdAdmin = async (e, coleccion, nombreSeccion) => {
             e.preventDefault();
             if (!db) return alert("Conectando a base de datos...");
 
+            const isTt = coleccion === 'tercer_tiempo_banners';
             const nuevoAd = {
-                titulo: document.getElementById('adminAdTitle').value.trim(),
-                imgUrl: document.getElementById('adminAdImgUrl').value.trim(),
-                whatsapp: document.getElementById('adminAdWsp').value.trim().replace(/\D/g, ''),
-                mensaje: document.getElementById('adminAdMsg').value.trim(),
-                segundos: parseInt(document.getElementById('adminAdSeconds').value, 10) || 6,
+                titulo: document.getElementById(isTt ? 'ttTitle' : 'adminAdTitle').value.trim(),
+                imgUrl: document.getElementById(isTt ? 'ttImgUrl' : 'adminAdImgUrl').value.trim(),
+                whatsapp: document.getElementById(isTt ? 'ttWsp' : 'adminAdWsp').value.trim().replace(/\D/g, ''),
+                mensaje: document.getElementById(isTt ? 'ttMsg' : 'adminAdMsg').value.trim(),
+                segundos: parseInt(document.getElementById(isTt ? 'ttSeconds' : 'adminAdSeconds').value, 10) || 6,
                 creadoEn: serverTimestamp()
             };
 
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), nuevoAd);
-                document.getElementById('formAgregarAdAdmin').reset();
-                alert("✅ Sponsor guardado con éxito.");
-            } catch (err) {
-                console.error(err);
-                alert("Error al guardar el sponsor.");
-            }
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', coleccion), nuevoAd);
+                document.getElementById(isTt ? 'formAgregarTtAdmin' : 'formAgregarAdAdmin').reset();
+                alert(`✅ Anuncio guardado en ${nombreSeccion} con éxito.`);
+            } catch (err) { console.error(err); alert("Error al guardar el anuncio."); }
         };
 
-        window.eliminarAdAdmin = async (id) => {
-            if (confirm("¿Estás seguro de eliminar este sponsor?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads_banners', id));
-                } catch (err) {
-                    console.error(err);
-                }
+        window.eliminarAdAdmin = async (id, coleccion) => {
+            if (confirm("¿Estás seguro de eliminar este anuncio?")) {
+                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', coleccion, id)); } catch (err) { console.error(err); }
             }
         };
 
@@ -694,7 +735,6 @@
                 contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay complejos cargados.</div>`;
                 return;
             }
-
             contenedor.innerHTML = complejosAdminCache.map(c => `
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div>
@@ -704,9 +744,7 @@
                         </div>
                         <p class="text-[11px] text-slate-400 mt-0.5">📍 ${c.direccion} • 📱 ${c.whatsapp}</p>
                     </div>
-                    <button onclick="eliminarComplejoAdmin('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold">
-                        Eliminar
-                    </button>
+                    <button onclick="eliminarComplejoAdmin('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold">Eliminar</button>
                 </div>
             `).join('');
         }
@@ -714,10 +752,9 @@
         function renderizarAdminAds() {
             const contenedor = document.getElementById('listaAdsAdmin');
             if (adsCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay sponsors cargados.</div>`;
+                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay anuncios cargados.</div>`;
                 return;
             }
-
             contenedor.innerHTML = adsCache.map(a => `
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
@@ -727,47 +764,90 @@
                             <p class="text-[10px] text-slate-400 truncate">📱 549${a.whatsapp} • ⏱️ ${a.segundos}s</p>
                         </div>
                     </div>
-                    <button onclick="eliminarAdAdmin('${a.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold shrink-0">
-                        Eliminar
-                    </button>
+                    <button onclick="eliminarAdAdmin('${a.id}', 'ads_banners')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold shrink-0">Eliminar</button>
                 </div>
             `).join('');
         }
 
-        function iniciarRotacionAds() {
-            if (adIntervalTimer) clearInterval(adIntervalTimer);
+        function renderizarAdminTercerTiempo() {
+            const contenedor = document.getElementById('listaTtAdmin');
+            if (tercerTiempoCache.length === 0) {
+                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay promos de Tercer Tiempo cargadas.</div>`;
+                return;
+            }
+            contenedor.innerHTML = tercerTiempoCache.map(a => `
+                <div class="bg-slate-900 border border-amber-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img src="${a.imgUrl}" class="w-12 h-8 object-cover rounded border border-slate-800 shrink-0">
+                        <div class="min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                            <p class="text-[10px] text-slate-400 truncate">📱 549${a.whatsapp} • ⏱️ ${a.segundos}s</p>
+                        </div>
+                    </div>
+                    <button onclick="eliminarAdAdmin('${a.id}', 'tercer_tiempo_banners')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold shrink-0">Eliminar</button>
+                </div>
+            `).join('');
+        }
 
-            const contenedor = document.getElementById('contenedorBannerRotativo');
+        // Rotador independiente para Banner 1 y 3 (Sponsors)
+        function iniciarRotacionAds() {
+            if (timerAd1) clearTimeout(timerAd1);
+            const cont1 = document.getElementById('contenedorBanner1');
+            const cont3 = document.getElementById('contenedorBanner3');
 
             if (adsCache.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="text-center py-1">
-                        <span class="text-xs text-slate-400">¿Querés tu local acá? </span>
-                        <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Falta Uno SP.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
-                    </div>`;
+                const htmlVacio = `<div class="text-center py-1"><span class="text-[10px] text-slate-500">Tu espacio</span></div>`;
+                cont1.innerHTML = htmlVacio;
+                cont3.innerHTML = htmlVacio;
                 return;
             }
 
-            if (indiceAdActual >= adsCache.length) {
-                indiceAdActual = 0;
+            if (indiceAd1 >= adsCache.length) indiceAd1 = 0;
+            const anuncio = adsCache[indiceAd1];
+            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola!')}`;
+
+            const htmlAnuncio = `
+                <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
+                    <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition">
+                </a>`;
+
+            cont1.innerHTML = htmlAnuncio;
+            // Para el banner 3 mostramos el siguiente de la lista (o el mismo si hay 1 solo)
+            const anuncio3 = adsCache[(indiceAd1 + 1) % adsCache.length];
+            const linkWsp3 = `https://wa.me/549${anuncio3.whatsapp}?text=${encodeURIComponent(anuncio3.mensaje || 'Hola!')}`;
+            cont3.innerHTML = `
+                <a href="${linkWsp3}" target="_blank" class="block w-full text-center group">
+                    <img src="${anuncio3.imgUrl}" alt="${anuncio3.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition">
+                </a>`;
+
+            timerAd1 = setTimeout(() => {
+                indiceAd1++;
+                iniciarRotacionAds();
+            }, (anuncio.segundos || 6) * 1000);
+        }
+
+        // Rotador independiente para Banner 2 (Tercer Tiempo / Kioscos)
+        function iniciarRotacionTercerTiempo() {
+            if (timerAd2) clearTimeout(timerAd2);
+            const cont2 = document.getElementById('contenedorBanner2');
+
+            if (tercerTiempoCache.length === 0) {
+                cont2.innerHTML = `<div class="text-center py-1"><span class="text-[10px] text-amber-500/70 font-bold">🍻 3er Tiempo</span></div>`;
+                return;
             }
 
-            const anuncio = adsCache[indiceAdActual];
-            contenedor.style.opacity = '0';
-            
-            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola, los vi en Falta Uno SP.')}`;
+            if (indiceAd2 >= tercerTiempoCache.length) indiceAd2 = 0;
+            const anuncio = tercerTiempoCache[indiceAd2];
+            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola!')}`;
 
-            setTimeout(() => {
-                contenedor.innerHTML = `
-                    <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
-                        <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-11 sm:h-12 mx-auto rounded-lg shadow object-contain group-hover:scale-[1.01] transition">
-                    </a>`;
-                contenedor.style.opacity = '1';
-            }, 300);
+            cont2.innerHTML = `
+                <a href="${linkWsp}" target="_blank" class="block w-full text-center group">
+                    <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition">
+                </a>`;
 
-            adIntervalTimer = setTimeout(() => {
-                indiceAdActual++;
-                iniciarRotacionAds();
+            timerAd2 = setTimeout(() => {
+                indiceAd2++;
+                iniciarRotacionTercerTiempo();
             }, (anuncio.segundos || 6) * 1000);
         }
 
@@ -779,7 +859,6 @@
             const inputWsp = document.getElementById('turnoWhatsapp');
 
             let encontrado = complejosAdminCache.find(c => c.pin === pin);
-
             if (encontrado) {
                 complejoVerificadoActual = encontrado;
                 inputComp.value = encontrado.nombre;
@@ -788,14 +867,8 @@
                 estado.innerHTML = '<span class="text-emerald-400 font-bold">✅ ' + encontrado.nombre + '</span>';
             } else {
                 complejoVerificadoActual = null;
-                inputComp.value = "";
-                inputDir.value = "";
-                inputWsp.value = "";
-                if (pin.length === 4) {
-                    estado.innerHTML = '<span class="text-rose-400 font-semibold">❌ PIN incorrecto</span>';
-                } else {
-                    estado.innerHTML = '<span class="text-slate-400">Ingresá los 4 dígitos...</span>';
-                }
+                inputComp.value = ""; inputDir.value = ""; inputWsp.value = "";
+                estado.innerHTML = pin.length === 4 ? '<span class="text-rose-400 font-semibold">❌ PIN incorrecto</span>' : '<span class="text-slate-400">Ingresá los 4 dígitos...</span>';
             }
         };
 
@@ -819,67 +892,37 @@
             document.getElementById('modalSumarse').classList.remove('hidden');
         };
 
-        window.cerrarModalSumarse = () => {
-            document.getElementById('modalSumarse').classList.add('hidden');
-        };
-
-        window.pedirPinBorrarTurno = (id) => {
-            document.getElementById('turnoIdBorrar').value = id;
-            document.getElementById('pinBorrarInput').value = '';
-            document.getElementById('modalBorrarTurno').classList.remove('hidden');
-        };
-
-        window.cerrarModalBorrar = () => {
-            document.getElementById('modalBorrarTurno').classList.add('hidden');
-        };
+        window.cerrarModalSumarse = () => { document.getElementById('modalSumarse').classList.add('hidden'); };
+        window.pedirPinBorrarTurno = (id) => { document.getElementById('turnoIdBorrar').value = id; document.getElementById('pinBorrarInput').value = ''; document.getElementById('modalBorrarTurno').classList.remove('hidden'); };
+        window.cerrarModalBorrar = () => { document.getElementById('modalBorrarTurno').classList.add('hidden'); };
 
         window.ejecutarBorrarTurno = async () => {
             const id = document.getElementById('turnoIdBorrar').value;
             const pinIngresado = document.getElementById('pinBorrarInput').value.trim();
-
-            if (!pinIngresado) {
-                alert("Ingresá el PIN para borrar.");
-                return;
-            }
-
             const turnoObj = canchasCache.find(c => c.id === id);
             let complejoAsociado = complejosAdminCache.find(c => c.nombre === turnoObj?.complejo);
             const esPinValido = (pinIngresado === 'atitomelero') || (complejoAsociado && pinIngresado === complejoAsociado.pin);
 
-            if (!esPinValido) {
-                alert("❌ PIN o contraseña incorrecta.");
-                return;
-            }
-
+            if (!esPinValido) return alert("❌ PIN o contraseña incorrecta.");
             try {
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courts', id));
                 cerrarModalBorrar();
                 alert("🗑️ Turno eliminado con éxito.");
-            } catch (err) {
-                console.error(err);
-                alert("Error al borrar el turno.");
-            }
+            } catch (err) { console.error(err); alert("Error al borrar."); }
         };
 
         function renderizarPartidos() {
             const contenedor = document.getElementById('listaPartidos');
             const ahora = new Date();
-
             let vigentes = partidosCache.filter(p => {
                 if (!p.fecha || !p.hora) return true;
-                const fechaHoraPartido = new Date(`${p.fecha}T${p.hora}:00`);
-                return fechaHoraPartido >= ahora;
+                return new Date(`${p.fecha}T${p.hora}:00`) >= ahora;
             });
 
             let filtrados = vigentes;
-
-            if (filtroActual === 'Torneo') {
-                filtrados = vigentes.filter(p => p.esTorneo === true);
-            } else if (filtroActual === 'Fútbol') {
-                filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Fútbol') && !p.esTorneo);
-            } else if (filtroActual === 'Pádel') {
-                filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Pádel') && !p.esTorneo);
-            }
+            if (filtroActual === 'Torneo') filtrados = vigentes.filter(p => p.esTorneo === true);
+            else if (filtroActual === 'Fútbol') filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Fútbol') && !p.esTorneo);
+            else if (filtroActual === 'Pádel') filtrados = vigentes.filter(p => p.modalidad && p.modalidad.includes('Pádel') && !p.esTorneo);
 
             if (filtrados.length === 0) {
                 contenedor.innerHTML = `
@@ -896,59 +939,32 @@
                 const restantes = Math.max(0, p.faltan - anotados.length);
                 const completo = restantes === 0;
                 const telLimpio = (p.whatsapp || '').replace(/\D/g, '');
-                
                 const [anio, mes, dia] = (p.fecha || hoyStr).split('-');
                 const fechaFormateada = `${dia}/${mes}`;
-
-                const badgeTipo = p.esTorneo 
-                    ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Torneo</span>`
-                    : `<span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">${p.modalidad}</span>`;
+                const badgeTipo = p.esTorneo ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Torneo</span>` : `<span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">${p.modalidad}</span>`;
 
                 return `
                 <div class="card-glass rounded-2xl p-5 shadow-lg transition hover:border-emerald-500/40 ${completo ? 'opacity-70' : ''}">
                     <div class="flex justify-between items-start gap-2 mb-3">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                                    📅 ${fechaFormateada} • ${p.hora} hs
-                                </span>
+                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">📅 ${fechaFormateada} • ${p.hora} hs</span>
                                 ${badgeTipo}
                                 ${p.puesto && p.puesto !== 'Cualquiera' && !p.esTorneo ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Busca ${p.puesto}</span>` : ''}
                             </div>
                             <h3 class="text-base font-extrabold text-white mt-2">${p.esTorneo ? '🏆' : '📍'} ${p.cancha}</h3>
                         </div>
-
                         <div class="text-right shrink-0">
-                            ${completo
-                                ? `<span class="bg-slate-800 text-slate-300 text-xs font-extrabold px-3 py-1.5 rounded-xl border border-slate-700">✅ ¡Completo!</span>`
-                                : `<div class="bg-rose-500/20 border border-rose-500/40 text-rose-300 px-3 py-1 rounded-xl text-center">
-                                     <span class="block text-lg font-black leading-none">${restantes}</span>
-                                     <span class="text-[10px] uppercase font-bold">${restantes === 1 ? 'Falta' : 'Faltan'}</span>
-                                   </div>`
-                            }
+                            ${completo ? `<span class="bg-slate-800 text-slate-300 text-xs font-extrabold px-3 py-1.5 rounded-xl border border-slate-700">✅ ¡Completo!</span>` : `<div class="bg-rose-500/20 border border-rose-500/40 text-rose-300 px-3 py-1 rounded-xl text-center"><span class="block text-lg font-black leading-none">${restantes}</span><span class="text-[10px] uppercase font-bold">${restantes === 1 ? 'Falta' : 'Faltan'}</span></div>`}
                         </div>
                     </div>
-
                     ${p.nota ? `<p class="text-xs text-slate-300 bg-slate-950/60 rounded-xl px-3 py-2 mb-3 border border-slate-800">💬 "${p.nota}"</p>` : ''}
-
-                    ${anotados.length > 0 ? `
-                        <div class="mb-3 flex flex-wrap items-center gap-1.5">
-                            <span class="text-[11px] text-slate-400">Se sumaron:</span>
-                            ${anotados.map(n => `<span class="bg-emerald-950 text-emerald-200 border border-emerald-500/30 text-[11px] font-semibold px-2 py-0.5 rounded-md">⚽ ${n}</span>`).join('')}
-                        </div>
-                    ` : ''}
-
+                    ${anotados.length > 0 ? `<div class="mb-3 flex flex-wrap items-center gap-1.5"><span class="text-[11px] text-slate-400">Se sumaron:</span>${anotados.map(n => `<span class="bg-emerald-950 text-emerald-200 border border-emerald-500/30 text-[11px] font-semibold px-2 py-0.5 rounded-md">⚽ ${n}</span>`).join('')}</div>` : ''}
                     <div class="flex items-center justify-between pt-3 border-t border-slate-800 gap-2">
                         <span class="text-xs text-slate-400">Organiza: <strong class="text-slate-200">${p.organizador}</strong></span>
                         <div class="flex gap-2">
-                            ${!completo ? `
-                                <button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
-                                    🙋‍♂️ ¡Me sumo!
-                                </button>
-                            ` : ''}
-                            <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero sumarme.`)}" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1">
-                                WhatsApp
-                            </a>
+                            ${!completo ? `<button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">🙋‍♂️ ¡Me sumo!</button>` : ''}
+                            <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero sumarme.`)}" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1">WhatsApp</a>
                         </div>
                     </div>
                 </div>`;
@@ -958,12 +974,7 @@
         function renderizarCanchas() {
             const contenedor = document.getElementById('listaCanchas');
             const ahora = new Date();
-
-            let vigentes = canchasCache.filter(c => {
-                if (!c.fecha) return true;
-                const fechaTurno = new Date(`${c.fecha}T23:59:59`);
-                return fechaTurno >= ahora;
-            });
+            let vigentes = canchasCache.filter(c => !c.fecha || new Date(`${c.fecha}T23:59:59`) >= ahora);
 
             if (vigentes.length === 0) {
                 contenedor.innerHTML = `
@@ -997,19 +1008,11 @@
                             <span class="text-[10px] text-slate-400">turno completo</span>
                         </div>
                     </div>
-
                     <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                        <div>
-                            <span class="text-xs text-slate-400">Horario disponible:</span>
-                            <p class="text-sm font-bold text-white">⏰ ${c.horarios}</p>
-                        </div>
+                        <div><span class="text-xs text-slate-400">Horario disponible:</span><p class="text-sm font-bold text-white">⏰ ${c.horarios}</p></div>
                         <div class="flex gap-2">
-                            <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-2.5 rounded-xl transition" title="Borrar turno">
-                                🗑️ Borrar
-                            </button>
-                            <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">
-                                📲 Reservar
-                            </a>
+                            <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-2.5 rounded-xl transition" title="Borrar turno">🗑️ Borrar</button>
+                            <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">📲 Reservar</a>
                         </div>
                     </div>
                 </div>`;
@@ -1019,7 +1022,6 @@
         window.guardarPartido = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando a base de datos...");
-
             const tipo = document.getElementById('tipoConvocatoria').value;
             const nuevoPartido = {
                 esTorneo: tipo === 'torneo',
@@ -1035,26 +1037,17 @@
                 anotados: [],
                 creadoEn: serverTimestamp()
             };
-
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), nuevoPartido);
                 document.getElementById('formPartido').reset();
                 window.cerrarModalPartido();
-            } catch (err) {
-                console.error(err);
-                alert("Error al publicar la convocatoria.");
-            }
+            } catch (err) { console.error(err); alert("Error al publicar."); }
         };
 
         window.guardarTurno = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando a base de datos...");
-
-            if (!complejoVerificadoActual) {
-                alert("⚠️ Ingresá un PIN válido de 4 dígitos para validar el complejo.");
-                return;
-            }
-
+            if (!complejoVerificadoActual) return alert("⚠️ Ingresá un PIN válido de 4 dígitos.");
             const nuevoTurno = {
                 complejo: complejoVerificadoActual.nombre,
                 numeroCancha: document.getElementById('turnoNumeroCancha').value.trim(),
@@ -1066,39 +1059,28 @@
                 direccion: complejoVerificadoActual.direccion,
                 creadoEn: serverTimestamp()
             };
-
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
                 document.getElementById('formTurno').reset();
                 window.cerrarModalTurno();
-            } catch (err) {
-                console.error(err);
-                alert("Error al publicar el turno.");
-            }
+            } catch (err) { console.error(err); alert("Error al publicar."); }
         };
 
         window.confirmarSumarse = async () => {
             const id = document.getElementById('partidoIdSumarse').value;
             const nombre = document.getElementById('nombreJugadorSumarse').value.trim();
             if (!nombre) return alert("Escribí tu nombre o apodo.");
-
             localStorage.setItem('clb_apodo', nombre);
             const partidoActual = partidosCache.find(p => p.id === id);
-            
             try {
-                const ref = doc(db, 'artifacts', appId, 'public', 'data', 'matches', id);
-                await updateDoc(ref, { anotados: arrayUnion(nombre) });
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'matches', id), { anotados: arrayUnion(nombre) });
                 window.cerrarModalSumarse();
-
                 if (partidoActual) {
                     const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
                     const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎🏆`);
                     window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
                 }
-            } catch (err) {
-                console.error(err);
-                alert("No se pudo registrar tu lugar.");
-            }
+            } catch (err) { console.error(err); alert("No se pudo registrar."); }
         };
 
         async function iniciarApp() {
@@ -1109,7 +1091,6 @@
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
-
                 await signInAnonymously(auth);
 
                 onAuthStateChanged(auth, (user) => {
@@ -1131,27 +1112,23 @@
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), (snap) => {
                             complejosAdminCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
-                                renderizarAdminComplejos();
-                            }
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminComplejos();
                         });
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), (snap) => {
                             adsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
-                                renderizarAdminAds();
-                            }
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminAds();
                             iniciarRotacionAds();
+                        });
+
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo_banners'), (snap) => {
+                            tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
+                            iniciarRotacionTercerTiempo();
                         });
                     }
                 });
-            } catch (error) {
-                console.error(error);
-                if (statusDot) {
-                    statusDot.className = "w-2 h-2 rounded-full bg-rose-400";
-                    statusText.textContent = "Error de conexión";
-                }
-            }
+            } catch (error) { console.error(error); }
         }
 
         iniciarApp();
