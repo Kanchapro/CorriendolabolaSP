@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Falta Uno SP ⚽ | Sáenz Peña</title>
+    
+    <!-- Configuración PWA para instalación -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#041b18">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -31,6 +38,25 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col pb-36">
+
+    <!-- ==================== BANNER FLOTANTE DE INSTALACIÓN ==================== -->
+    <div id="bannerInstalacion" class="hidden fixed top-2 left-4 right-4 z-50 bg-emerald-950/95 border-2 border-emerald-500 text-white px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">📲</span>
+            <div>
+                <h4 class="text-xs font-extrabold text-emerald-300">¡Instalá Falta Uno SP!</h4>
+                <p class="text-[11px] text-slate-300">Llevá la app a tu pantalla de inicio.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="instalarAppPWA()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold px-3.5 py-2 rounded-xl transition shadow">
+                Instalar
+            </button>
+            <button onclick="cerrarBannerInstalacion()" class="text-slate-400 hover:text-white text-lg font-bold px-1.5">
+                &times;
+            </button>
+        </div>
+    </div>
 
     <!-- Header Estético con la Identidad del Logo -->
     <header class="app-gradient shadow-xl sticky top-0 z-40">
@@ -133,7 +159,7 @@
         </div>
     </div>
 
-    <!-- ==================== MODAL 1: PUBLICAR FALTA UNO / TORNEO / RIVAL ==================== -->
+    <!-- ==================== MODAL 1: PUBLICAR ==================== -->
     <div id="modalPublicar" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-slate-900 border border-emerald-500/30 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-5">
@@ -176,7 +202,7 @@
                     </div>
                     <div id="campoFaltanContainer">
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div id="campoPuestoContainer">
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
@@ -382,7 +408,7 @@
                 <div id="listaAdsAdmin" class="space-y-2.5"></div>
             </div>
 
-            <!-- CONTENIDO TAB 3: TERCER TIEMPO (Kioscos / Promos) -->
+            <!-- CONTENIDO TAB 3: TERCER TIEMPO -->
             <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
                 <form id="formAgregarTtAdmin" onsubmit="guardarAdAdmin(event, 'tercer_tiempo_banners', 'Tercer Tiempo')" class="space-y-3 bg-slate-950/60 p-4 rounded-2xl border border-amber-500/30">
                     <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">🍻 Agregar Promo / Kiosco (Banner 2 Derecho)</h3>
@@ -418,7 +444,7 @@
         </div>
     </div>
 
-    <!-- Modal Súmate Rápido con Elección de Posición -->
+    <!-- Modal Súmate Rápido -->
     <div id="modalSumarse" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-emerald-500/30 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
             <h3 class="text-lg font-extrabold text-white mb-1">🙋‍♂️ ¡Me sumo a la convocatoria!</h3>
@@ -449,17 +475,13 @@
         </div>
     </div>
 
-    <!-- Modal Calificar Asistencia / Estrellas -->
+    <!-- Modal Calificar -->
     <div id="modalCalificar" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-emerald-500/30 w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-extrabold text-white mb-1">⭐ Calificar Jugadores</h3>
-            <p class="text-xs text-slate-400 mb-4">Marcá si el jugador asistió correctamente para sumar reputación.</p>
+            <p class="text-xs text-slate-400 mb-4">Marcá si el jugador asistió correctamente.</p>
             <input type="hidden" id="partidoIdCalificar">
-            
-            <div id="listaJugadoresACalificar" class="space-y-3 mb-5">
-                <!-- Dinámico -->
-            </div>
-
+            <div id="listaJugadoresACalificar" class="space-y-3 mb-5"></div>
             <div class="flex gap-2">
                 <button onclick="cerrarModalCalificar()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-sm">Cerrar</button>
                 <button onclick="guardarCalificaciones()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-sm">Guardar Calificaciones</button>
@@ -467,11 +489,11 @@
         </div>
     </div>
 
-    <!-- Modal Borrar Turno con PIN -->
+    <!-- Modal Borrar -->
     <div id="modalBorrarTurno" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-emerald-500/30 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
             <h3 class="text-lg font-extrabold text-white mb-1">🗑️ Eliminar Publicación</h3>
-            <p class="text-xs text-slate-400 mb-4">Ingresá el PIN de 4 dígitos o contraseña admin para confirmar.</p>
+            <p class="text-xs text-slate-400 mb-4">Ingresá el PIN de 4 dígitos o contraseña admin.</p>
             <input type="hidden" id="turnoIdBorrar">
             <input type="hidden" id="tipoBorrar">
             <input type="password" id="pinBorrarInput" maxlength="4" placeholder="PIN de 4 dígitos..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-3 text-center tracking-widest font-bold text-sm text-white mb-4 focus:outline-none focus:border-emerald-500">
@@ -497,10 +519,7 @@
             appId: "1:415745937408:web:bfd5828092332b0c1388e5"
         };
 
-        const firebaseConfig = (typeof __firebase_config !== 'undefined')
-            ? JSON.parse(__firebase_config)
-            : miFirebaseConfig;
-
+        const firebaseConfig = (typeof __firebase_config !== 'undefined') ? JSON.parse(__firebase_config) : miFirebaseConfig;
         const appId = (typeof __app_id !== 'undefined') ? __app_id : 'falta-uno-sp';
 
         let db, auth;
@@ -518,6 +537,30 @@
         let indiceAd2 = 0;
         let timerAd1 = null;
         let timerAd2 = null;
+
+        // Variables para captura de instalación PWA
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('bannerInstalacion').classList.remove('hidden');
+        });
+
+        window.instalarAppPWA = async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Usuario aceptó instalar la PWA');
+                }
+                deferredPrompt = null;
+                document.getElementById('bannerInstalacion').classList.add('hidden');
+            }
+        };
+
+        window.cerrarBannerInstalacion = () => {
+            document.getElementById('bannerInstalacion').classList.add('hidden');
+        };
 
         const hoyStr = new Date().toISOString().split('T')[0];
 
@@ -545,11 +588,8 @@
         };
 
         window.manejarBotonPrincipal = () => {
-            if (tabActual === 'falta-uno') {
-                window.abrirModalPartido();
-            } else {
-                window.abrirModalTurno();
-            }
+            if (tabActual === 'falta-uno') { window.abrirModalPartido(); } 
+            else { window.abrirModalTurno(); }
         };
 
         window.abrirModalPartido = () => {
@@ -558,9 +598,7 @@
             document.getElementById('modalPublicar').classList.remove('hidden');
         };
 
-        window.cerrarModalPartido = () => {
-            document.getElementById('modalPublicar').classList.add('hidden');
-        };
+        window.cerrarModalPartido = () => { document.getElementById('modalPublicar').classList.add('hidden'); };
 
         window.abrirModalTurno = () => {
             document.getElementById('turnoFecha').value = hoyStr;
@@ -576,9 +614,7 @@
             complejoVerificadoActual = null;
         };
 
-        window.cerrarModalTurno = () => {
-            document.getElementById('modalTurno').classList.add('hidden');
-        };
+        window.cerrarModalTurno = () => { document.getElementById('modalTurno').classList.add('hidden'); };
 
         window.toggleCamposTorneo = () => {
             const tipo = document.getElementById('tipoConvocatoria').value;
@@ -597,68 +633,37 @@
             if (tipo === 'rival') {
                 labelTexto.textContent = "Complejo / Cancha para el Amistoso";
                 inputLugar.placeholder = "Ej: Complejo La Red, Cancha 2...";
-                campoFaltan.style.display = 'none'; // No hace falta cuántos faltan, es equipo vs equipo
+                campoFaltan.style.display = 'none';
                 campoPuesto.style.display = 'none';
-
                 ['Fútbol 5', 'Fútbol 7', 'Fútbol 8', 'Fútbol 11', 'Futsal', 'Pádel'].forEach(mod => {
-                    const opt = document.createElement('option');
-                    opt.value = mod;
-                    opt.textContent = mod;
-                    selectModalidad.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = mod; opt.textContent = mod; selectModalidad.appendChild(opt);
                 });
-
             } else if (tipo === 'torneo') {
                 labelTexto.textContent = "Nombre del Torneo / Competencia";
                 inputLugar.placeholder = "Ej: Torneo Comercial / Club Unión";
-                
                 ['Fútbol 5', 'Fútbol 7', 'Fútbol 8', 'Fútbol 11', 'Futsal', 'Pádel Dobles', 'Pádel Single'].forEach(mod => {
-                    const opt = document.createElement('option');
-                    opt.value = mod;
-                    opt.textContent = mod;
-                    selectModalidad.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = mod; opt.textContent = mod; selectModalidad.appendChild(opt);
                 });
-
                 ['Cualquiera', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero', 'Revés', 'Drive'].forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p;
-                    opt.textContent = p;
-                    selectPuesto.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = p; opt.textContent = p; selectPuesto.appendChild(opt);
                 });
-
             } else if (tipo === 'falta1_futbol') {
                 labelTexto.textContent = "Complejo / Cancha en Sáenz Peña";
                 inputLugar.placeholder = "Ej: Complejo La Red, Club Unión...";
-
                 ['Fútbol 5', 'Fútbol 8', 'Fútbol 11', 'Futsal'].forEach(mod => {
-                    const opt = document.createElement('option');
-                    opt.value = mod;
-                    opt.textContent = mod;
-                    selectModalidad.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = mod; opt.textContent = mod; selectModalidad.appendChild(opt);
                 });
-
                 ['Cualquiera', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero'].forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p;
-                    opt.textContent = p;
-                    selectPuesto.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = p; opt.textContent = p; selectPuesto.appendChild(opt);
                 });
-
             } else if (tipo === 'falta1_padel') {
                 labelTexto.textContent = "Complejo / Cancha en Sáenz Peña";
                 inputLugar.placeholder = "Ej: Complejo La Red, Club Unión...";
-
                 ['Pádel Single', 'Pádel Dobles'].forEach(mod => {
-                    const opt = document.createElement('option');
-                    opt.value = mod;
-                    opt.textContent = mod;
-                    selectModalidad.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = mod; opt.textContent = mod; selectModalidad.appendChild(opt);
                 });
-
                 ['Cualquiera', 'Revés', 'Drive', 'Izquierdo', 'Derecho'].forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p;
-                    opt.textContent = p;
-                    selectPuesto.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = p; opt.textContent = p; selectPuesto.appendChild(opt);
                 });
             }
         };
@@ -668,9 +673,7 @@
             document.getElementById('modalAdminLogin').classList.remove('hidden');
         };
 
-        window.cerrarModalAdmin = () => {
-            document.getElementById('modalAdminLogin').classList.add('hidden');
-        };
+        window.cerrarModalAdmin = () => { document.getElementById('modalAdminLogin').classList.add('hidden'); };
 
         window.verificarAdminPassword = () => {
             const pass = document.getElementById('adminPasswordInput').value.trim();
@@ -680,14 +683,10 @@
                 renderizarAdminComplejos();
                 renderizarAdminAds();
                 renderizarAdminTercerTiempo();
-            } else {
-                alert("❌ Contraseña incorrecta");
-            }
+            } else { alert("❌ Contraseña incorrecta"); }
         };
 
-        window.cerrarPanelAdmin = () => {
-            document.getElementById('modalAdminPanel').classList.add('hidden');
-        };
+        window.cerrarPanelAdmin = () => { document.getElementById('modalAdminPanel').classList.add('hidden'); };
 
         window.cambiarTabAdmin = (tab) => {
             const secComp = document.getElementById('seccionAdminComplejos');
@@ -697,23 +696,14 @@
             const btnAds = document.getElementById('tabAdminSponsors');
             const btnTt = document.getElementById('tabAdminTercerTiempo');
 
-            secComp.classList.add('hidden');
-            secAds.classList.add('hidden');
-            secTt.classList.add('hidden');
+            secComp.classList.add('hidden'); secAds.classList.add('hidden'); secTt.classList.add('hidden');
             btnComp.className = "py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition";
             btnAds.className = "py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition";
             btnTt.className = "py-2 rounded-lg text-[11px] font-bold text-slate-300 hover:text-white transition";
 
-            if (tab === 'complejos') {
-                secComp.classList.remove('hidden');
-                btnComp.className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
-            } else if (tab === 'sponsors') {
-                secAds.classList.remove('hidden');
-                btnAds.className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
-            } else if (tab === 'tercerTiempo') {
-                secTt.classList.remove('hidden');
-                btnTt.className = "py-2 rounded-lg text-[11px] font-bold bg-amber-500 text-slate-950 transition";
-            }
+            if (tab === 'complejos') { secComp.classList.remove('hidden'); btnComp.className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition"; }
+            else if (tab === 'sponsors') { secAds.classList.remove('hidden'); btnAds.className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition"; }
+            else if (tab === 'tercerTiempo') { secTt.classList.remove('hidden'); btnTt.className = "py-2 rounded-lg text-[11px] font-bold bg-amber-500 text-slate-950 transition"; }
         };
 
         window.guardarComplejoAdmin = async (e) => {
@@ -767,10 +757,7 @@
 
         function renderizarAdminComplejos() {
             const contenedor = document.getElementById('listaComplejosAdmin');
-            if (complejosAdminCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay complejos cargados.</div>`;
-                return;
-            }
+            if (complejosAdminCache.length === 0) { contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay complejos cargados.</div>`; return; }
             contenedor.innerHTML = complejosAdminCache.map(c => `
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div>
@@ -787,10 +774,7 @@
 
         function renderizarAdminAds() {
             const contenedor = document.getElementById('listaAdsAdmin');
-            if (adsCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay anuncios cargados.</div>`;
-                return;
-            }
+            if (adsCache.length === 0) { contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay anuncios cargados.</div>`; return; }
             contenedor.innerHTML = adsCache.map(a => `
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
@@ -807,10 +791,7 @@
 
         function renderizarAdminTercerTiempo() {
             const contenedor = document.getElementById('listaTtAdmin');
-            if (tercerTiempoCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay promos de Tercer Tiempo cargadas.</div>`;
-                return;
-            }
+            if (tercerTiempoCache.length === 0) { contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay promos cargadas.</div>`; return; }
             contenedor.innerHTML = tercerTiempoCache.map(a => `
                 <div class="bg-slate-900 border border-amber-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
@@ -828,10 +809,7 @@
         function iniciarRotacionBanner1() {
             if (timerAd1) clearTimeout(timerAd1);
             const cont1 = document.getElementById('contenedorBanner1');
-            if (adsCache.length === 0) {
-                cont1.innerHTML = `<div class="text-center py-1"><span class="text-[10px] text-slate-500">Tu espacio</span></div>`;
-                return;
-            }
+            if (adsCache.length === 0) { cont1.innerHTML = `<div class="text-center py-1"><span class="text-[10px] text-slate-500">Tu espacio</span></div>`; return; }
             if (indiceAd1 >= adsCache.length) indiceAd1 = 0;
             const anuncio = adsCache[indiceAd1];
             const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola!')}`;
@@ -842,10 +820,7 @@
         function iniciarRotacionBanner2() {
             if (timerAd2) clearTimeout(timerAd2);
             const cont2 = document.getElementById('contenedorBanner2');
-            if (tercerTiempoCache.length === 0) {
-                cont2.innerHTML = `<div class="text-center py-1"><span class="text-[10px] text-amber-500/70 font-bold">🍻 3er Tiempo</span></div>`;
-                return;
-            }
+            if (tercerTiempoCache.length === 0) { cont2.innerHTML = `<div class="text-center py-1"><span class="text-[10px] text-amber-500/70 font-bold">🍻 3er Tiempo</span></div>`; return; }
             if (indiceAd2 >= tercerTiempoCache.length) indiceAd2 = 0;
             const anuncio = tercerTiempoCache[indiceAd2];
             const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola!')}`;
@@ -863,9 +838,7 @@
             let encontrado = complejosAdminCache.find(c => c.pin === pin);
             if (encontrado) {
                 complejoVerificadoActual = encontrado;
-                inputComp.value = encontrado.nombre;
-                inputDir.value = encontrado.direccion;
-                inputWsp.value = encontrado.whatsapp;
+                inputComp.value = encontrado.nombre; inputDir.value = encontrado.direccion; inputWsp.value = encontrado.whatsapp;
                 estado.innerHTML = '<span class="text-emerald-400 font-bold">✅ ' + encontrado.nombre + '</span>';
             } else {
                 complejoVerificadoActual = null;
@@ -896,7 +869,6 @@
 
         window.cerrarModalSumarse = () => { document.getElementById('modalSumarse').classList.add('hidden'); };
 
-        // Abrir modal para calificar jugadores (Sistema de Reputación)
         window.abrirModalCalificar = (id) => {
             const partido = partidosCache.find(p => p.id === id);
             if (!partido) return;
@@ -905,7 +877,7 @@
             const anotados = partido.anotados || [];
 
             if (anotados.length === 0) {
-                contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No hay jugadores anotados en esta convocatoria.</p>`;
+                contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No hay jugadores anotados.</p>`;
             } else {
                 contenedor.innerHTML = anotados.map((j, idx) => `
                     <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-2">
@@ -913,11 +885,9 @@
                             <h4 class="text-xs font-bold text-white">⚽ ${j.nombre}</h4>
                             <span class="text-[10px] text-emerald-400">${j.posicion || 'Jugador'}</span>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <label class="text-[11px] text-slate-300 cursor-pointer flex items-center gap-1 bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/30">
-                                <input type="checkbox" name="calif_${idx}" value="${j.nombre}" checked class="accent-emerald-500"> Asistió (⭐)
-                            </label>
-                        </div>
+                        <label class="text-[11px] text-slate-300 cursor-pointer flex items-center gap-1 bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                            <input type="checkbox" name="calif_${idx}" value="${j.nombre}" checked class="accent-emerald-500"> Asistió (⭐)
+                        </label>
                     </div>
                 `).join('');
             }
@@ -929,34 +899,21 @@
         window.guardarCalificaciones = async () => {
             const id = document.getElementById('partidoIdCalificar').value;
             const checkboxes = document.querySelectorAll('#listaJugadoresACalificar input[type="checkbox"]');
-            
             try {
                 let nuevasReputaciones = { ...reputacionCache };
                 checkboxes.forEach(cb => {
                     const nombreJugador = cb.value;
-                    if (!nuevasReputaciones[nombreJugador]) {
-                        nuevasReputaciones[nombreJugador] = { puntos: 5, totalPartidos: 1 };
-                    }
-                    if (cb.checked) {
-                        nuevasReputaciones[nombreJugador].puntos += 5;
-                        nuevasReputaciones[nombreJugador].totalPartidos += 1;
-                    } else {
-                        nuevasReputaciones[nombreJugador].puntos += 1; // Penalización leve
-                        nuevasReputaciones[nombreJugador].totalPartidos += 1;
-                    }
+                    if (!nuevasReputaciones[nombreJugador]) { nuevasReputaciones[nombreJugador] = { puntos: 5, totalPartidos: 1 }; }
+                    if (cb.checked) { nuevasReputaciones[nombreJugador].puntos += 5; nuevasReputaciones[nombreJugador].totalPartidos += 1; } 
+                    else { nuevasReputaciones[nombreJugador].puntos += 1; nuevasReputaciones[nombreJugador].totalPartidos += 1; }
                 });
-
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), {
                     data: JSON.stringify(nuevasReputaciones),
                     actualizadoEn: serverTimestamp()
                 });
-
                 cerrarModalCalificar();
                 alert("⭐ ¡Calificaciones guardadas con éxito!");
-            } catch (err) {
-                console.error(err);
-                alert("Error al guardar calificaciones.");
-            }
+            } catch (err) { console.error(err); alert("Error al guardar."); }
         };
 
         window.pedirPinBorrar = (id, tipo) => {
@@ -1213,12 +1170,10 @@
 
             localStorage.setItem('clb_apodo', nombre);
             const partidoActual = partidosCache.find(p => p.id === id);
-            
             try {
                 const ref = doc(db, 'artifacts', appId, 'public', 'data', 'matches', id);
                 await updateDoc(ref, { anotados: arrayUnion({ nombre, posicion }) });
                 window.cerrarModalSumarse();
-
                 if (partidoActual) {
                     const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
                     const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* (${posicion}) y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎`);
