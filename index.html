@@ -27,9 +27,13 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        /* Transición suave para el banner rotativo */
+        .ad-slide {
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col pb-20">
 
     <!-- Header Estético con el Verde Clásico -->
     <header class="pitch-gradient shadow-lg sticky top-0 z-40 border-b border-emerald-600/30">
@@ -113,10 +117,15 @@
             </div>
         </section>
 
-        <!-- Espacio Publicitario Local -->
-        <div class="mt-8 border border-dashed border-slate-700 rounded-2xl p-4 text-center bg-slate-900/40">
-            <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Espacio Sponsor Local</span>
-            <p class="text-xs text-slate-400 mt-1">¿Tenés complejo de canchas, indumentaria o kiosco en Sáenz Peña? <span class="text-emerald-400 font-semibold">Anunciá acá</span></p>
+        <!-- Espacio Publicitario Rotativo Inferior (Google AdSense / Banners) -->
+        <div class="mt-8 bg-slate-900/60 border border-slate-800 rounded-2xl p-3 text-center shadow-inner relative overflow-hidden min-h-[95px] flex flex-col justify-center items-center">
+            <div class="absolute top-1 left-3 text-[9px] uppercase tracking-widest text-slate-500 font-bold flex items-center gap-1">
+                <span>Publicidad</span> • <span id="adRotatorTimer">Rotando...</span>
+            </div>
+            <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 mt-2">
+                <!-- Se inyecta dinámicamente con JS -->
+                <p class="text-xs text-slate-500">Cargando anuncios...</p>
+            </div>
         </div>
     </main>
 
@@ -292,42 +301,82 @@
     </div>
 
     <div id="modalAdminPanel" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-extrabold text-white">⚙️ Gestión de Complejos y PINs</h2>
+                <h2 class="text-lg font-extrabold text-white">⚙️ Panel de Administración General</h2>
                 <button onclick="cerrarPanelAdmin()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <form id="formAgregarComplejoAdmin" onsubmit="guardarComplejoAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700 mb-5">
-                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Nuevo Complejo</h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre Complejo</label>
-                        <input type="text" id="adminNombreComp" placeholder="Ej: Complejo Gol" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">PIN (4 dígitos)</label>
-                        <input type="text" id="adminPinComp" maxlength="4" placeholder="Ej: 5050" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white tracking-widest font-bold">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Dirección / Ubicación</label>
-                        <input type="text" id="adminDirComp" placeholder="Ej: Calle 14 y 9" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
-                        <input type="tel" id="adminWspComp" placeholder="Ej: 3644123456" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
-                    Guardar y Habilitar Complejo
-                </button>
-            </form>
+            <!-- Sección Pestañas del Admin -->
+            <div class="grid grid-cols-2 gap-2 bg-slate-800/80 p-1 rounded-xl mb-4">
+                <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition">Complejos & PINs</button>
+                <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">Google Ads / Sponsors</button>
+            </div>
 
-            <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Complejos Activos en la Ciudad</h3>
-            <div id="listaComplejosAdmin" class="space-y-2.5">
-                <!-- Se llena por JavaScript -->
+            <!-- CONTENIDO TAB 1: COMPLEJOS -->
+            <div id="seccionAdminComplejos" class="space-y-4">
+                <form id="formAgregarComplejoAdmin" onsubmit="guardarComplejoAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Nuevo Complejo</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre Complejo</label>
+                            <input type="text" id="adminNombreComp" placeholder="Ej: Complejo Gol" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">PIN (4 dígitos)</label>
+                            <input type="text" id="adminPinComp" maxlength="4" placeholder="Ej: 5050" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white tracking-widest font-bold">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Dirección / Ubicación</label>
+                            <input type="text" id="adminDirComp" placeholder="Ej: Calle 14 y 9" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
+                            <input type="tel" id="adminWspComp" placeholder="Ej: 3644123456" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                        Guardar y Habilitar Complejo
+                    </button>
+                </form>
+
+                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Complejos Activos en la Ciudad</h3>
+                <div id="listaComplejosAdmin" class="space-y-2.5"></div>
+            </div>
+
+            <!-- CONTENIDO TAB 2: SPONSORS Y ADSENSE -->
+            <div id="seccionAdminSponsors" class="space-y-4 hidden">
+                <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Banner Rotativo / Google AdSense</h3>
+                    <p class="text-[11px] text-slate-400">Podés pegar código HTML de AdSense (&lt;ins&gt;...), script o un banner con imagen/texto personalizado.</p>
+                    
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Título de referencia (interno)</label>
+                        <input type="text" id="adminAdTitle" placeholder="Ej: Anuncio AdSense Inferior / Sponsor Kiosco" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Código HTML / Script del Anuncio o Banner</label>
+                        <textarea id="adminAdHtml" rows="3" placeholder='Ej: <a href="https://wa.me/..." target="_blank"><div class="text-xs text-emerald-400 font-bold">¡Visitá Kiosco Central!</div><span class="text-[10px] text-slate-300">Bebidas frías y picadas</span></div></a>' required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Tiempo en pantalla (segundos)</label>
+                            <input type="number" id="adminAdSeconds" min="3" max="60" value="6" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs transition shadow">
+                                Guardar Anuncio
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <h3 class="text-xs font-bold text-slate-300 mb-2">📋 Anuncios Rotativos Activos</h3>
+                <div id="listaAdsAdmin" class="space-y-2.5"></div>
             </div>
         </div>
     </div>
@@ -387,7 +436,12 @@
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
+        let adsCache = [];
         let complejoVerificadoActual = null;
+
+        // Variables para la rotación de anuncios
+        let indiceAdActual = 0;
+        let adIntervalTimer = null;
 
         const hoyStr = new Date().toISOString().split('T')[0];
 
@@ -481,6 +535,7 @@
                 cerrarModalAdmin();
                 document.getElementById('modalAdminPanel').classList.remove('hidden');
                 renderizarAdminComplejos();
+                renderizarAdminAds();
             } else {
                 alert("❌ Contraseña incorrecta");
             }
@@ -488,6 +543,25 @@
 
         window.cerrarPanelAdmin = () => {
             document.getElementById('modalAdminPanel').classList.add('hidden');
+        };
+
+        window.cambiarTabAdmin = (tab) => {
+            const secComp = document.getElementById('seccionAdminComplejos');
+            const secAds = document.getElementById('seccionAdminSponsors');
+            const btnComp = document.getElementById('tabAdminComplejos');
+            const btnAds = document.getElementById('tabAdminSponsors');
+
+            if (tab === 'complejos') {
+                secComp.classList.remove('hidden');
+                secAds.classList.add('hidden');
+                btnComp.className = "py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition";
+                btnAds.className = "py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition";
+            } else {
+                secComp.classList.add('hidden');
+                secAds.classList.remove('hidden');
+                btnAds.className = "py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition";
+                btnComp.className = "py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition";
+            }
         };
 
         window.guardarComplejoAdmin = async (e) => {
@@ -517,12 +591,42 @@
         };
 
         window.eliminarComplejoAdmin = async (id) => {
-            if (confirm("¿Estás seguro de eliminar este complejo de la lista oficial?")) {
+            if (confirm("¿Estás seguro de eliminar este complejo?")) {
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_complexes', id));
                 } catch (err) {
                     console.error(err);
-                    alert("No se pudo eliminar.");
+                }
+            }
+        };
+
+        window.guardarAdAdmin = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando a base de datos...");
+
+            const nuevoAd = {
+                titulo: document.getElementById('adminAdTitle').value.trim(),
+                html: document.getElementById('adminAdHtml').value.trim(),
+                segundos: parseInt(document.getElementById('adminAdSeconds').value, 10) || 6,
+                creadoEn: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), nuevoAd);
+                document.getElementById('formAgregarAdAdmin').reset();
+                alert("✅ Anuncio / Banner guardado con éxito.");
+            } catch (err) {
+                console.error(err);
+                alert("Error al guardar el anuncio.");
+            }
+        };
+
+        window.eliminarAdAdmin = async (id) => {
+            if (confirm("¿Estás seguro de eliminar este anuncio rotativo?")) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads_banners', id));
+                } catch (err) {
+                    console.error(err);
                 }
             }
         };
@@ -530,7 +634,7 @@
         function renderizarAdminComplejos() {
             const contenedor = document.getElementById('listaComplejosAdmin');
             if (complejosAdminCache.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay complejos cargados. Agregá el primero arriba.</div>`;
+                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay complejos cargados.</div>`;
                 return;
             }
 
@@ -548,6 +652,65 @@
                     </button>
                 </div>
             `).join('');
+        }
+
+        function renderizarAdminAds() {
+            const contenedor = document.getElementById('listaAdsAdmin');
+            if (adsCache.length === 0) {
+                contenedor.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No hay anuncios cargados.</div>`;
+                return;
+            }
+
+            contenedor.innerHTML = adsCache.map(a => `
+                <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex items-center justify-between gap-2">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded">⏱️ ${a.segundos} segs</span>
+                            <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                        </div>
+                        <p class="text-[10px] text-slate-400 font-mono mt-1 truncate">${a.html}</p>
+                    </div>
+                    <button onclick="eliminarAdAdmin('${a.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-1 rounded-lg transition font-semibold shrink-0">
+                        Eliminar
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Sistema de Rotación de Banners de Publicidad Inferior
+        function iniciarRotacionAds() {
+            if (adIntervalTimer) clearInterval(adIntervalTimer);
+
+            const contenedor = document.getElementById('contenedorBannerRotativo');
+            const timerLabel = document.getElementById('adRotatorTimer');
+
+            if (adsCache.length === 0) {
+                contenedor.innerHTML = `
+                    <div class="text-center py-1">
+                        <span class="text-xs text-slate-400">¿Querés tu publicidad acá? </span>
+                        <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Corriendo la Bola.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
+                    </div>`;
+                if (timerLabel) timerLabel.textContent = "Sponsor Oficial";
+                return;
+            }
+
+            if (indiceAdActual >= adsCache.length) {
+                indiceAdActual = 0;
+            }
+
+            const anuncio = adsCache[indiceAdActual];
+            contenedor.style.opacity = '0';
+            
+            setTimeout(() => {
+                contenedor.innerHTML = anuncio.html;
+                contenedor.style.opacity = '1';
+                if (timerLabel) timerLabel.textContent = `Rotando en ${anuncio.segundos}s (${indiceAdActual + 1}/${adsCache.length})`;
+            }, 300);
+
+            adIntervalTimer = setTimeout(() => {
+                indiceAdActual++;
+                iniciarRotacionAds();
+            }, (anuncio.segundos || 6) * 1000);
         }
 
         window.verificarPin = () => {
@@ -913,6 +1076,14 @@
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
                                 renderizarAdminComplejos();
                             }
+                        });
+
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), (snap) => {
+                            adsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) {
+                                renderizarAdminAds();
+                            }
+                            iniciarRotacionAds();
                         });
                     }
                 });
