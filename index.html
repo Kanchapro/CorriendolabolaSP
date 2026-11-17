@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #061021; /* Azul noche profundo extraído del logo */
+            background-color: #061021;
             color: #f8fafc;
         }
         .app-gradient {
@@ -21,9 +21,6 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(34, 197, 94, 0.15);
         }
-        .neon-glow {
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
-        }
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -33,7 +30,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-28">
+<body class="min-h-screen flex flex-col pb-24">
 
     <!-- Header Estético con la Identidad del Logo -->
     <header class="app-gradient shadow-xl sticky top-0 z-40">
@@ -116,13 +113,10 @@
         </section>
     </main>
 
-    <!-- ==================== BANNER PUBLICITARIO FIJO ABAJO ==================== -->
-    <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 shadow-2xl py-2 px-4">
-        <div class="max-w-3xl mx-auto relative flex items-center justify-center">
-            <div class="absolute top-0.5 left-1 text-[8px] uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1">
-                <span>Patrocinador</span> • <span id="adRotatorTimer">Rotando...</span>
-            </div>
-            <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 mt-2 text-center">
+    <!-- ==================== BANNER PUBLICITARIO FIJO ABAJO (LIMPIO) ==================== -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 shadow-2xl py-1.5 px-4">
+        <div class="max-w-3xl mx-auto flex items-center justify-center">
+            <div id="contenedorBannerRotativo" class="w-full transition-opacity duration-500 text-center">
                 <p class="text-xs text-slate-500">Cargando anuncios...</p>
             </div>
         </div>
@@ -176,7 +170,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto</label>
-                        <select id="puesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <select id="puesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                             <option value="Cualquiera">Cualquiera</option>
                             <option value="Arquero">🧤 Arquero</option>
                             <option value="Defensor">🛡️ Defensor</option>
@@ -689,7 +683,6 @@
             if (adIntervalTimer) clearInterval(adIntervalTimer);
 
             const contenedor = document.getElementById('contenedorBannerRotativo');
-            const timerLabel = document.getElementById('adRotatorTimer');
 
             if (adsCache.length === 0) {
                 contenedor.innerHTML = `
@@ -697,7 +690,6 @@
                         <span class="text-xs text-slate-400">¿Querés tu local acá? </span>
                         <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Corriendo la Bola.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
                     </div>`;
-                if (timerLabel) timerLabel.textContent = "Sponsor Oficial";
                 return;
             }
 
@@ -716,7 +708,6 @@
                         <img src="${anuncio.imgUrl}" alt="${anuncio.titulo}" class="h-11 sm:h-12 mx-auto rounded-lg shadow object-contain group-hover:scale-[1.01] transition">
                     </a>`;
                 contenedor.style.opacity = '1';
-                if (timerLabel) timerLabel.textContent = `Rotando en ${anuncio.segundos}s (${indiceAdActual + 1}/${adsCache.length})`;
             }, 300);
 
             adIntervalTimer = setTimeout(() => {
