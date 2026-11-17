@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corriendo la Bola ⚽ | Sáenz Peña</title>
+    <title>Falta Uno SP ⚽ | Sáenz Peña</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #061021;
+            background-color: #061021; /* Azul noche profundo extraído del logo */
             color: #f8fafc;
         }
         .app-gradient {
@@ -39,10 +39,10 @@
                 
                 <!-- Identidad con el Logo Oficial -->
                 <div class="flex items-center gap-3">
-                    <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png" alt="Logo Corriendo la Bola" class="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500/50 shadow-md">
+                    <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png" alt="Logo Falta Uno SP" class="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500/50 shadow-md">
                     <div>
                         <div class="flex items-center gap-1.5">
-                            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white leading-tight">Corriendo la Bola</h1>
+                            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white leading-tight">Falta Uno SP</h1>
                         </div>
                         <p class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1.5 mt-0.5">
                             <span id="statusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -368,7 +368,7 @@
 
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje que llega al WhatsApp</label>
-                        <input type="text" id="adminAdMsg" placeholder="Ej: Hola Pere y el Flaco, los vi en Corriendo la Bola y quiero hacer un pedido." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="adminAdMsg" placeholder="Ej: Hola Pere y el Flaco, los vi en Falta Uno SP y quiero hacer un pedido." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
 
                     <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow">
@@ -429,7 +429,7 @@
             ? JSON.parse(__firebase_config)
             : miFirebaseConfig;
 
-        const appId = (typeof __app_id !== 'undefined') ? __app_id : 'corriendo-la-bola-sp';
+        const appId = (typeof __app_id !== 'undefined') ? __app_id : 'falta-uno-sp';
 
         let db, auth;
         let tabActual = 'falta-uno';
@@ -688,7 +688,7 @@
                 contenedor.innerHTML = `
                     <div class="text-center py-1">
                         <span class="text-xs text-slate-400">¿Querés tu local acá? </span>
-                        <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Corriendo la Bola.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
+                        <a href="https://wa.me/5493644000000?text=${encodeURIComponent('Hola! Me interesa poner publicidad en Falta Uno SP.')}" target="_blank" class="text-xs text-emerald-400 font-bold underline">Contactanos</a>
                     </div>`;
                 return;
             }
@@ -700,7 +700,7 @@
             const anuncio = adsCache[indiceAdActual];
             contenedor.style.opacity = '0';
             
-            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola, los vi en Corriendo la Bola.')}`;
+            const linkWsp = `https://wa.me/549${anuncio.whatsapp}?text=${encodeURIComponent(anuncio.mensaje || 'Hola, los vi en Falta Uno SP.')}`;
 
             setTimeout(() => {
                 contenedor.innerHTML = `
@@ -891,7 +891,7 @@
                                     🙋‍♂️ ¡Me sumo!
                                 </button>
                             ` : ''}
-                            <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Corriendo la Bola* tu convocatoria (${p.cancha}) y quiero sumarme.`)}" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1">
+                            <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero sumarme.`)}" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1">
                                 WhatsApp
                             </a>
                         </div>
@@ -924,7 +924,7 @@
                 const telLimpio = (c.whatsapp || '').replace(/\D/g, '');
                 const [anio, mes, dia] = (c.fecha || hoyStr).split('-');
                 const fechaFormateada = `${dia}/${mes}`;
-                const msg = encodeURIComponent(`¡Hola! Vi en *Corriendo la Bola* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
+                const msg = encodeURIComponent(`¡Hola! Vi en *Falta Uno SP* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
 
                 return `
                 <div class="card-glass rounded-2xl p-5 shadow-lg border border-emerald-500/30">
@@ -1037,7 +1037,7 @@
 
                 if (partidoActual) {
                     const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
-                    const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* y acabo de anotarme en *Corriendo la Bola* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🤝`);
+                    const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🤝`);
                     window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
                 }
             } catch (err) {
