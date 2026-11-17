@@ -92,7 +92,7 @@
             </div>
         </section>
 
-        <!-- ==================== SECCIÓN 2: CANCHAS LIBRES ==================== -->
+        <!-- ==================== SECCIÓN 2: CANCHAS LIBRES ORDENADAS POR DÍA ==================== -->
         <section id="vista-canchas" class="hidden">
             <div class="flex items-center justify-between mb-4 bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-4 shadow-sm">
                 <div>
@@ -104,8 +104,8 @@
                 </button>
             </div>
 
-            <!-- Lista de Turnos de Canchas -->
-            <div id="listaCanchas" class="space-y-4">
+            <!-- Lista de Turnos Agrupados por Fecha -->
+            <div id="listaCanchas" class="space-y-6">
                 <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos disponibles...</div>
             </div>
         </section>
@@ -174,7 +174,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
@@ -952,6 +952,7 @@
             }).join('');
         }
 
+        // Renderizado de Canchas Agrupadas por Fecha y Complejo
         function renderizarCanchas() {
             const contenedor = document.getElementById('listaCanchas');
             const ahora = new Date();
@@ -967,34 +968,80 @@
                 return;
             }
 
-            contenedor.innerHTML = vigentes.map(c => {
-                const telLimpio = (c.whatsapp || '').replace(/\D/g, '');
-                const [anio, mes, dia] = (c.fecha || hoyStr).split('-');
-                const fechaFormateada = `${dia}/${mes}`;
-                const msg = encodeURIComponent(`¡Hola! Vi en *Falta Uno SP* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
+            // Agrupar por fecha
+            let gruposPorFecha = {};
+            vigentes.forEach(c => {
+                const fechaKey = c.fecha || hoyStr;
+                if (!gruposPorFecha[fechaKey]) gruposPorFecha[fechaKey] = [];
+                gruposPorFecha[fechaKey].push(c);
+            });
+
+            // Ordenar las fechas de forma cronológica
+            let fechasOrdenadas = Object.keys(gruposPorFecha).sort();
+
+            contenedor.innerHTML = fechasOrdenadas.map(fecha => {
+                const turnosDelDia = gruposPorFecha[fecha];
+                const [anio, mes, dia] = fecha.split('-');
+                const fechaFormateada = `${dia}/${mes}/${anio}`;
+                
+                let etiquetaDia = `📅 ${fechaFormateada}`;
+                if (fecha === hoyStr) etiquetaDia = `🔥 Hoy (${fechaFormateada})`;
+
+                // Agrupar por Complejo dentro del mismo día
+                let gruposPorComplejo = {};
+                turnosDelDia.forEach(t => {
+                    const compKey = t.complejo || 'Otro Complejo';
+                    if (!gruposPorComplejo[compKey]) gruposPorComplejo[compKey] = [];
+                    gruposPorComplejo[compKey].push(t);
+                });
+
+                let htmlComplejos = Object.keys(gruposPorComplejo).map(nombreComp => {
+                    const turnosComp = gruposPorComplejo[nombreComp];
+                    
+                    return `
+                    <div class="bg-slate-900/90 border border-emerald-500/20 rounded-2xl p-4 shadow-md space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                            <h4 class="text-sm font-extrabold text-emerald-400 flex items-center gap-1.5">
+                                🏟️ ${nombreComp}
+                            </h4>
+                            <span class="text-[10px] text-slate-400">📍 ${turnosComp[0]?.direccion || 'Sáenz Peña'}</span>
+                        </div>
+
+                        <div class="space-y-2.5">
+                            ${turnosComp.map(c => {
+                                const telLimpio = (c.whatsapp || '').replace(/\D/g, '');
+                                const msg = encodeURIComponent(`¡Hola! Vi en *Falta Uno SP* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
+
+                                return `
+                                <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3 flex items-center justify-between gap-3">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-xs font-bold text-white">${c.numeroCancha}</span>
+                                            <span class="bg-emerald-500/10 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded">${c.tipo}</span>
+                                        </div>
+                                        <p class="text-xs font-semibold text-slate-300 mt-1">⏰ ${c.horarios} • <span class="text-emerald-400 font-extrabold">${c.precio}</span></p>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 shrink-0">
+                                        <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs px-2.5 py-2 rounded-lg transition font-semibold" title="Borrar">
+                                            🗑️
+                                        </button>
+                                        <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow flex items-center gap-1">
+                                            📲 Reservar
+                                        </a>
+                                    </div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    </div>`;
+                }).join('');
 
                 return `
-                <div class="card-glass rounded-2xl p-5 shadow-lg border border-emerald-500/30">
-                    <div class="flex justify-between items-start gap-2 mb-2">
-                        <div>
-                            <div class="flex items-center gap-2 flex-wrap mb-1.5">
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ ${c.complejo}</span>
-                                <span class="bg-slate-900 text-slate-300 border border-slate-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">📅 ${fechaFormateada}</span>
-                            </div>
-                            <h3 class="text-base font-extrabold text-white">🏟️ ${c.numeroCancha} • <span class="text-emerald-400">${c.tipo}</span></h3>
-                            <p class="text-xs text-slate-400 mt-0.5">📍 ${c.direccion}</p>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="block text-base font-black text-emerald-400">${c.precio}</span>
-                            <span class="text-[10px] text-slate-400">turno completo</span>
-                        </div>
+                <div class="space-y-3">
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-4 py-2 rounded-xl text-xs font-extrabold inline-block shadow-sm">
+                        ${etiquetaDia}
                     </div>
-                    <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                        <div><span class="text-xs text-slate-400">Horario disponible:</span><p class="text-sm font-bold text-white">⏰ ${c.horarios}</p></div>
-                        <div class="flex gap-2">
-                            <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-2.5 rounded-xl transition" title="Borrar turno">🗑️ Borrar</button>
-                            <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">📲 Reservar</a>
-                        </div>
+                    <div class="space-y-3">
+                        ${htmlComplejos}
                     </div>
                 </div>`;
             }).join('');
