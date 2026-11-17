@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corriendo la Bola ⚽ | Sáenz Peña</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b0f19;
-            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #07090e;
+            color: #f1f5f9;
         }
-        .header-gradient {
-            background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+        .hero-glow {
+            background: radial-gradient(circle at top, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
         }
         .card-glass {
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
         .no-scrollbar::-webkit-scrollbar {
@@ -29,105 +29,100 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col hero-glow">
 
-    <!-- Header Profesional Ultra Limpio -->
-    <header class="header-gradient shadow-xl sticky top-0 z-40 border-b border-emerald-500/20">
-        <div class="max-w-3xl mx-auto px-4 py-3">
-            <div class="flex items-center justify-between gap-2 mb-3">
+    <!-- Header Estético & Moderno -->
+    <header class="sticky top-0 z-40 bg-[#07090e]/80 backdrop-blur-xl border-b border-slate-800/80">
+        <div class="max-w-3xl mx-auto px-4 py-3.5">
+            <div class="flex items-center justify-between gap-3">
                 
-                <!-- Logo e Identidad -->
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-10 h-10 shrink-0 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-xl shadow-inner">
+                <!-- Identidad Minimalista -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-xl shadow-inner text-emerald-400">
                         ⚽
                     </div>
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-1.5">
-                            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white truncate leading-tight">Corriendo la Bola</h1>
-                            <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full shrink-0">PRO</span>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-base font-extrabold tracking-tight text-white leading-tight">Corriendo la Bola</h1>
+                            <span class="bg-emerald-500/20 text-emerald-400 text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">Sáenz Peña</span>
                         </div>
-                        <p class="text-[11px] text-emerald-100/80 font-medium truncate mt-0.5">
-                            📍 Sáenz Peña, Chaco
+                        <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+                            <span id="statusDot" class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                            <span id="statusText">Conectando en vivo...</span>
                         </p>
                     </div>
                 </div>
 
-                <!-- Botones de Acción Superior -->
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <button onclick="abrirModalAdmin()" class="w-10 h-10 rounded-xl bg-black/25 hover:bg-black/40 border border-white/10 text-emerald-200 flex items-center justify-center text-sm transition shadow-sm" title="Panel Administrador">
+                <!-- Botones de Control Estéticos -->
+                <div class="flex items-center gap-2">
+                    <button onclick="abrirModalAdmin()" class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-300 flex items-center justify-center text-sm transition shadow-sm" title="Panel Admin">
                         ⚙️
                     </button>
-                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="bg-white text-emerald-950 hover:bg-emerald-50 active:scale-95 transition font-extrabold text-xs px-3.5 h-10 rounded-xl shadow-md flex items-center gap-1.5">
+                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs px-4 h-10 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5 active:scale-95">
                         <span class="text-base leading-none font-black">+</span> <span id="textoBotonPrincipal">Falta Uno</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Selector de Secciones (Tabs) Rediseñado Pro -->
-            <div class="grid grid-cols-2 gap-1.5 bg-black/30 border border-white/10 p-1 rounded-xl">
-                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2 px-3 rounded-lg text-xs font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-1.5">
+            <!-- Tabs de Navegación Tipo Píldora (Muy modernos) -->
+            <div class="flex gap-2 mt-3 p-1 bg-slate-900/90 border border-slate-800/80 rounded-2xl">
+                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Falta Uno / Torneos
                 </button>
-                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2 px-3 rounded-lg text-xs font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-1.5">
+                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="flex-1 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5">
                     <span>🏟️</span> Canchas Libres
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Estado de conexión móvil sutil -->
-    <div class="bg-slate-900/90 border-b border-slate-800/80 py-1 px-4 text-center text-[10px] text-slate-400 flex items-center justify-center gap-1.5">
-        <span id="statusDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-        <span id="statusText">Conectando al tablero en vivo...</span>
-    </div>
-
     <!-- Contenido Principal -->
     <main class="max-w-3xl w-full mx-auto px-4 py-5 flex-1">
 
         <!-- ==================== SECCIÓN 1: FALTA UNO / TORNEOS ==================== -->
         <section id="vista-falta-uno">
-            <!-- Filtros rápidos -->
+            <!-- Filtros rápidos estilo píldora -->
             <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar">
-                <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-600 text-white text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap shadow-sm transition">Todos</button>
-                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-800/90 text-slate-300 hover:bg-slate-700 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition border border-slate-700/60">🏆 Armar Equipo Torneo</button>
-                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-800/90 text-slate-300 hover:bg-slate-700 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition border border-slate-700/60">Fútbol 5</button>
-                <button onclick="setFiltro('Fútbol 7')" id="filtro-Fútbol 7" class="filtro-btn bg-slate-800/90 text-slate-300 hover:bg-slate-700 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition border border-slate-700/60">Fútbol 7</button>
-                <button onclick="setFiltro('Arquero')" id="filtro-Arquero" class="filtro-btn bg-slate-800/90 text-slate-300 hover:bg-slate-700 text-xs font-semibold px-3.5 py-2 rounded-full whitespace-nowrap transition border border-slate-700/60">🧤 Buscan Arquero</button>
+                <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl whitespace-nowrap shadow-sm transition">Todos</button>
+                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-slate-900/90 text-slate-300 hover:bg-slate-800 text-xs font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition border border-slate-800">🏆 Torneo</button>
+                <button onclick="setFiltro('Fútbol 5')" id="filtro-Fútbol 5" class="filtro-btn bg-slate-900/90 text-slate-300 hover:bg-slate-800 text-xs font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition border border-slate-800">Fútbol 5</button>
+                <button onclick="setFiltro('Fútbol 7')" id="filtro-Fútbol 7" class="filtro-btn bg-slate-900/90 text-slate-300 hover:bg-slate-800 text-xs font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition border border-slate-800">Fútbol 7</button>
+                <button onclick="setFiltro('Arquero')" id="filtro-Arquero" class="filtro-btn bg-slate-900/90 text-slate-300 hover:bg-slate-800 text-xs font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition border border-slate-800">🧤 Arquero</button>
             </div>
 
             <!-- Lista de Partidos -->
-            <div id="listaPartidos" class="space-y-4">
+            <div id="listaPartidos" class="space-y-3.5">
                 <div class="text-center py-12 text-slate-500 text-sm">Cargando convocatorias en Sáenz Peña...</div>
             </div>
         </section>
 
         <!-- ==================== SECCIÓN 2: CANCHAS LIBRES ==================== -->
         <section id="vista-canchas" class="hidden">
-            <div class="flex items-center justify-between mb-4 bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-sm">
+            <div class="flex items-center justify-between mb-4 card-glass rounded-2xl p-4">
                 <div>
                     <h2 class="text-sm font-bold text-white">Turnos disponibles en la ciudad</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Reservá directo por WhatsApp con el complejo</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Reservá directo por WhatsApp</p>
                 </div>
-                <button onclick="abrirModalTurno()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
+                <button onclick="abrirModalTurno()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold px-3.5 py-2.5 rounded-xl transition shadow-md">
                     + Cargar Turno
                 </button>
             </div>
 
             <!-- Lista de Turnos de Canchas -->
-            <div id="listaCanchas" class="space-y-4">
+            <div id="listaCanchas" class="space-y-3.5">
                 <div class="text-center py-12 text-slate-500 text-sm">Buscando turnos disponibles...</div>
             </div>
         </section>
 
-        <!-- Espacio Publicitario Local -->
+        <!-- Espacio Publicitario Estético -->
         <div class="mt-8 border border-dashed border-slate-800 rounded-2xl p-4 text-center bg-slate-900/30">
             <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Espacio Sponsor Local</span>
-            <p class="text-xs text-slate-400 mt-1">¿Tenés complejo de canchas, indumentaria o kiosco en Sáenz Peña? <span class="text-emerald-400 font-semibold">Anunciá acá</span></p>
+            <p class="text-xs text-slate-400 mt-1">¿Tenés complejo o comercio en Sáenz Peña? <span class="text-emerald-400 font-semibold">Anunciá acá</span></p>
         </div>
     </main>
 
     <!-- ==================== MODAL 1: PUBLICAR FALTA UNO / TORNEO ==================== -->
-    <div id="modalPublicar" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div id="modalPublicar" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-lg font-extrabold text-white">📢 Nueva Convocatoria</h2>
@@ -137,7 +132,7 @@
             <form id="formPartido" onsubmit="guardarPartido(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Tipo de Publicación</label>
-                    <select id="tipoConvocatoria" onchange="toggleCamposTorneo()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <select id="tipoConvocatoria" onchange="toggleCamposTorneo()" class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                         <option value="picado">⚽ Falta Uno para Picadito</option>
                         <option value="torneo">🏆 Completar Equipo para Torneo</option>
                     </select>
@@ -145,24 +140,24 @@
 
                 <div id="labelLugarContainer">
                     <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelLugarTexto">Complejo / Cancha en Sáenz Peña</label>
-                    <input type="text" id="canchaCustom" placeholder="Ej: Complejo La Red, Club Unión..." required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="canchaCustom" placeholder="Ej: Complejo La Red, Club Unión..." required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha límite / Día</label>
-                        <input type="date" id="fechaPartido" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="date" id="fechaPartido" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Hora límite / Horario</label>
-                        <input type="time" id="hora" value="21:00" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="time" id="hora" value="21:00" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Modalidad</label>
-                        <select id="modalidad" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <select id="modalidad" class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white">
                             <option value="Fútbol 5">Fútbol 5</option>
                             <option value="Fútbol 7">Fútbol 7</option>
                             <option value="Fútbol 11">Fútbol 11</option>
@@ -170,11 +165,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Puesto</label>
-                        <select id="puesto" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white">
+                        <select id="puesto" class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white">
                             <option value="Cualquiera">Cualquiera</option>
                             <option value="Arquero">🧤 Arquero</option>
                             <option value="Defensor">🛡️ Defensor</option>
@@ -186,20 +181,20 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Nombre / Equipo</label>
-                        <input type="text" id="organizador" placeholder="Ej: Ema / Los Amigos FC" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="text" id="organizador" placeholder="Ej: Ema / Los Amigos FC" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp (sin 0 ni 15)</label>
-                        <input type="tel" id="whatsapp" placeholder="Ej: 3644123456" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="tel" id="whatsapp" placeholder="Ej: 3644123456" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Nota opcional (valor, categoría, etc.)</label>
-                    <input type="text" id="nota" placeholder="Ej: $3.500 c/u o inscripción libre" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                    <input type="text" id="nota" placeholder="Ej: $3.500 c/u o inscripción libre" class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition mt-2">
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition mt-2">
                     Publicar en el Tablero ⚽
                 </button>
             </form>
@@ -207,7 +202,7 @@
     </div>
 
     <!-- ==================== MODAL 2: PUBLICAR CANCHA LIBRE ==================== -->
-    <div id="modalTurno" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div id="modalTurno" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-2">
@@ -217,12 +212,12 @@
             </div>
 
             <form id="formTurno" onsubmit="guardarTurno(event)" class="space-y-4">
-                <div class="bg-slate-800/80 border border-emerald-500/30 rounded-xl p-3.5">
+                <div class="bg-slate-800/60 border border-emerald-500/30 rounded-xl p-3.5">
                     <label class="block text-xs font-bold text-emerald-400 mb-1">Código PIN de Complejo Autorizado (4 dígitos)</label>
                     <div class="flex gap-2">
                         <input type="password" id="pinComplejo" maxlength="4" placeholder="Ej: 1010" oninput="verificarPin()" class="w-32 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-center tracking-widest font-bold text-white focus:outline-none focus:border-emerald-500" required>
                         <div id="estadoPin" class="flex-1 flex items-center text-xs text-slate-400">
-                            Ingresá tu PIN para validar el complejo
+                            Ingresá tu PIN para validar
                         </div>
                     </div>
                 </div>
@@ -230,22 +225,22 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre del Complejo</label>
-                        <input type="text" id="turnoComplejo" placeholder="Se completa con el PIN" readonly required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
+                        <input type="text" id="turnoComplejo" placeholder="Se completa con el PIN" readonly required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Cancha (Ej: Cancha 1)</label>
-                        <input type="text" id="turnoNumeroCancha" placeholder="Ej: Cancha 1" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="text" id="turnoNumeroCancha" placeholder="Ej: Cancha 1" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha del turno</label>
-                        <input type="date" id="turnoFecha" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="date" id="turnoFecha" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Descripción de Cancha</label>
-                        <select id="turnoTipo" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <select id="turnoTipo" class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                             <option value="Fútbol 5 (Sintético)">Fútbol 5 (Sintético)</option>
                             <option value="Fútbol 7 (Sintético)">Fútbol 7 (Sintético)</option>
                             <option value="Fútbol 8 (Sintético)">Fútbol 8 (Sintético)</option>
@@ -258,26 +253,26 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Horario (Ej: De 21 a 22 hs)</label>
-                        <input type="text" id="turnoHorarios" placeholder="Ej: De 21 a 22 hs" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="text" id="turnoHorarios" placeholder="Ej: De 21 a 22 hs" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Valor del Turno ($)</label>
-                        <input type="text" id="turnoPrecio" placeholder="Ej: $28.000" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="text" id="turnoPrecio" placeholder="Ej: $28.000" required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp de reservas</label>
-                        <input type="tel" id="turnoWhatsapp" placeholder="Ej: 3644123456" readonly required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
+                        <input type="tel" id="turnoWhatsapp" placeholder="Ej: 3644123456" readonly required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Dirección / Referencia</label>
-                        <input type="text" id="turnoDireccion" placeholder="Dirección del complejo" readonly required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
+                        <input type="text" id="turnoDireccion" placeholder="Dirección del complejo" readonly required class="w-full bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition mt-2">
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition mt-2">
                     Publicar Disponibilidad 🏟️
                 </button>
             </form>
@@ -285,26 +280,26 @@
     </div>
 
     <!-- ==================== MODAL 3: PANEL ADMINISTRADOR ==================== -->
-    <div id="modalAdminLogin" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="modalAdminLogin" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
             <h3 class="text-lg font-extrabold text-white mb-1">🔐 Acceso Administrador</h3>
             <p class="text-xs text-slate-400 mb-4">Ingresá tu contraseña para gestionar complejos.</p>
             <input type="password" id="adminPasswordInput" placeholder="Contraseña..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white mb-4 focus:outline-none focus:border-emerald-500">
             <div class="flex gap-2">
                 <button onclick="cerrarModalAdmin()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-sm">Cancelar</button>
-                <button onclick="verificarAdminPassword()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-sm">Entrar</button>
+                <button onclick="verificarAdminPassword()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-sm">Entrar</button>
             </div>
         </div>
     </div>
 
-    <div id="modalAdminPanel" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div id="modalAdminPanel" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-extrabold text-white">⚙️ Gestión de Complejos y PINs</h2>
                 <button onclick="cerrarPanelAdmin()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <form id="formAgregarComplejoAdmin" onsubmit="guardarComplejoAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700 mb-5">
+            <form id="formAgregarComplejoAdmin" onsubmit="guardarComplejoAdmin(event)" class="space-y-3 bg-slate-800/60 p-4 rounded-2xl border border-slate-700/80 mb-5">
                 <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">➕ Agregar Nuevo Complejo</h3>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -326,7 +321,7 @@
                         <input type="tel" id="adminWspComp" placeholder="Ej: 3644123456" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition shadow">
                     Guardar y Habilitar Complejo
                 </button>
             </form>
@@ -339,7 +334,7 @@
     </div>
 
     <!-- Modal Súmate Rápido -->
-    <div id="modalSumarse" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="modalSumarse" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
             <h3 class="text-lg font-extrabold text-white mb-1">🙋‍♂️ ¡Me sumo a la convocatoria!</h3>
             <p class="text-xs text-slate-400 mb-4">Al confirmar, se abrirá WhatsApp directo con el organizador.</p>
@@ -347,13 +342,13 @@
             <input type="text" id="nombreJugadorSumarse" placeholder="Tu nombre o apodo (Ej: Dani)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white mb-4 focus:outline-none focus:border-emerald-500">
             <div class="flex gap-2">
                 <button onclick="cerrarModalSumarse()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-sm">Cancelar</button>
-                <button onclick="confirmarSumarse()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-sm">Confirmar y Enviar 📲</button>
+                <button onclick="confirmarSumarse()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-sm">Confirmar y Enviar 📲</button>
             </div>
         </div>
     </div>
 
     <!-- Modal Borrar Turno con PIN -->
-    <div id="modalBorrarTurno" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="modalBorrarTurno" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
             <h3 class="text-lg font-extrabold text-white mb-1">🗑️ Eliminar Turno Publicado</h3>
             <p class="text-xs text-slate-400 mb-4">Ingresá el PIN de 4 dígitos del complejo (o contraseña admin) para confirmar la baja.</p>
@@ -408,14 +403,14 @@
             if (tab === 'falta-uno') {
                 vistaFalta.classList.remove('hidden');
                 vistaCanchas.classList.add('hidden');
-                btnTabFalta.className = "py-2 px-3 rounded-lg text-xs font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-1.5";
-                btnTabCanchas.className = "py-2 px-3 rounded-lg text-xs font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-1.5";
+                btnTabFalta.className = "flex-1 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition flex items-center justify-center gap-1.5";
+                btnTabCanchas.className = "flex-1 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Falta Uno";
             } else {
                 vistaFalta.classList.add('hidden');
                 vistaCanchas.classList.remove('hidden');
-                btnTabCanchas.className = "py-2 px-3 rounded-lg text-xs font-bold bg-white text-emerald-950 shadow-md transition flex items-center justify-center gap-1.5";
-                btnTabFalta.className = "py-2 px-3 rounded-lg text-xs font-bold text-emerald-100/80 hover:text-white transition flex items-center justify-center gap-1.5";
+                btnTabCanchas.className = "flex-1 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition flex items-center justify-center gap-1.5";
+                btnTabFalta.className = "flex-1 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Cargar Turno";
             }
         };
@@ -447,7 +442,7 @@
             document.getElementById('turnoPrecio').value = "";
             document.getElementById('turnoWhatsapp').value = "";
             document.getElementById('turnoDireccion').value = "";
-            document.getElementById('estadoPin').innerHTML = '<span class="text-slate-400">Ingresá tu PIN para validar el complejo</span>';
+            document.getElementById('estadoPin').innerHTML = '<span class="text-slate-400">Ingresá tu PIN para validar</span>';
             complejoVerificadoActual = null;
         };
 
@@ -587,13 +582,13 @@
         window.setFiltro = (filtro) => {
             filtroActual = filtro;
             document.querySelectorAll('.filtro-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-600', 'text-white');
-                btn.classList.add('bg-slate-800', 'text-slate-300');
+                btn.classList.remove('bg-emerald-500', 'text-slate-950', 'font-bold');
+                btn.classList.add('bg-slate-900/90', 'text-slate-300', 'font-semibold', 'border', 'border-slate-800');
             });
             const active = document.getElementById(`filtro-${filtro}`);
             if (active) {
-                active.classList.remove('bg-slate-800', 'text-slate-300');
-                active.classList.add('bg-emerald-600', 'text-white');
+                active.classList.remove('bg-slate-900/90', 'text-slate-300', 'font-semibold', 'border', 'border-slate-800');
+                active.classList.add('bg-emerald-500', 'text-slate-950', 'font-bold');
             }
             renderizarPartidos();
         };
@@ -686,27 +681,27 @@
                 const fechaFormateada = `${dia}/${mes}`;
 
                 const badgeTipo = p.esTorneo 
-                    ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Equipo Torneo</span>`
+                    ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🏆 Torneo</span>`
                     : `<span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">${p.modalidad}</span>`;
 
                 return `
-                <div class="card-glass rounded-2xl p-5 shadow-lg transition hover:border-emerald-500/40 ${completo ? 'opacity-70' : ''}">
+                <div class="card-glass rounded-2xl p-4 sm:p-5 shadow-lg transition hover:border-emerald-500/30 ${completo ? 'opacity-70' : ''}">
                     <div class="flex justify-between items-start gap-2 mb-3">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                                <span class="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                                     📅 ${fechaFormateada} • ${p.hora} hs
                                 </span>
                                 ${badgeTipo}
-                                ${p.puesto !== 'Cualquiera' && !p.esTorneo ? `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Busca ${p.puesto}</span>` : ''}
+                                ${p.puesto !== 'Cualquiera' && !p.esTorneo ? `<span class="bg-amber-500/15 text-amber-400 border border-amber-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Busca ${p.puesto}</span>` : ''}
                             </div>
                             <h3 class="text-base font-extrabold text-white mt-2">${p.esTorneo ? '🏆' : '📍'} ${p.cancha}</h3>
                         </div>
 
                         <div class="text-right shrink-0">
                             ${completo
-                                ? `<span class="bg-slate-700 text-slate-300 text-xs font-extrabold px-3 py-1.5 rounded-xl">✅ ¡Completo!</span>`
-                                : `<div class="bg-rose-500/20 border border-rose-500/40 text-rose-300 px-3 py-1 rounded-xl text-center">
+                                ? `<span class="bg-slate-800 text-slate-300 text-xs font-extrabold px-3 py-1.5 rounded-xl">✅ ¡Completo!</span>`
+                                : `<div class="bg-rose-500/15 border border-rose-500/30 text-rose-400 px-3 py-1 rounded-xl text-center">
                                      <span class="block text-lg font-black leading-none">${restantes}</span>
                                      <span class="text-[10px] uppercase font-bold">${restantes === 1 ? 'Falta' : 'Faltan'}</span>
                                    </div>`
@@ -714,20 +709,20 @@
                         </div>
                     </div>
 
-                    ${p.nota ? `<p class="text-xs text-slate-300 bg-slate-900/60 rounded-xl px-3 py-2 mb-3 border border-slate-800">💬 "${p.nota}"</p>` : ''}
+                    ${p.nota ? `<p class="text-xs text-slate-300 bg-slate-900/80 rounded-xl px-3.5 py-2 mb-3 border border-slate-800">💬 "${p.nota}"</p>` : ''}
 
                     ${anotados.length > 0 ? `
                         <div class="mb-3 flex flex-wrap items-center gap-1.5">
-                            <span class="text-[11px] text-slate-400">Se sumaron:</span>
-                            ${anotados.map(n => `<span class="bg-emerald-900/60 text-emerald-200 text-[11px] font-semibold px-2 py-0.5 rounded-md">⚽ ${n}</span>`).join('')}
+                            <span class="text-[11px] text-slate-400">Inscriptos:</span>
+                            ${anotados.map(n => `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800/50 text-[11px] font-semibold px-2 py-0.5 rounded-md">⚽ ${n}</span>`).join('')}
                         </div>
                     ` : ''}
 
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-800 gap-2">
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-800/80 gap-2">
                         <span class="text-xs text-slate-400">Organiza: <strong class="text-slate-200">${p.organizador}</strong></span>
                         <div class="flex gap-2">
                             ${!completo ? `
-                                <button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
+                                <button onclick="abrirModalSumarse('${p.id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-md">
                                     🙋‍♂️ ¡Me sumo!
                                 </button>
                             ` : ''}
@@ -767,11 +762,11 @@
                 const msg = encodeURIComponent(`¡Hola! Vi en *Corriendo la Bola* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
 
                 return `
-                <div class="card-glass rounded-2xl p-5 shadow-lg border border-emerald-500/30">
+                <div class="card-glass rounded-2xl p-4 sm:p-5 shadow-lg border border-emerald-500/20">
                     <div class="flex justify-between items-start gap-2 mb-2">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap mb-1.5">
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ ${c.complejo}</span>
+                                <span class="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ ${c.complejo}</span>
                                 <span class="bg-slate-800 text-slate-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">📅 ${fechaFormateada}</span>
                             </div>
                             <h3 class="text-base font-extrabold text-white">🏟️ ${c.numeroCancha} • <span class="text-emerald-400">${c.tipo}</span></h3>
@@ -783,16 +778,16 @@
                         </div>
                     </div>
 
-                    <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
+                    <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-xs text-slate-400">Horario disponible:</span>
                             <p class="text-sm font-bold text-white">⏰ ${c.horarios}</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-2.5 rounded-xl transition" title="Borrar turno">
+                            <button onclick="pedirPinBorrarTurno('${c.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 border border-rose-500/30 text-xs font-bold px-3 py-2 rounded-xl transition" title="Borrar turno">
                                 🗑️ Borrar
                             </button>
-                            <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">
+                            <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-md">
                                 📲 Reservar
                             </a>
                         </div>
@@ -901,7 +896,7 @@
                     if (user) {
                         if (statusDot) {
                             statusDot.className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse";
-                            statusText.textContent = "Tablero en vivo conectado";
+                            statusText.textContent = "Conectado";
                         }
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
@@ -926,7 +921,7 @@
                 console.error(error);
                 if (statusDot) {
                     statusDot.className = "w-1.5 h-1.5 rounded-full bg-rose-500";
-                    statusText.textContent = "Error de conexión";
+                    statusText.textContent = "Sin conexión";
                 }
             }
         }
