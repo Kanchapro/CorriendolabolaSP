@@ -8,13 +8,13 @@
     <!-- ==================== METADATOS DE COMPARTIR (OPEN GRAPH / WHATSAPP) ==================== -->
     <meta property="og:title" content="Falta Uno SP ⚽ | Comunidad Deportiva Sáenz Peña">
     <meta property="og:description" content="¡Unite a la comunidad deportiva! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo. 🏟️🔥">
-    <meta property="og:image" content="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png">
-    <meta property="og:url" content="https://kanchapro.app/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png">
+    <meta property="og:url" content="https://faltaunosp.kanchapro.app/">
     <meta property="og:type" content="website">
 
     <!-- Configuración PWA e Icono de la App -->
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png">
     <meta name="theme-color" content="#050a14">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -145,7 +145,7 @@
                 <!-- Centro: Logo Más Grande y Título (Doble toque secreto para Administrar) -->
                 <div class="flex flex-col items-center text-center cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
                     <div class="relative mb-1.5">
-                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-xl shadow-emerald-500/10 bg-stadium-950 mx-auto">
+                        <img src="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png" alt="Logo Falta Uno SP" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-xl shadow-emerald-500/10 bg-stadium-950 mx-auto">
                         <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
                     </div>
                     <h1 class="font-display text-xs sm:text-sm font-black tracking-tight text-white leading-none">
@@ -293,6 +293,17 @@
                         <label class="block text-xs font-bold text-slate-300 mb-1">Horario</label>
                         <input type="time" id="hora" value="21:00" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                     </div>
+                </div>
+
+                <!-- CAMPO: ESTILO / CLIMA DEL PARTIDO -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Clima / Estilo del Partido</label>
+                    <select id="vibePartido" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                        <option value="🔥 Picante / Por los porotos">🔥 Picante / Por los porotos</option>
+                        <option value="⚡ Recreativo / Por joda">⚡ Recreativo / Por joda</option>
+                        <option value="💪 Entrenamiento / Amistoso">💪 Entrenamiento / Amistoso</option>
+                        <option value="🍻 Previa y Post-partido">🍻 Previa y Post-partido</option>
+                    </select>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2.5">
@@ -712,7 +723,7 @@
         window.compartirAplicacion = async () => {
             const tituloApp = "Falta Uno SP ⚽";
             const textoApp = "🏟️ ¡Unite a la comunidad deportiva de Sáenz Peña! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo en Falta Uno SP:";
-            const urlApp = window.location.origin + window.location.pathname;
+            const urlApp = "https://faltaunosp.kanchapro.app/";
 
             if (navigator.share) {
                 try {
@@ -733,7 +744,7 @@
                     const reg = await navigator.serviceWorker.ready;
                     reg.showNotification("¡Falta Uno SP Conectado! ⚽", {
                         body: "Te avisaremos cada vez que se arme un partido en Sáenz Peña.",
-                        icon: "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png"
+                        icon: "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png"
                     });
                 }
             } else {
@@ -1238,21 +1249,23 @@
             alert("🗑️ Publicación eliminada.");
         };
 
-        window.compartirWhatsApp = (cancha, fecha, hora, modalidad, faltan, puesto, nota, organizador, esTorneo, esRival) => {
+        window.compartirWhatsApp = (cancha, fecha, hora, modalidad, faltan, puesto, nota, organizador, vibe, esTorneo, esRival) => {
             const [, mes, dia] = fecha.split('-');
             const fechaFmt = `${dia}/${mes}`;
             let titulo = `⚽ *¡Falta Uno en Falta Uno SP!* ⚽`;
             if (esTorneo) titulo = `🏆 *¡Convocatoria para Torneo!* 🏆`;
             if (esRival) titulo = `🤝 *¡Buscamos Rival / Amistoso!* 🤝`;
 
+            const detalleVibe = vibe ? `🎯 *Estilo:* ${vibe}\n` : '';
             const detalleFaltan = esRival ? `` : `🥅 *Faltan:* ${faltan} jugador(es)${puesto && puesto !== 'Cualquiera' ? ` (Puesto: *${puesto}*)` : ''}\n`;
             const textoNota = nota ? `💬 _"${nota}"_\n` : '';
-            const linkWeb = window.location.href;
+            const linkWeb = "https://faltaunosp.kanchapro.app/";
 
             const mensaje = `${titulo}\n\n` +
                             `📍 *Lugar:* ${cancha}\n` +
                             `📅 *Fecha:* ${fechaFmt} • ${hora} hs\n` +
                             `📌 *Modalidad:* ${modalidad}\n` +
+                            detalleVibe +
                             detalleFaltan +
                             textoNota +
                             `👤 *Organiza:* ${organizador}\n\n` +
@@ -1329,6 +1342,10 @@
                                     📅 ${fechaFormateada} • ${p.hora} hs
                                 </span>
                                 ${badgeTipo}
+                                ${p.vibe ? `
+                                    <span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                                        ${p.vibe}
+                                    </span>` : ''}
                                 ${p.puesto && p.puesto !== 'Cualquiera' && !p.esTorneo && !p.esRival ? `
                                     <span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">
                                         Busca ${p.puesto}
@@ -1388,7 +1405,7 @@
                         </div>
 
                         <div class="flex items-center gap-2 ml-auto">
-                            <button onclick="compartirWhatsApp('${p.cancha}', '${p.fecha}', '${p.hora}', '${p.modalidad}', ${p.faltan || 1}, '${p.puesto || ''}', '${p.nota || ''}', '${p.organizador}', ${p.esTorneo || false}, ${p.esRival || false})" class="bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 border border-white/10 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                            <button onclick="compartirWhatsApp('${p.cancha}', '${p.fecha}', '${p.hora}', '${p.modalidad}', ${p.faltan || 1}, '${p.puesto || ''}', '${p.nota || ''}', '${p.organizador}', '${p.vibe || ''}', ${p.esTorneo || false}, ${p.esRival || false})" class="bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 border border-white/10 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
                                 <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i>
                                 <span class="hidden sm:inline">Compartir</span>
                             </button>
@@ -1521,6 +1538,7 @@
                 cancha: document.getElementById('canchaCustom').value.trim(),
                 fecha: document.getElementById('fechaPartido').value,
                 hora: document.getElementById('hora').value,
+                vibe: document.getElementById('vibePartido').value,
                 modalidad: document.getElementById('modalidad').value,
                 faltan: tipo === 'rival' ? 0 : parseInt(document.getElementById('faltan').value, 10),
                 puesto: document.getElementById('puesto').value || 'Cualquiera',
