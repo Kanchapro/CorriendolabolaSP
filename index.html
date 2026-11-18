@@ -313,7 +313,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">Tu Nombre / Equipo</label>
-                        <input type="text" id="organizador" placeholder="Ej: Ema / Los Amigos" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500">
+                        <input type="text" id="organizador" placeholder="Ej: Juan / Los Amigos" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp (sin 0 ni 15)</label>
@@ -1569,7 +1569,7 @@
             if (partidoActual) {
                 const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
                 const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* (${posicion}) y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎`);
-                window.open(`https://api.whatsapp.com/send?text=${telLimpio}&text=${textoWsp}`, '_blank');
+                window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
             }
         };
 
@@ -1609,7 +1609,7 @@
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel'].classList?.contains('hidden')) renderizarAdminTercerTiempo();
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
                             renderizarTercerTiempo();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
