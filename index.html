@@ -202,7 +202,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS (AUTOGESTIÓN) -->
+        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS (AUTOGESTIÓN Y SOLAPAS DEPORTIVAS) -->
         <section id="vista-canchas" class="hidden space-y-4">
             <div class="card-pro rounded-2xl p-4 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
                 <div>
@@ -212,6 +212,16 @@
                 <button onclick="abrirModalAdminPinComplejo()" class="btn-glow text-slate-950 font-extrabold text-[11px] px-3 py-2 rounded-xl transition shrink-0 flex items-center gap-1.5">
                     <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
                     <span>Soy Complejo (PIN)</span>
+                </button>
+            </div>
+
+            <!-- Solapas de Canchas: Fútbol vs Pádel -->
+            <div class="grid grid-cols-2 gap-2 bg-stadium-900 p-1 rounded-2xl border border-white/10">
+                <button onclick="setSubTabCanchas('Futbol')" id="subtab-Futbol" class="py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5">
+                    <span>⚽</span> Complejos de Fútbol
+                </button>
+                <button onclick="setSubTabCanchas('Padel')" id="subtab-Padel" class="py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5">
+                    <span>🥎</span> Complejos de Pádel
                 </button>
             </div>
 
@@ -410,22 +420,22 @@
         </div>
     </div>
 
-    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO (HORARIOS FIJOS 15:00 A 01:00) -->
+    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO (HORARIOS FIJOS CRONOLÓGICOS) -->
     <div id="modalPanelAutogestion" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
                 <div>
                     <h2 id="tituloAutogestionComp" class="font-display text-lg font-extrabold text-white">Panel de Complejo</h2>
-                    <p class="text-xs text-emerald-400 font-medium">Generación automática (15:00 a 01:00 hs)</p>
+                    <p class="text-xs text-emerald-400 font-medium">Generación cronológica (15:00 a 01:00 hs)</p>
                 </div>
                 <button onclick="cerrarPanelAutogestion()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <!-- Formulario simplificado con horarios fijos -->
+            <!-- Formulario simplificado -->
             <form onsubmit="generarGrillaFijaAutogestion(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10 mb-5">
-                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Cargar Cancha y Horarios Fijos</h3>
+                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Cargar Cancha y Horarios en Orden Cronológico</h3>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Cancha</label>
@@ -440,7 +450,7 @@
                     <label class="block text-[11px] font-semibold text-slate-300 mb-1">Precio por Turno (Ej: 28000 o $28.000)</label>
                     <input type="text" id="autoPrecio" placeholder="Ej: 30000" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                 </div>
-                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Generar de 15:00 a 01:00 hs automáticamente ⚡</button>
+                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Generar de 15:00 a 01:00 hs cronológicamente ⚡</button>
             </form>
 
             <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Turnos activos (Tocá para cambiar Libre 🟢 / Ocupado 🔴)</h3>
@@ -466,7 +476,7 @@
         </div>
     </div>
 
-    <!-- MODAL ADMIN PANEL -->
+    <!-- MODAL ADMIN PANEL (CON SELECTOR DE DEPORTE) -->
     <div id="modalAdminPanel" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
@@ -498,13 +508,20 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Dirección</label>
-                            <input type="text" id="adminDirComp" placeholder="Calle 14 y 9" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Deporte / Categoría</label>
+                            <select id="adminDeporteComp" class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-bold">
+                                <option value="Futbol">⚽ Fútbol</option>
+                                <option value="Padel">🥎 Pádel</option>
+                            </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp</label>
                             <input type="tel" id="adminWspComp" placeholder="3644123456" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Dirección</label>
+                        <input type="text" id="adminDirComp" placeholder="Calle 14 y 9" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar Complejo</button>
                 </form>
@@ -696,6 +713,7 @@
         let db, auth;
         let tabActual = 'falta-uno';
         let filtroActual = 'Fútbol';
+        let subTabCanchasActual = 'Futbol';
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
@@ -811,24 +829,46 @@
             }
         };
 
+        window.setSubTabCanchas = (subtab) => {
+            subTabCanchasActual = subtab;
+            const btnFutbol = document.getElementById('subtab-Futbol');
+            const btnPadel = document.getElementById('subtab-Padel');
+
+            if (subtab === 'Futbol') {
+                btnFutbol.className = "py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5";
+                btnPadel.className = "py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5";
+            } else {
+                btnFutbol.className = "py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5";
+                btnPadel.className = "py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5";
+            }
+            renderizarComplejosBotones();
+        };
+
         function renderizarComplejosBotones() {
             const contenedor = document.getElementById('listaComplejosBotones');
-            if (!complejosAdminCache.length) {
+            
+            // Filtrar complejos por deporte (Si no tienen la propiedad deporte, se asume Fútbol por compatibilidad)
+            const complejosFiltrados = complejosAdminCache.filter(comp => {
+                const deporte = comp.deporte || 'Futbol';
+                return deporte === subTabCanchasActual;
+            });
+
+            if (!complejosFiltrados.length) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center col-span-full">
                         <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🏟️</div>
-                        <h3 class="font-display text-base font-bold text-white">No hay complejos cargados</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Un administrador debe dar de alta los complejos para que aparezcan sus botones aquí.</p>
+                        <h3 class="font-display text-base font-bold text-white">No hay complejos de ${subTabCanchasActual === 'Futbol' ? 'Fútbol' : 'Pádel'}</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Agregá complejos desde el panel de administración.</p>
                     </div>`;
                 return;
             }
 
-            contenedor.innerHTML = complejosAdminCache.map(comp => {
+            contenedor.innerHTML = complejosFiltrados.map(comp => {
                 return `
                 <div onclick="abrirPerfilComplejo('${comp.id}')" class="card-pro rounded-3xl p-5 cursor-pointer group flex items-center justify-between gap-4 border-emerald-500/20 hover:border-emerald-500/60 transition">
                     <div class="flex items-center gap-3.5 min-w-0">
                         <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 font-display font-black text-lg group-hover:scale-105 transition">
-                            ⚽
+                            ${comp.deporte === 'Padel' ? '🥎' : '⚽'}
                         </div>
                         <div class="min-w-0">
                             <h3 class="font-display text-base font-extrabold text-white truncate group-hover:text-emerald-400 transition">${comp.nombre}</h3>
@@ -899,6 +939,28 @@
 
             const turnosDelComplejo = canchasCache.filter(c => c.complejo === complejoSeleccionadoModal.nombre && c.fecha === fechaSeleccionadaModal);
 
+            // ORDEN CRONOLÓGICO ESTRICTO DE 15:00 A 01:00 HS
+            const ordenHorarios = [
+                "15:00 a 16:00 hs",
+                "16:00 a 17:00 hs",
+                "17:00 a 18:00 hs",
+                "18:00 a 19:00 hs",
+                "19:00 a 20:00 hs",
+                "20:00 a 21:00 hs",
+                "21:00 a 22:00 hs",
+                "22:00 a 23:00 hs",
+                "23:00 a 00:00 hs",
+                "00:00 a 01:00 hs"
+            ];
+
+            turnosDelComplejo.sort((a, b) => {
+                let indexA = ordenHorarios.indexOf(a.horarios);
+                let indexB = ordenHorarios.indexOf(b.horarios);
+                if (indexA === -1) indexA = 99;
+                if (indexB === -1) indexB = 99;
+                return indexA - indexB;
+            });
+
             if (!turnosDelComplejo.length) {
                 contenedor.innerHTML = `
                     <div class="bg-stadium-950/60 border border-white/5 rounded-2xl p-8 text-center">
@@ -939,7 +1001,7 @@
             }).join('');
         }
 
-        // AUTOGESTIÓN DE COMPLEJOS POR PIN (GENERACIÓN DE 15:00 A 01:00 HS)
+        // AUTOGESTIÓN DE COMPLEJOS POR PIN (GENERACIÓN CRONOLÓGICA DE 15:00 A 01:00 HS)
         window.abrirModalAdminPinComplejo = () => {
             document.getElementById('inputPinComplejoAutogestion').value = '';
             document.getElementById('modalAdminPinComplejo').classList.remove('hidden');
@@ -974,7 +1036,7 @@
                 precioInput = '$' + precioInput;
             }
 
-            // Franjas horarias fijas de 15:00 a 01:00 hs (cada 1 hora)
+            // Franjas horarias estrictamente en orden cronológico
             const franjasFijas = [
                 "15:00 a 16:00 hs",
                 "16:00 a 17:00 hs",
@@ -1003,7 +1065,7 @@
 
             document.getElementById('autoCancha').value = '';
             document.getElementById('autoPrecio').value = '';
-            alert("✅ ¡Grilla fija de 15:00 a 01:00 hs generada con éxito!");
+            alert("✅ ¡Grilla cronológica de 15:00 a 01:00 hs generada con éxito!");
             renderizarTurnosAutogestion();
         };
 
@@ -1012,6 +1074,21 @@
             if (!complejoAutogestionadoActual) return;
 
             const misTurnos = canchasCache.filter(c => c.complejo === complejoAutogestionadoActual.nombre);
+            
+            const ordenHorarios = [
+                "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
+                "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
+                "23:00 a 00:00 hs", "00:00 a 01:00 hs"
+            ];
+
+            misTurnos.sort((a, b) => {
+                let indexA = ordenHorarios.indexOf(a.horarios);
+                let indexB = ordenHorarios.indexOf(b.horarios);
+                if (indexA === -1) indexA = 99;
+                if (indexB === -1) indexB = 99;
+                return indexA - indexB;
+            });
+
             if (!misTurnos.length) {
                 contenedor.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">No hay turnos generados todavía.</p>`;
                 return;
@@ -1089,6 +1166,7 @@
             const nuevo = {
                 nombre: document.getElementById('adminNombreComp').value.trim(),
                 pin: document.getElementById('adminPinComp').value.trim(),
+                deporte: document.getElementById('adminDeporteComp').value, // 'Futbol' o 'Padel'
                 direccion: document.getElementById('adminDirComp').value.trim(),
                 whatsapp: document.getElementById('adminWspComp').value.trim(),
                 creadoEn: serverTimestamp()
@@ -1159,6 +1237,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-bold px-2 py-0.5 rounded">PIN: ${item.pin}</span>
+                            <span class="bg-white/10 text-slate-300 text-[10px] font-semibold px-2 py-0.5 rounded">${item.deporte === 'Padel' ? '🥎 Pádel' : '⚽ Fútbol'}</span>
                             <h4 class="text-xs font-bold text-white">${item.nombre}</h4>
                         </div>
                         <p class="text-[11px] text-slate-400 mt-0.5">📍 ${item.direccion} • 📱 ${item.whatsapp}</p>
