@@ -1,16 +1,20 @@
 {
   "name": "Falta Uno SP",
-  "short_name": "Falta Uno",
+  "short_name": "Falta Uno SP",
   "start_url": "/CorriendolabolaSP/",
   "display": "standalone",
-  "background_color": "#061021",
-  "theme_color": "#041b18",
+  "background_color": "#050a14",
+  "theme_color": "#050a14",
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
