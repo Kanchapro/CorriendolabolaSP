@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            <!-- 3 Pestañas de Navegación -->
+            <!-- 3 Pestañas Principales de Navegación -->
             <div class="grid grid-cols-3 gap-1.5 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
                 <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
                     <span>⚽</span> Convocatorias
@@ -205,10 +205,26 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS LIBRES -->
-        <section id="vista-canchas" class="hidden">
-            <div id="listaCanchas" class="space-y-6">
-                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos disponibles...</div>
+        <!-- SECCIÓN 2: CANCHAS LIBRES (CON 2 SOLAPAS: FÚTBOL Y PÁDEL) -->
+        <section id="vista-canchas" class="hidden space-y-5">
+            <!-- Solapas internas de Canchas -->
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="setSubTabCanchas('futbol')" id="subtab-canchas-futbol" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5">
+                    <span>⚽</span> Canchas de Fútbol
+                </button>
+                <button onclick="setSubTabCanchas('padel')" id="subtab-canchas-padel" class="py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:bg-stadium-800 bg-stadium-900 border border-white/10 transition flex items-center justify-center gap-1.5">
+                    <span>🥎</span> Canchas de Pádel
+                </button>
+            </div>
+
+            <!-- Contenedor Turnos Fútbol -->
+            <div id="listaCanchasFutbol" class="space-y-6">
+                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de fútbol...</div>
+            </div>
+
+            <!-- Contenedor Turnos Pádel -->
+            <div id="listaCanchasPadel" class="space-y-6 hidden">
+                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de pádel...</div>
             </div>
         </section>
 
@@ -295,7 +311,6 @@
                     </div>
                 </div>
 
-                <!-- CAMPO: ESTILO / CLIMA DEL PARTIDO -->
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5">Clima / Estilo del Partido</label>
                     <select id="vibePartido" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
@@ -385,13 +400,13 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">Superficie / Tipo</label>
                         <select id="turnoTipo" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                            <option value="Fútbol 5 (Sintético)">Fútbol 5 (Sintético)</option>
-                            <option value="Fútbol 7 (Sintético)">Fútbol 7 (Sintético)</option>
-                            <option value="Fútbol 8 (Sintético)">Fútbol 8 (Sintético)</option>
-                            <option value="Fútbol 11 (Césped)">Fútbol 11 (Césped)</option>
-                            <option value="Futsal">Futsal</option>
-                            <option value="Pádel (Vidriada)">Pádel (Vidriada)</option>
-                            <option value="Pádel (Muro)">Pádel (Muro)</option>
+                            <option value="Fútbol 5 (Sintético)">⚽ Fútbol 5 (Sintético)</option>
+                            <option value="Fútbol 7 (Sintético)">⚽ Fútbol 7 (Sintético)</option>
+                            <option value="Fútbol 8 (Sintético)">⚽ Fútbol 8 (Sintético)</option>
+                            <option value="Fútbol 11 (Césped)">⚽ Fútbol 11 (Césped)</option>
+                            <option value="Futsal">⚽ Futsal</option>
+                            <option value="Pádel (Vidriada)">🥎 Pádel (Vidriada)</option>
+                            <option value="Pádel (Muro)">🥎 Pádel (Muro)</option>
                         </select>
                     </div>
                 </div>
@@ -656,7 +671,6 @@
 
         lucide.createIcons();
 
-        // Atajo por teclado secreto para admin: Ctrl + Shift + A
         window.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
                 e.preventDefault();
@@ -664,7 +678,6 @@
             }
         });
 
-        // Registrar Service Worker para PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -687,6 +700,7 @@
 
         let db, auth;
         let tabActual = 'falta-uno';
+        let subTabCanchasActual = 'futbol';
         let filtroActual = 'Fútbol';
         let partidosCache = [];
         let canchasCache = [];
@@ -785,6 +799,26 @@
                 vistaTercerTiempo.classList.remove('hidden');
                 btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Publicar";
+            }
+        };
+
+        window.setSubTabCanchas = (subtab) => {
+            subTabCanchasActual = subtab;
+            const btnFutbol = document.getElementById('subtab-canchas-futbol');
+            const btnPadel = document.getElementById('subtab-canchas-padel');
+            const contFutbol = document.getElementById('listaCanchasFutbol');
+            const contPadel = document.getElementById('listaCanchasPadel');
+
+            if (subtab === 'futbol') {
+                btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5";
+                btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:bg-stadium-800 bg-stadium-900 border border-white/10 transition flex items-center justify-center gap-1.5";
+                contFutbol.classList.remove('hidden');
+                contPadel.classList.add('hidden');
+            } else {
+                btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5";
+                btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:bg-stadium-800 bg-stadium-900 border border-white/10 transition flex items-center justify-center gap-1.5";
+                contPadel.classList.remove('hidden');
+                contFutbol.classList.add('hidden');
             }
         };
 
@@ -1429,22 +1463,31 @@
         }
 
         function renderizarCanchas() {
-            const contenedor = document.getElementById('listaCanchas');
             const ahora = new Date();
             const vigentes = canchasCache.filter(c => !c.fecha || new Date(`${c.fecha}T23:59:59`) >= ahora);
 
-            if (vigentes.length === 0) {
+            // Separar en Fútbol y Pádel según la propiedad .tipo
+            const turnosFutbol = vigentes.filter(c => !c.tipo || c.tipo.toLowerCase().includes('fútbol') || c.tipo.toLowerCase().includes('futsal'));
+            const turnosPadel = vigentes.filter(c => c.tipo && c.tipo.toLowerCase().includes('pádel'));
+
+            renderizarListaSubTabCanchas('listaCanchasFutbol', turnosFutbol, '⚽', 'No hay turnos libres de fútbol publicados.');
+            renderizarListaSubTabCanchas('listaCanchasPadel', turnosPadel, '🥎', 'No hay turnos libres de pádel publicados.');
+        }
+
+        function renderizarListaSubTabCanchas(elementId, listaTurnos, icono, mensajeVacio) {
+            const contenedor = document.getElementById(elementId);
+            if (!listaTurnos.length) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🏟️</div>
-                        <h3 class="font-display text-base font-bold text-white">No hay turnos libres publicados</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Los complejos deportivos de Sáenz Peña publican acá sus horarios disponibles de último momento.</p>
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">${icono}</div>
+                        <h3 class="font-display text-base font-bold text-white">${mensajeVacio}</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Los complejos deportivos de Sáenz Peña publican acá sus horarios disponibles.</p>
                     </div>`;
                 return;
             }
 
             let gruposPorFecha = {};
-            vigentes.forEach(c => {
+            listaTurnos.forEach(c => {
                 const fechaKey = c.fecha || hoyStr;
                 if (!gruposPorFecha[fechaKey]) gruposPorFecha[fechaKey] = [];
                 gruposPorFecha[fechaKey].push(c);
@@ -1587,7 +1630,7 @@
             if (partidoActual) {
                 const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
                 const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* (${posicion}) y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎`);
-                window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
+                window.open(`https://api.whatsapp.com/send?text=${textoWsp}`, '_blank');
             }
         };
 
@@ -1627,7 +1670,7 @@
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
+                            if (!document.getElementById('modalAdminPanel'].classList.contains('hidden')) renderizarAdminTercerTiempo();
                             renderizarTercerTiempo();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
