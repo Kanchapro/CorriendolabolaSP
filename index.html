@@ -159,13 +159,16 @@
                 </div>
             </div>
 
-            <!-- Pestañas de Navegación -->
-            <div class="grid grid-cols-2 gap-1.5 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
-                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2">
+            <!-- 3 Pestañas de Navegación -->
+            <div class="grid grid-cols-3 gap-1.5 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
+                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
                     <span>⚽</span> Convocatorias
                 </button>
-                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2">
-                    <span>🏟️</span> Canchas Libres
+                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                    <span>🏟️</span> Canchas
+                </button>
+                <button id="tab-tercer-tiempo" onclick="cambiarTab('tercer-tiempo')" class="py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                    <span>🍻</span> 3er Tiempo
                 </button>
             </div>
         </div>
@@ -176,21 +179,19 @@
 
         <!-- SECCIÓN 1: CONVOCATORIAS -->
         <section id="vista-falta-uno">
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-5">
-                <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn shrink-0 bg-emerald-500 text-slate-950 text-xs font-bold py-2 px-4 rounded-full shadow-sm transition">
-                    Todos
+            <!-- Grilla 2x2 para filtros (Fútbol, Pádel, Torneos, Rival) sin scroll horizontal -->
+            <div class="grid grid-cols-2 gap-2 mb-5">
+                <button onclick="setFiltro('Fútbol')" id="filtro-Fútbol" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold py-2.5 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5">
+                    <span>⚽</span> Fútbol
                 </button>
-                <button onclick="setFiltro('Fútbol')" id="filtro-Fútbol" class="filtro-btn shrink-0 bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2 px-4 rounded-full transition">
-                    ⚽ Fútbol
+                <button onclick="setFiltro('Pádel')" id="filtro-Pádel" class="filtro-btn bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                    <span>🥎</span> Pádel
                 </button>
-                <button onclick="setFiltro('Pádel')" id="filtro-Pádel" class="filtro-btn shrink-0 bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2 px-4 rounded-full transition">
-                    🥎 Pádel
+                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                    <span>🏆</span> Torneos
                 </button>
-                <button onclick="setFiltro('Rival')" id="filtro-Rival" class="filtro-btn shrink-0 bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2 px-4 rounded-full transition">
-                    🤝 Buscan Rival
-                </button>
-                <button onclick="setFiltro('Torneo')" id="filtro-Torneo" class="filtro-btn shrink-0 bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2 px-4 rounded-full transition">
-                    🏆 Torneos
+                <button onclick="setFiltro('Rival')" id="filtro-Rival" class="filtro-btn bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                    <span>🤝</span> Buscan Rival
                 </button>
             </div>
 
@@ -204,23 +205,30 @@
 
         <!-- SECCIÓN 2: CANCHAS LIBRES -->
         <section id="vista-canchas" class="hidden">
-            <div class="card-pro rounded-2xl p-4 sm:p-5 mb-6 flex items-center justify-between gap-4 border-emerald-500/20">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
-                        <i data-lucide="calendar-check" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-display text-base font-bold text-white">Turnos Disponibles Hoy</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Reservá directo por WhatsApp con cada complejo</p>
-                    </div>
-                </div>
-                <button onclick="abrirModalTurno()" class="bg-white/10 hover:bg-white/15 text-white border border-white/15 text-xs font-bold px-3.5 py-2.5 rounded-xl transition shrink-0 flex items-center gap-1.5">
-                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Soy Complejo
-                </button>
-            </div>
-
             <div id="listaCanchas" class="space-y-6">
                 <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos disponibles...</div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: TERCER TIEMPO (Kioscos y Comercios) -->
+        <section id="vista-tercer-tiempo" class="hidden space-y-6">
+            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
+                        🍻
+                    </div>
+                    <div>
+                        <h2 class="font-display text-base font-bold text-white">El Tercer Tiempo</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Kioscos, casas de picadas, bebidas y comercios recomendados en Sáenz Peña.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="listaTercerTiempo" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="card-pro rounded-2xl p-10 text-center col-span-full">
+                    <div class="inline-block w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+                    <p class="text-slate-400 text-sm font-medium">Cargando comercios del Tercer Tiempo...</p>
+                </div>
             </div>
         </section>
     </main>
@@ -430,10 +438,12 @@
                 </button>
             </div>
 
-            <div class="grid grid-cols-3 gap-1.5 bg-stadium-950 p-1 rounded-xl mb-5 border border-white/10">
-                <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
-                <button onclick="cambiarTabAdmin('pub1')" id="tabAdminPub1" class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">Publicidad 1</button>
-                <button onclick="cambiarTabAdmin('pub2')" id="tabAdminPub2" class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">Publicidad 2</button>
+            <!-- Navegación Admin (4 solapas ahora) -->
+            <div class="grid grid-cols-4 gap-1 bg-stadium-950 p-1 rounded-xl mb-5 border border-white/10">
+                <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
+                <button onclick="cambiarTabAdmin('pub1')" id="tabAdminPub1" class="py-2 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition">Pub 1</button>
+                <button onclick="cambiarTabAdmin('pub2')" id="tabAdminPub2" class="py-2 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition">Pub 2</button>
+                <button onclick="cambiarTabAdmin('tercertiempo')" id="tabAdminTercerTiempo" class="py-2 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition">3er Tiempo</button>
             </div>
 
             <div id="seccionAdminComplejos" class="space-y-4">
@@ -535,6 +545,37 @@
                 </form>
                 <div id="listaPub2Admin" class="space-y-2.5"></div>
             </div>
+
+            <!-- TAB ADMIN: TERCER TIEMPO -->
+            <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
+                <form id="formAgregarTercerTiempo" onsubmit="guardarTercerTiempoAdmin(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Agregar Comercio / Kiosco (3er Tiempo)</h3>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Comercio</label>
+                        <input type="text" id="ttTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen / Logo</label>
+                        <input type="url" id="ttImgUrl" placeholder="https://..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp</label>
+                            <input type="tel" id="ttWsp" placeholder="3644..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Categoría</label>
+                            <input type="text" id="ttCategoria" placeholder="Ej: Bebidas / Picadas" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Descripción corta o Promo</label>
+                        <input type="text" id="ttDesc" placeholder="Ej: Envios a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en 3er Tiempo</button>
+                </form>
+                <div id="listaTercerTiempoAdmin" class="space-y-2.5"></div>
+            </div>
         </div>
     </div>
 
@@ -625,12 +666,13 @@
 
         let db, auth;
         let tabActual = 'falta-uno';
-        let filtroActual = 'todos';
+        let filtroActual = 'Fútbol'; // Arranca directo en Fútbol por defecto
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
         let pub1Cache = [];
         let pub2Cache = [];
+        let tercerTiempoCache = [];
         let reputacionCache = {};
         let complejoVerificadoActual = null;
 
@@ -680,27 +722,39 @@
             tabActual = tab;
             const vistaFalta = document.getElementById('vista-falta-uno');
             const vistaCanchas = document.getElementById('vista-canchas');
+            const vistaTercerTiempo = document.getElementById('vista-tercer-tiempo');
+            
             const btnTabFalta = document.getElementById('tab-falta-uno');
             const btnTabCanchas = document.getElementById('tab-canchas');
+            const btnTabTercer = document.getElementById('tab-tercer-tiempo');
             const textoBtnPrincipal = document.getElementById('textoBotonPrincipal');
+
+            // Resetear estilos de las 3 solapas
+            btnTabFalta.className = "py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabCanchas.className = "py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabTercer.className = "py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+
+            vistaFalta.classList.add('hidden');
+            vistaCanchas.classList.add('hidden');
+            vistaTercerTiempo.classList.add('hidden');
 
             if (tab === 'falta-uno') {
                 vistaFalta.classList.remove('hidden');
-                vistaCanchas.classList.add('hidden');
-                btnTabFalta.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2";
-                btnTabCanchas.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                btnTabFalta.className = "py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Publicar";
-            } else {
-                vistaFalta.classList.add('hidden');
+            } else if (tab === 'canchas') {
                 vistaCanchas.classList.remove('hidden');
-                btnTabCanchas.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2";
-                btnTabFalta.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                btnTabCanchas.className = "py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Turno Libre";
+            } else if (tab === 'tercer-tiempo') {
+                vistaTercerTiempo.classList.remove('hidden');
+                btnTabTercer.className = "py-2.5 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
+                textoBtnPrincipal.textContent = "Publicar";
             }
         };
 
         window.manejarBotonPrincipal = () => {
-            if (tabActual === 'falta-uno') window.abrirModalPartido();
+            if (tabActual === 'falta-uno' || tabActual === 'tercer-tiempo') window.abrirModalPartido();
             else window.abrirModalTurno();
         };
 
@@ -791,6 +845,7 @@
                 renderizarAdminComplejos();
                 renderizarAdminPub1();
                 renderizarAdminPub2();
+                renderizarAdminTercerTiempo();
             } else {
                 alert("❌ Contraseña incorrecta");
             }
@@ -798,14 +853,14 @@
         window.cerrarPanelAdmin = () => document.getElementById('modalAdminPanel').classList.add('hidden');
 
         window.cambiarTabAdmin = (tab) => {
-            ['Complejos', 'Pub1', 'Pub2'].forEach(t => {
+            ['Complejos', 'Pub1', 'Pub2', 'TercerTiempo'].forEach(t => {
                 document.getElementById(`seccionAdmin${t}`).classList.add('hidden');
-                document.getElementById(`tabAdmin${t}`).className = "py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+                document.getElementById(`tabAdmin${t}`).className = "py-2 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition";
             });
-            const map = { complejos: 'Complejos', pub1: 'Pub1', pub2: 'Pub2' };
+            const map = { complejos: 'Complejos', pub1: 'Pub1', pub2: 'Pub2', tercertiempo: 'TercerTiempo' };
             const key = map[tab];
             document.getElementById(`seccionAdmin${key}`).classList.remove('hidden');
-            document.getElementById(`tabAdmin${key}`).className = "py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition";
+            document.getElementById(`tabAdmin${key}`).className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
         };
 
         window.guardarComplejoAdmin = async (e) => {
@@ -851,6 +906,28 @@
         window.eliminarAdAdmin = async (id, coleccion) => {
             if (confirm("¿Eliminar este anuncio?")) {
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', coleccion, id));
+            }
+        };
+
+        window.guardarTercerTiempoAdmin = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+            const nuevoComercio = {
+                titulo: document.getElementById('ttTitle').value.trim(),
+                imgUrl: document.getElementById('ttImgUrl').value.trim(),
+                whatsapp: document.getElementById('ttWsp').value.trim().replace(/\D/g, ''),
+                categoria: document.getElementById('ttCategoria').value.trim(),
+                descripcion: document.getElementById('ttDesc').value.trim(),
+                creadoEn: serverTimestamp()
+            };
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
+            document.getElementById('formAgregarTercerTiempo').reset();
+            alert("✅ Comercio guardado en Tercer Tiempo.");
+        };
+
+        window.eliminarTercerTiempoAdmin = async (id) => {
+            if (confirm("¿Eliminar este comercio del Tercer Tiempo?")) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo', id));
             }
         };
 
@@ -909,6 +986,63 @@
                     <button onclick="eliminarAdAdmin('${a.id}', 'ads_pub2')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
                 </div>
             `).join('');
+        }
+
+        function renderizarAdminTercerTiempo() {
+            const c = document.getElementById('listaTercerTiempoAdmin');
+            if (!tercerTiempoCache.length) { c.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">Sin comercios en Tercer Tiempo.</p>`; return; }
+            c.innerHTML = tercerTiempoCache.map(t => `
+                <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img src="${t.imgUrl}" class="w-12 h-10 object-cover rounded border border-white/10 shrink-0">
+                        <div class="min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${t.titulo}</h4>
+                            <p class="text-[10px] text-amber-400 font-semibold">${t.categoria}</p>
+                        </div>
+                    </div>
+                    <button onclick="eliminarTercerTiempoAdmin('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
+                </div>
+            `).join('');
+        }
+
+        function renderizarTercerTiempo() {
+            const contenedor = document.getElementById('listaTercerTiempo');
+            if (!tercerTiempoCache.length) {
+                contenedor.innerHTML = `
+                    <div class="card-pro rounded-3xl p-10 text-center col-span-full">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🍻</div>
+                        <h3 class="font-display text-base font-bold text-white">Pronto más comercios</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Acá vas a encontrar kioscos, picadas y bebidas para el post-partido.</p>
+                    </div>`;
+                return;
+            }
+
+            contenedor.innerHTML = tercerTiempoCache.map(t => {
+                const telLimpio = (t.whatsapp || '').replace(/\D/g, '');
+                const msgWsp = encodeURIComponent(`¡Hola ${t.titulo}! Vi su comercio en la sección *Tercer Tiempo* de *Falta Uno SP* y quiero hacerles un pedido / consulta.`);
+                return `
+                <div class="card-pro rounded-3xl p-5 flex flex-col justify-between gap-4 border-amber-500/20">
+                    <div class="flex items-center gap-4">
+                        <img src="${t.imgUrl}" alt="${t.titulo}" class="w-16 h-16 rounded-2xl object-cover border border-amber-500/30 shrink-0 shadow-lg bg-stadium-950">
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md inline-block mb-1">
+                                ${t.categoria}
+                            </span>
+                            <h3 class="font-display text-base font-extrabold text-white truncate">${t.titulo}</h3>
+                            <p class="text-xs text-slate-400 mt-0.5 line-clamp-2">${t.descripcion}</p>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                        <span class="text-[11px] text-slate-500 font-medium">Sáenz Peña, Chaco</span>
+                        <a href="https://wa.me/549${telLimpio}?text=${msgWsp}" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-lg">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>Pedir por WhatsApp</span>
+                        </a>
+                    </div>
+                </div>`;
+            }).join('');
+
+            lucide.createIcons();
         }
 
         function actualizarRotacionPublicidades() {
@@ -995,11 +1129,16 @@
 
         window.setFiltro = (filtro) => {
             filtroActual = filtro;
-            document.querySelectorAll('.filtro-btn').forEach(btn => {
-                btn.className = "filtro-btn shrink-0 bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2 px-4 rounded-full transition";
+            ['Fútbol', 'Pádel', 'Torneo', 'Rival'].forEach(f => {
+                const btn = document.getElementById(`filtro-${f}`);
+                if (btn) {
+                    if (f === filtro) {
+                        btn.className = "filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold py-2.5 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5";
+                    } else {
+                        btn.className = "filtro-btn bg-stadium-900 text-slate-300 hover:bg-stadium-800 border border-white/10 text-xs font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5";
+                    }
+                }
             });
-            const active = document.getElementById(`filtro-${filtro}`);
-            if (active) active.className = "filtro-btn shrink-0 bg-emerald-500 text-slate-950 text-xs font-bold py-2 px-4 rounded-full shadow-sm transition";
             renderizarPartidos();
         };
 
@@ -1445,6 +1584,11 @@
                             pub2Cache = snap.docs.map(d => ({ id: d.id, ...d.data()}));
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminPub2();
                             actualizarRotacionPublicidades();
+                        });
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
+                            tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
+                            renderizarTercerTiempo();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
                             snap.docs.forEach(d => {
