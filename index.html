@@ -202,29 +202,24 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS LIBRES (CON 2 SOLAPAS: FÚTBOL / PÁDEL) -->
+        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS (AUTOGESTIÓN) -->
         <section id="vista-canchas" class="hidden space-y-4">
-            <!-- Solapas internas de Canchas -->
-            <div class="grid grid-cols-2 gap-2 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
-                <button id="subtab-canchas-futbol" onclick="cambiarSubTabCanchas('futbol')" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
-                    <span>⚽</span> Canchas de Fútbol
-                </button>
-                <button id="subtab-canchas-padel" onclick="cambiarSubTabCanchas('padel')" class="py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
-                    <span>🥎</span> Canchas de Pádel
-                </button>
-            </div>
-
-            <!-- Contenedor Sub-solapa Fútbol -->
-            <div id="subvista-canchas-futbol" class="space-y-4">
-                <div id="listaCanchasFutbol" class="space-y-4">
-                    <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de fútbol...</div>
+            <div class="card-pro rounded-2xl p-4 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
+                <div>
+                    <h3 class="font-display text-sm font-bold text-white">🏟️ Complejos Deportivos</h3>
+                    <p class="text-[11px] text-slate-400">Elegí un complejo para ver sus canchas y horarios libres o administrar con tu PIN.</p>
                 </div>
+                <button onclick="abrirModalAdminPinComplejo()" class="btn-glow text-slate-950 font-extrabold text-[11px] px-3 py-2 rounded-xl transition shrink-0 flex items-center gap-1.5">
+                    <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+                    <span>Soy Complejo (PIN)</span>
+                </button>
             </div>
 
-            <!-- Contenedor Sub-solapa Pádel -->
-            <div id="subvista-canchas-padel" class="hidden space-y-4">
-                <div id="listaCanchasPadel" class="space-y-4">
-                    <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de pádel...</div>
+            <!-- Listado de Botones de Complejos -->
+            <div id="listaComplejosBotones" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="card-pro rounded-2xl p-8 text-center col-span-full">
+                    <div class="inline-block w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+                    <p class="text-slate-400 text-sm font-medium">Cargando complejos...</p>
                 </div>
             </div>
         </section>
@@ -366,83 +361,98 @@
         </div>
     </div>
 
-    <!-- MODAL TURNO LIBRE -->
-    <div id="modalTurno" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
-            <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
-                <h2 class="font-display text-lg font-extrabold text-white">🏟️ Publicar Turno Libre</h2>
-                <button onclick="cerrarModalTurno()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
+    <!-- MODAL DETALLE / GRILLA DE HORARIOS DEL COMPLEJO -->
+    <div id="modalPerfilComplejo" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-stadium-900 border border-white/15 w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
+                <div>
+                    <h2 id="tituloModalComplejoNombre" class="font-display text-lg font-extrabold text-white">Complejo</h2>
+                    <p id="tituloModalComplejoDir" class="text-xs text-slate-400">Dirección</p>
+                </div>
+                <button onclick="cerrarModalPerfilComplejo()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <form id="formTurno" onsubmit="guardarTurno(event)" class="space-y-4">
-                <div class="bg-stadium-950 border border-emerald-500/30 rounded-2xl p-4">
-                    <label class="block text-xs font-bold text-emerald-400 mb-1.5">PIN de Complejo Autorizado</label>
-                    <div class="flex items-center gap-3">
-                        <input type="password" id="pinComplejo" maxlength="4" placeholder="••••" oninput="verificarPin()" class="w-28 bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-center tracking-[0.4em] font-bold text-white focus:outline-none focus:border-emerald-500" required>
-                        <div id="estadoPin" class="flex-1 text-xs text-slate-400">
-                            Ingresá tus 4 dígitos
-                        </div>
-                    </div>
-                </div>
+            <!-- Solapas de Días -->
+            <div id="grillaDiasComplejo" class="grid grid-cols-3 gap-1.5 bg-stadium-950 p-1 rounded-2xl mb-4 border border-white/10">
+                <!-- Se llena dinámicamente -->
+            </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Complejo</label>
-                        <input type="text" id="turnoComplejo" placeholder="Validado por PIN" readonly required class="w-full bg-stadium-950/60 border border-white/5 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">N° Cancha</label>
-                        <input type="text" id="turnoNumeroCancha" placeholder="Ej: Cancha 1" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                    </div>
-                </div>
+            <!-- Grilla de Horarios y Canchas -->
+            <div id="contenedorGrillaHorarios" class="space-y-3 mb-5">
+                <!-- Se llena dinámicamente -->
+            </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Fecha</label>
-                        <input type="date" id="turnoFecha" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Superficie / Tipo</label>
-                        <select id="turnoTipo" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                            <option value="Fútbol 5 (Sintético)">Fútbol 5 (Sintético)</option>
-                            <option value="Fútbol 7 (Sintético)">Fútbol 7 (Sintético)</option>
-                            <option value="Fútbol 8 (Sintético)">Fútbol 8 (Sintético)</option>
-                            <option value="Fútbol 11 (Césped)">Fútbol 11 (Césped)</option>
-                            <option value="Futsal">Futsal</option>
-                            <option value="Pádel (Vidriada)">Pádel (Vidriada)</option>
-                            <option value="Pádel (Muro)">Pádel (Muro)</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="pt-3 border-t border-white/10 flex justify-between items-center">
+                <a id="btnChatComplejoModal" href="#" target="_blank" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>Consultar por WhatsApp general</span>
+                </a>
+                <button onclick="cerrarModalPerfilComplejo()" class="bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs px-4 py-2.5 rounded-xl transition">Cerrar</button>
+            </div>
+        </div>
+    </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Franja Horaria</label>
-                        <input type="text" id="turnoHorarios" placeholder="Ej: 21:00 a 22:00 hs" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Valor del Turno</label>
-                        <input type="text" id="turnoPrecio" placeholder="Ej: $28.000" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white">
-                    </div>
-                </div>
+    <!-- MODAL INGRESO PIN COMPLEJO -->
+    <div id="modalAdminPinComplejo" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-stadium-900 border border-white/15 w-full max-w-sm rounded-3xl p-6 shadow-2xl modal-animate">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-4">
+                <i data-lucide="key-round" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display text-lg font-extrabold text-white mb-1">Acceso Complejo</h3>
+            <p class="text-xs text-slate-400 mb-4">Ingresá el PIN de 4 dígitos de tu complejo para autogestionar tus horarios.</p>
+            <input type="password" id="inputPinComplejoAutogestion" maxlength="4" placeholder="••••" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-4 py-3 text-center tracking-[0.5em] font-bold text-lg text-white mb-4 focus:outline-none focus:border-emerald-500">
+            <div class="flex gap-2.5">
+                <button onclick="cerrarModalAdminPinComplejo()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-sm transition">Cancelar</button>
+                <button onclick="verificarPinAutogestionComplejo()" class="flex-1 btn-glow text-slate-950 font-extrabold py-2.5 rounded-xl text-sm transition">Ingresar</button>
+            </div>
+        </div>
+    </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp</label>
-                        <input type="tel" id="turnoWhatsapp" readonly required class="w-full bg-stadium-950/60 border border-white/5 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Dirección</label>
-                        <input type="text" id="turnoDireccion" readonly required class="w-full bg-stadium-950/60 border border-white/5 rounded-xl px-3.5 py-2.5 text-sm text-slate-400">
-                    </div>
+    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO -->
+    <div id="modalPanelAutogestion" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
+                <div>
+                    <h2 id="tituloAutogestionComp" class="font-display text-lg font-extrabold text-white">Panel de Complejo</h2>
+                    <p class="text-xs text-emerald-400 font-medium">Administración de horarios y semáforos</p>
                 </div>
-
-                <button type="submit" class="w-full btn-glow text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2">
-                    Publicar Disponibilidad 🏟️
+                <button onclick="cerrarPanelAutogestion()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10">
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
+            </div>
+
+            <!-- Formulario agregar horario -->
+            <form onsubmit="agregarHorarioAutogestion(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10 mb-5">
+                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Agregar Nuevo Turno / Horario</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Cancha</label>
+                        <input type="text" id="autoCancha" placeholder="Ej: Cancha 1 (Sintética)" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Fecha</label>
+                        <input type="date" id="autoFecha" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Horario</label>
+                        <input type="text" id="autoHorario" placeholder="Ej: 21:00 hs" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Valor / Precio</label>
+                        <input type="text" id="autoPrecio" placeholder="Ej: $28.000" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                    </div>
+                </div>
+                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Publicar Turno en Grilla</button>
             </form>
+
+            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Tus turnos cargados (Tocá para cambiar 🟢 / 🔴)</h3>
+            <div id="listaTurnosAutogestion" class="space-y-2.5">
+                <!-- Se llena dinámicamente -->
+            </div>
         </div>
     </div>
 
@@ -472,7 +482,6 @@
                 </button>
             </div>
 
-            <!-- Navegación Admin -->
             <div class="grid grid-cols-4 gap-1 bg-stadium-950 p-1 rounded-xl mb-5 border border-white/10">
                 <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
                 <button onclick="cambiarTabAdmin('pub1')" id="tabAdminPub1" class="py-2 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition">Pub 1</button>
@@ -535,9 +544,7 @@
                     </div>
                     <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3">
                         <input type="checkbox" id="pub1Doble" class="w-4 h-4 accent-emerald-500 rounded">
-                        <div>
-                            <label for="pub1Doble" class="text-xs font-bold text-emerald-300 cursor-pointer">Adquirió Publicidad Conjunta (Ocupa toda la pantalla)</label>
-                        </div>
+                        <div><label for="pub1Doble" class="text-xs font-bold text-emerald-300 cursor-pointer">Adquirió Publicidad Conjunta (Ocupa toda la pantalla)</label></div>
                     </div>
                     <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en Publicidad 1</button>
                 </form>
@@ -571,16 +578,13 @@
                     </div>
                     <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3">
                         <input type="checkbox" id="pub2Doble" class="w-4 h-4 accent-emerald-500 rounded">
-                        <div>
-                            <label for="pub2Doble" class="text-xs font-bold text-emerald-300 cursor-pointer">Adquirió Publicidad Conjunta (Ocupa toda la pantalla)</label>
-                        </div>
+                        <div><label for="pub2Doble" class="text-xs font-bold text-emerald-300 cursor-pointer">Adquirió Publicidad Conjunta (Ocupa toda la pantalla)</label></div>
                     </div>
                     <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en Publicidad 2</button>
                 </form>
                 <div id="listaPub2Admin" class="space-y-2.5"></div>
             </div>
 
-            <!-- TAB ADMIN: TERCER TIEMPO -->
             <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
                 <form id="formAgregarTercerTiempo" onsubmit="guardarTercerTiempoAdmin(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
                     <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Agregar Comercio / Kiosco (3er Tiempo)</h3>
@@ -655,20 +659,6 @@
         </div>
     </div>
 
-    <div id="modalBorrarTurno" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-stadium-900 border border-white/15 w-full max-w-sm rounded-3xl p-6 shadow-2xl modal-animate">
-            <h3 class="font-display text-lg font-extrabold text-white mb-1">🗑️ Eliminar Publicación</h3>
-            <p class="text-xs text-slate-400 mb-4">Ingresá el PIN del complejo o la clave admin.</p>
-            <input type="hidden" id="turnoIdBorrar">
-            <input type="hidden" id="tipoBorrar">
-            <input type="password" id="pinBorrarInput" placeholder="PIN o Clave..." class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-center tracking-widest font-bold text-sm text-white mb-4 focus:outline-none focus:border-rose-500">
-            <div class="flex gap-2.5">
-                <button onclick="cerrarModalBorrar()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-sm">Cancelar</button>
-                <button onclick="ejecutarBorrar()" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl text-sm transition">Eliminar</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ==================== LÓGICA DE APLICACIÓN ==================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -677,7 +667,6 @@
 
         lucide.createIcons();
 
-        // Atajo por teclado secreto para admin: Ctrl + Shift + A
         window.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
                 e.preventDefault();
@@ -685,19 +674,16 @@
             }
         });
 
-        // Registro inline de Service Worker seguro mediante Blob
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
                     self.addEventListener('install', e => self.skipWaiting());
-                    self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+                    self.addEventListener('activate', e => self.waitUntil(clients.claim()));
                     self.addEventListener('fetch', e => {});
                 `;
                 const blob = new Blob([swCode], { type: 'text/javascript' });
                 const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl)
-                    .then(reg => console.log('Service Worker PWA registrado con éxito'))
-                    .catch(err => console.log('Service Worker no disponible', err));
+                navigator.serviceWorker.register(swUrl).catch(err => console.log(err));
             });
         }
 
@@ -715,7 +701,6 @@
 
         let db, auth;
         let tabActual = 'falta-uno';
-        let subTabCanchasActual = 'futbol';
         let filtroActual = 'Fútbol';
         let partidosCache = [];
         let canchasCache = [];
@@ -724,62 +709,13 @@
         let pub2Cache = [];
         let tercerTiempoCache = [];
         let reputacionCache = {};
-        let complejoVerificadoActual = null;
+        
+        let complejoSeleccionadoModal = null;
+        let fechaSeleccionadaModal = '';
+        let complejoAutogestionadoActual = null;
 
         let indicePub1 = 0, indicePub2 = 0;
         let timerPub1 = null, timerPub2 = null;
-
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('bannerInstalacion').classList.remove('hidden');
-        });
-
-        window.instalarAppPWA = async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                document.getElementById('bannerInstalacion').classList.add('hidden');
-            }
-        };
-
-        window.cerrarBannerInstalacion = () => {
-            document.getElementById('bannerInstalacion').classList.add('hidden');
-        };
-
-        window.compartirAplicacion = async () => {
-            const tituloApp = "Falta Uno SP ⚽";
-            const textoApp = "🏟️ ¡Unite a la comunidad deportiva de Sáenz Peña! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo en Falta Uno SP:";
-            const urlApp = "https://faltaunosp.kanchapro.app/";
-
-            if (navigator.share) {
-                try {
-                    await navigator.share({ title: tituloApp, text: textoApp, url: urlApp });
-                } catch (err) {}
-            } else {
-                const mensajeWsp = encodeURIComponent(`${textoApp}\n${urlApp}`);
-                window.open(`https://api.whatsapp.com/send?text=${mensajeWsp}`, '_blank');
-            }
-        };
-
-        window.solicitarPermisoNotificaciones = async () => {
-            if (!("Notification" in window)) return alert("Este navegador no soporta notificaciones.");
-            const permiso = await Notification.requestPermission();
-            if (permiso === "granted") {
-                alert("✅ ¡Alertas activadas! Recibirás avisos de nuevos partidos.");
-                if ('serviceWorker' in navigator) {
-                    const reg = await navigator.serviceWorker.ready;
-                    reg.showNotification("¡Falta Uno SP Conectado! ⚽", {
-                        body: "Te avisaremos cada vez que se arme un partido en Sáenz Peña.",
-                        icon: "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png"
-                    });
-                }
-            } else {
-                alert("❌ Permiso denegado.");
-            }
-        };
 
         const hoyStr = new Date().toISOString().split('T')[0];
 
@@ -809,7 +745,7 @@
             } else if (tab === 'canchas') {
                 vistaCanchas.classList.remove('hidden');
                 btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
-                textoBtnPrincipal.textContent = "Turno Libre";
+                textoBtnPrincipal.textContent = "Nuevo Complejo";
             } else if (tab === 'tercer-tiempo') {
                 vistaTercerTiempo.classList.remove('hidden');
                 btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
@@ -817,30 +753,9 @@
             }
         };
 
-        window.cambiarSubTabCanchas = (subtab) => {
-            subTabCanchasActual = subtab;
-            const subFutbol = document.getElementById('subvista-canchas-futbol');
-            const subPadel = document.getElementById('subvista-canchas-padel');
-            const btnFutbol = document.getElementById('subtab-canchas-futbol');
-            const btnPadel = document.getElementById('subtab-canchas-padel');
-
-            subFutbol.classList.add('hidden');
-            subPadel.classList.add('hidden');
-            btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
-            btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
-
-            if (subtab === 'futbol') {
-                subFutbol.classList.remove('hidden');
-                btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
-            } else {
-                subPadel.classList.remove('hidden');
-                btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
-            }
-        };
-
         window.manejarBotonPrincipal = () => {
             if (tabActual === 'falta-uno' || tabActual === 'tercer-tiempo') window.abrirModalPartido();
-            else window.abrirModalTurno();
+            else window.abrirModalAdmin();
         };
 
         window.abrirModalPartido = () => {
@@ -849,21 +764,6 @@
             document.getElementById('modalPublicar').classList.remove('hidden');
         };
         window.cerrarModalPartido = () => document.getElementById('modalPublicar').classList.add('hidden');
-
-        window.abrirModalTurno = () => {
-            document.getElementById('turnoFecha').value = hoyStr;
-            document.getElementById('modalTurno').classList.remove('hidden');
-            document.getElementById('pinComplejo').value = "";
-            document.getElementById('turnoComplejo').value = "";
-            document.getElementById('turnoNumeroCancha').value = "";
-            document.getElementById('turnoHorarios').value = "";
-            document.getElementById('turnoPrecio').value = "";
-            document.getElementById('turnoWhatsapp').value = "";
-            document.getElementById('turnoDireccion').value = "";
-            document.getElementById('estadoPin').innerHTML = '<span class="text-slate-400">Ingresá tus 4 dígitos</span>';
-            complejoVerificadoActual = null;
-        };
-        window.cerrarModalTurno = () => document.getElementById('modalTurno').classList.add('hidden');
 
         window.toggleCamposTorneo = () => {
             const tipo = document.getElementById('tipoConvocatoria').value;
@@ -917,6 +817,230 @@
             }
         };
 
+        // GESTIÓN DE PERFILES Y GRILLAS DE HORARIOS POR COMPLEJO
+        function renderizarComplejosBotones() {
+            const contenedor = document.getElementById('listaComplejosBotones');
+            if (!complejosAdminCache.length) {
+                contenedor.innerHTML = `
+                    <div class="card-pro rounded-3xl p-10 text-center col-span-full">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🏟️</div>
+                        <h3 class="font-display text-base font-bold text-white">No hay complejos cargados</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Un administrador debe dar de alta los complejos para que aparezcan sus botones aquí.</p>
+                    </div>`;
+                return;
+            }
+
+            contenedor.innerHTML = complejosAdminCache.map(comp => {
+                return `
+                <div onclick="abrirPerfilComplejo('${comp.id}')" class="card-pro rounded-3xl p-5 cursor-pointer group flex items-center justify-between gap-4 border-emerald-500/20 hover:border-emerald-500/60 transition">
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 font-display font-black text-lg group-hover:scale-105 transition">
+                            ⚽
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="font-display text-base font-extrabold text-white truncate group-hover:text-emerald-400 transition">${comp.nombre}</h3>
+                            <p class="text-xs text-slate-400 mt-0.5 truncate">📍 ${comp.direccion}</p>
+                        </div>
+                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 group-hover:bg-emerald-500 group-hover:text-slate-950 transition shrink-0">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </div>
+                </div>`;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        window.abrirPerfilComplejo = (idComplejo) => {
+            const comp = complejosAdminCache.find(c => c.id === idComplejo);
+            if (!comp) return;
+            complejoSeleccionadoModal = comp;
+            
+            document.getElementById('tituloModalComplejoNombre').textContent = comp.nombre;
+            document.getElementById('tituloModalComplejoDir').textContent = `📍 ${comp.direccion}`;
+            
+            const telLimpio = (comp.whatsapp || '').replace(/\D/g, '');
+            const msgWspGen = encodeURIComponent(`¡Hola ${comp.nombre}! Vi su perfil en *Falta Uno SP* y quiero consultar por canchas y horarios.`);
+            document.getElementById('btnChatComplejoModal').href = `https://wa.me/549${telLimpio}?text=${msgWspGen}`;
+
+            // Generar fechas: Hoy, Mañana, Pasado
+            const d0 = new Date();
+            const d1 = new Date(); d1.setDate(d0.getDate() + 1);
+            const d2 = new Date(); d2.setDate(d0.getDate() + 2);
+
+            const s0 = d0.toISOString().split('T')[0];
+            const s1 = d1.toISOString().split('T')[0];
+            const s2 = d2.toISOString().split('T')[0];
+
+            fechaSeleccionadaModal = s0;
+
+            const formatD = (d) => {
+                const parts = d.toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'numeric' }).split(',');
+                return parts.join(' ');
+            };
+
+            const grillaDias = document.getElementById('grillaDiasComplejo');
+            grillaDias.innerHTML = `
+                <button onclick="cambiarFechaModalComplejo('${s0}')" id="btnDia_${s0}" class="py-2 px-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition text-center">Hoy (${d0.getDate()}/${d0.getMonth()+1})</button>
+                <button onclick="cambiarFechaModalComplejo('${s1}')" id="btnDia_${s1}" class="py-2 px-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition text-center">Mañana (${d1.getDate()}/${d1.getMonth()+1})</button>
+                <button onclick="cambiarFechaModalComplejo('${s2}')" id="btnDia_${s2}" class="py-2 px-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition text-center">Pasado (${d2.getDate()}/${d2.getMonth()+1})</button>
+            `;
+
+            renderizarGrillaHorariosModal();
+            document.getElementById('modalPerfilComplejo').classList.remove('hidden');
+        };
+
+        window.cerrarModalPerfilComplejo = () => document.getElementById('modalPerfilComplejo').classList.add('hidden');
+
+        window.cambiarFechaModalComplejo = (fechaStr) => {
+            fechaSeleccionadaModal = fechaStr;
+            [0, 1, 2].forEach(i => {
+                const d = new Date(); d.setDate(d.getDate() + i);
+                const s = d.toISOString().split('T')[0];
+                const btn = document.getElementById(`btnDia_${s}`);
+                if (btn) {
+                    if (s === fechaStr) btn.className = "py-2 px-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition text-center";
+                    else btn.className = "py-2 px-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition text-center";
+                }
+            });
+            renderizarGrillaHorariosModal();
+        };
+
+        function renderizarGrillaHorariosModal() {
+            const contenedor = document.getElementById('contenedorGrillaHorarios');
+            if (!complejoSeleccionadoModal) return;
+
+            const turnosDelComplejo = canchasCache.filter(c => c.complejo === complejoSeleccionadoModal.nombre && c.fecha === fechaSeleccionadaModal);
+
+            if (!turnosDelComplejo.length) {
+                contenedor.innerHTML = `
+                    <div class="bg-stadium-950/60 border border-white/5 rounded-2xl p-8 text-center">
+                        <p class="text-xs text-slate-400">No hay horarios cargados para esta fecha en ${complejoSeleccionadoModal.nombre}.</p>
+                    </div>`;
+                return;
+            }
+
+            contenedor.innerHTML = turnosDelComplejo.map(t => {
+                const disponible = t.disponible !== false; // Por defecto verde si no está especificado en falso
+                const telLimpio = (complejoSeleccionadoModal.whatsapp || '').replace(/\D/g, '');
+                const msgReserva = encodeURIComponent(`¡Hola ${complejoSeleccionadoModal.nombre}! Quiero reservar el turno de la ${t.numeroCancha} (${t.horarios}) para el día ${t.fecha} por ${t.precio}. ¿Está disponible? 🟢`);
+
+                const luzColor = disponible ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]' : 'bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.8)]';
+                const estadoTexto = disponible ? 'Disponible (Verde)' : 'Ocupado (Rojo)';
+                const estadoBorde = disponible ? 'border-emerald-500/30 hover:border-emerald-500' : 'border-rose-500/30 opacity-60';
+
+                return `
+                <div class="bg-stadium-950 border ${estadoBorde} rounded-2xl p-3.5 flex items-center justify-between gap-3 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-3.5 h-3.5 rounded-full ${luzColor} shrink-0" title="${estadoTexto}"></div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-xs font-extrabold text-white">${t.numeroCancha}</h4>
+                                <span class="text-[10px] text-slate-400 font-medium">${t.horarios}</span>
+                            </div>
+                            <span class="font-display text-xs font-black text-emerald-400">${t.precio}</span>
+                        </div>
+                    </div>
+                    ${disponible ? `
+                        <a href="https://wa.me/549${telLimpio}?text=${msgReserva}" target="_blank" class="btn-glow text-slate-950 text-xs font-extrabold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shrink-0">
+                            <span>Reservar 📲</span>
+                        </a>
+                    ` : `
+                        <span class="bg-rose-500/15 text-rose-300 text-[11px] font-bold px-3 py-1.5 rounded-xl border border-rose-500/30">Ocupado</span>
+                    `}
+                </div>`;
+            }).join('');
+        }
+
+        // AUTOGESTIÓN DE COMPLEJOS POR PIN
+        window.abrirModalAdminPinComplejo = () => {
+            document.getElementById('inputPinComplejoAutogestion').value = '';
+            document.getElementById('modalAdminPinComplejo').classList.remove('hidden');
+        };
+        window.cerrarModalAdminPinComplejo = () => document.getElementById('modalAdminPinComplejo').classList.add('hidden');
+
+        window.verificarPinAutogestionComplejo = () => {
+            const pin = document.getElementById('inputPinComplejoAutogestion').value.trim();
+            const encontrado = complejosAdminCache.find(c => c.pin === pin);
+            if (encontrado) {
+                complejoAutogestionadoActual = encontrado;
+                cerrarModalAdminPinComplejo();
+                document.getElementById('tituloAutogestionComp').textContent = encontrado.nombre;
+                document.getElementById('autoFecha').value = hoyStr;
+                document.getElementById('modalPanelAutogestion').classList.remove('hidden');
+                renderizarTurnosAutogestion();
+            } else {
+                alert("❌ PIN incorrecto.");
+            }
+        };
+        window.cerrarPanelAutogestion = () => document.getElementById('modalPanelAutogestion').classList.add('hidden');
+
+        window.agregarHorarioAutogestion = async (e) => {
+            e.preventDefault();
+            if (!db || !complejoAutogestionadoActual) return;
+            const nuevoTurno = {
+                complejo: complejoAutogestionadoActual.nombre,
+                numeroCancha: document.getElementById('autoCancha').value.trim(),
+                fecha: document.getElementById('autoFecha').value,
+                horarios: document.getElementById('autoHorario').value.trim(),
+                precio: document.getElementById('autoPrecio').value.trim(),
+                disponible: true, // Luz verde por defecto
+                creadoEn: serverTimestamp()
+            };
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
+            document.getElementById('autoCancha').value = '';
+            document.getElementById('autoHorario').value = '';
+            document.getElementById('autoPrecio').value = '';
+            alert("✅ Turno agregado a la grilla.");
+            renderizarTurnosAutogestion();
+        };
+
+        function renderizarTurnosAutogestion() {
+            const contenedor = document.getElementById('listaTurnosAutogestion');
+            if (!complejoAutogestionadoActual) return;
+
+            const misTurnos = canchasCache.filter(c => c.complejo === complejoAutogestionadoActual.nombre);
+            if (!misTurnos.length) {
+                contenedor.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">No cargaste turnos todavía.</p>`;
+                return;
+            }
+
+            contenedor.innerHTML = misTurnos.map(t => {
+                const disponible = t.disponible !== false;
+                const luzColor = disponible ? 'bg-emerald-500' : 'bg-rose-500';
+                const textoEstado = disponible ? '🟢 Libre (Verde)' : '🔴 Ocupado (Rojo)';
+                return `
+                <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-xs font-bold text-white">${t.numeroCancha} • ${t.horarios}</h4>
+                            <span class="text-[10px] text-emerald-400 font-bold">${t.precio}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-0.5">📅 ${t.fecha}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleDisponibilidadTurno('${t.id}', ${!disponible})" class="text-xs font-bold px-3 py-1.5 rounded-lg border ${disponible ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border-rose-500/40'} transition">
+                            ${textoEstado}
+                        </button>
+                        <button onclick="eliminarTurnoAutogestion('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg">Borrar</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        window.toggleDisponibilidadTurno = async (idTurno, nuevoEstado) => {
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courts', idTurno), { disponible: nuevoEstado });
+            renderizarTurnosAutogestion();
+        };
+
+        window.eliminarTurnoAutogestion = async (idTurno) => {
+            if (confirm("¿Eliminar este turno de la grilla?")) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courts', idTurno));
+                renderizarTurnosAutogestion();
+            }
+        };
+
+        // ADMINISTRADOR GENERAL
         window.abrirModalAdmin = () => {
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('modalAdminLogin').classList.remove('hidden');
@@ -1193,25 +1317,6 @@
             }, tiempoMax);
         }
 
-        window.verificarPin = () => {
-            const pin = document.getElementById('pinComplejo').value.trim();
-            const estado = document.getElementById('estadoPin');
-            const encontrado = complejosAdminCache.find(c => c.pin === pin);
-            if (encontrado) {
-                complejoVerificadoActual = encontrado;
-                document.getElementById('turnoComplejo').value = encontrado.nombre;
-                document.getElementById('turnoDireccion').value = encontrado.direccion;
-                document.getElementById('turnoWhatsapp').value = encontrado.whatsapp;
-                estado.innerHTML = `<span class="text-emerald-400 font-bold">✅ ${encontrado.nombre}</span>`;
-            } else {
-                complejoVerificadoActual = null;
-                document.getElementById('turnoComplejo').value = "";
-                document.getElementById('turnoDireccion').value = "";
-                document.getElementById('turnoWhatsapp').value = "";
-                estado.innerHTML = pin.length === 4 ? '<span class="text-rose-400 font-semibold">❌ PIN incorrecto</span>' : '<span class="text-slate-400">Ingresá tus 4 dígitos</span>';
-            }
-        };
-
         window.setFiltro = (filtro) => {
             filtroActual = filtro;
             ['Fútbol', 'Pádel', 'Torneo', 'Rival'].forEach(f => {
@@ -1227,101 +1332,29 @@
             renderizarPartidos();
         };
 
-        window.abrirModalSumarse = (id) => {
-            document.getElementById('partidoIdSumarse').value = id;
-            document.getElementById('nombreJugadorSumarse').value = localStorage.getItem('clb_apodo') || '';
-            document.getElementById('modalSumarse').classList.remove('hidden');
-        };
-        window.cerrarModalSumarse = () => document.getElementById('modalSumarse').classList.add('hidden');
-
-        window.abrirModalCalificar = (id) => {
-            const partido = partidosCache.find(p => p.id === id);
-            if (!partido) return;
-            document.getElementById('partidoIdCalificar').value = id;
-            const cont = document.getElementById('listaJugadoresACalificar');
-            const anotados = partido.anotados || [];
-            if (!anotados.length) {
-                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Aún no hay jugadores anotados.</p>`;
-            } else {
-                cont.innerHTML = anotados.map((j, idx) => `
-                    <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
-                        <div>
-                            <h4 class="text-xs font-bold text-white">${j.nombre}</h4>
-                            <span class="text-[10px] text-emerald-400 font-medium">${j.posicion || 'Jugador'}</span>
-                        </div>
-                        <label class="text-[11px] font-bold cursor-pointer flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30">
-                            <input type="checkbox" name="calif_${idx}" value="${j.nombre}" checked class="accent-emerald-500"> Asistió ⭐
-                        </label>
-                    </div>
-                `).join('');
-            }
-            document.getElementById('modalCalificar').classList.remove('hidden');
-        };
-        window.cerrarModalCalificar = () => document.getElementById('modalCalificar').classList.add('hidden');
-
-        window.guardarCalificaciones = async () => {
-            const checkboxes = document.querySelectorAll('#listaJugadoresACalificar input[type="checkbox"]');
-            let nuevas = { ...reputacionCache };
-            checkboxes.forEach(cb => {
-                const nom = cb.value;
-                if (!nuevas[nom]) nuevas[nom] = { puntos: 5, totalPartidos: 1 };
-                nuevas[nom].puntos += cb.checked ? 5 : 1;
-                nuevas[nom].totalPartidos += 1;
-            });
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), {
-                data: JSON.stringify(nuevas),
-                actualizadoEn: serverTimestamp()
-            });
-            cerrarModalCalificar();
-            alert("⭐ ¡Calificaciones guardadas!");
-        };
-
-        window.pedirPinBorrar = (id, tipo) => {
-            document.getElementById('turnoIdBorrar').value = id;
-            document.getElementById('tipoBorrar').value = tipo;
-            document.getElementById('pinBorrarInput').value = '';
-            document.getElementById('modalBorrarTurno').classList.remove('hidden');
-        };
-        window.cerrarModalBorrar = () => document.getElementById('modalBorrarTurno').classList.add('hidden');
-
-        window.ejecutarBorrar = async () => {
-            const id = document.getElementById('turnoIdBorrar').value;
-            const tipo = document.getElementById('tipoBorrar').value;
-            const pinIngresado = document.getElementById('pinBorrarInput').value.trim();
-            const coleccion = tipo === 'partido' ? 'matches' : 'courts';
-            const obj = tipo === 'partido' ? partidosCache.find(p => p.id === id) : canchasCache.find(c => c.id === id);
-            const complejoAsociado = complejosAdminCache.find(c => c.nombre === (obj?.cancha || obj?.complejo));
-            const esValido = (pinIngresado === 'atitomelero') || (complejoAsociado && pinIngresado === complejoAsociado.pin);
-
-            if (!esValido) return alert("❌ PIN o clave incorrecta.");
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', coleccion, id));
-            cerrarModalBorrar();
-            alert("🗑️ Publicación eliminada.");
-        };
-
-        window.compartirWhatsApp = (cancha, fecha, hora, modalidad, faltan, puesto, nota, organizador, vibe, esTorneo, esRival) => {
-            const [, mes, dia] = fecha.split('-');
-            const fechaFmt = `${dia}/${mes}`;
-            let titulo = `⚽ *¡Falta Uno en Falta Uno SP!* ⚽`;
-            if (esTorneo) titulo = `🏆 *¡Convocatoria para Torneo!* 🏆`;
-            if (esRival) titulo = `🤝 *¡Buscamos Rival / Amistoso!* 🤝`;
-
-            const detalleVibe = vibe ? `🎯 *Estilo:* ${vibe}\n` : '';
-            const detalleFaltan = esRival ? `` : `🥅 *Faltan:* ${faltan} jugador(es)${puesto && puesto !== 'Cualquiera' ? ` (Puesto: *${puesto}*)` : ''}\n`;
-            const textoNota = nota ? `💬 _"${nota}"_\n` : '';
-            const linkWeb = "https://faltaunosp.kanchapro.app/";
-
-            const mensaje = `${titulo}\n\n` +
-                            `📍 *Lugar:* ${cancha}\n` +
-                            `📅 *Fecha:* ${fechaFmt} • ${hora} hs\n` +
-                            `📌 *Modalidad:* ${modalidad}\n` +
-                            detalleVibe +
-                            detalleFaltan +
-                            textoNota +
-                            `👤 *Organiza:* ${organizador}\n\n` +
-                            `📲 *Sumate o entrá a la web:* \n${linkWeb}`;
-
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
+        window.guardarPartido = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+            const tipo = document.getElementById('tipoConvocatoria').value;
+            const nuevoPartido = {
+                esTorneo: tipo === 'torneo',
+                esRival: tipo === 'rival',
+                cancha: document.getElementById('canchaCustom').value.trim(),
+                fecha: document.getElementById('fechaPartido').value,
+                hora: document.getElementById('hora').value,
+                vibe: document.getElementById('vibePartido').value,
+                modalidad: document.getElementById('modalidad').value,
+                faltan: tipo === 'rival' ? 0 : parseInt(document.getElementById('faltan').value, 10),
+                puesto: document.getElementById('puesto').value || 'Cualquiera',
+                organizador: document.getElementById('organizador').value.trim(),
+                whatsapp: document.getElementById('whatsapp').value.trim(),
+                nota: document.getElementById('nota').value.trim(),
+                anotados: [],
+                creadoEn: serverTimestamp()
+            };
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), nuevoPartido);
+            document.getElementById('formPartido').reset();
+            window.cerrarModalPartido();
         };
 
         function renderizarPartidos() {
@@ -1358,297 +1391,31 @@
                 const [, mes, dia] = (p.fecha || hoyStr).split('-');
                 const fechaFormateada = `${dia}/${mes}`;
 
-                let badgeTipo = `<span class="bg-white/5 text-slate-300 border border-white/10 text-[11px] font-semibold px-2.5 py-1 rounded-lg">${p.modalidad}</span>`;
-                if (p.esTorneo) badgeTipo = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">🏆 Torneo</span>`;
-                if (p.esRival) badgeTipo = `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">🤝 Buscan Rival</span>`;
-
-                let bloqueContador = '';
-                if (p.esRival) {
-                    bloqueContador = `
-                        <div class="bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 px-3.5 py-2 rounded-2xl text-center shrink-0">
-                            <span class="block font-display text-xs font-extrabold uppercase tracking-wider">Amistoso</span>
-                            <span class="text-[10px] text-cyan-400/80">1 vs 1</span>
-                        </div>`;
-                } else if (completo) {
-                    bloqueContador = `
-                        <div class="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 px-3.5 py-2 rounded-2xl text-center shrink-0">
-                            <span class="block font-display text-xs font-extrabold uppercase tracking-wider">✅ Completo</span>
-                            <span class="text-[10px] text-emerald-400/80">Equipo listo</span>
-                        </div>`;
-                } else {
-                    bloqueContador = `
-                        <div class="bg-rose-500/15 border border-rose-500/40 text-rose-300 px-3.5 py-1.5 rounded-2xl text-center shrink-0 shadow-inner">
-                            <span class="block font-display text-2xl font-black leading-none text-rose-400 ${restantes === 1 ? 'animate-pulse' : ''}">${restantes}</span>
-                            <span class="text-[9px] uppercase font-extrabold tracking-wider text-rose-300/90">${restantes === 1 ? 'Falta' : 'Faltan'}</span>
-                        </div>`;
-                }
-
                 return `
                 <article class="card-pro rounded-3xl p-5 ${completo ? 'opacity-75' : ''}">
                     <div class="flex justify-between items-start gap-3 mb-3.5">
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 flex-wrap mb-2">
-                                <span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg inline-flex items-center gap-1">
+                                <span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">
                                     📅 ${fechaFormateada} • ${p.hora} hs
                                 </span>
-                                ${badgeTipo}
-                                ${p.vibe ? `
-                                    <span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">
-                                        ${p.vibe}
-                                    </span>` : ''}
-                                ${p.puesto && p.puesto !== 'Cualquiera' && !p.esTorneo && !p.esRival ? `
-                                    <span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">
-                                        Busca ${p.puesto}
-                                    </span>` : ''}
+                                <span class="bg-white/5 text-slate-300 border border-white/10 text-[11px] font-semibold px-2.5 py-1 rounded-lg">${p.modalidad}</span>
                             </div>
                             <h3 class="font-display text-lg font-extrabold text-white tracking-tight truncate">${p.cancha}</h3>
                         </div>
-                        ${bloqueContador}
                     </div>
-
-                    ${!p.esRival ? `
-                        <div class="mb-3.5">
-                            <div class="flex justify-between text-[10px] font-semibold text-slate-400 mb-1">
-                                <span>Cupos cubiertos</span>
-                                <span>${anotados.length} de ${totalBuscados}</span>
-                            </div>
-                            <div class="w-full h-1.5 bg-stadium-950 rounded-full overflow-hidden border border-white/5">
-                                <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500" style="width: ${porcentajeLleno}%"></div>
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    ${p.nota ? `
-                        <div class="bg-stadium-950/80 border border-white/5 rounded-xl px-3.5 py-2.5 mb-3.5 text-xs text-slate-300 flex items-start gap-2">
-                            <span class="text-slate-500 mt-0.5">💬</span>
-                            <p class="leading-relaxed">${p.nota}</p>
-                        </div>` : ''}
-
-                    ${anotados.length > 0 ? `
-                        <div class="mb-4">
-                            <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Confirmados en lista:</span>
-                            <div class="flex flex-wrap gap-2">
-                                ${anotados.map(n => {
-                                    const rep = reputacionCache[n.nombre] ? (reputacionCache[n.nombre].puntos / reputacionCache[n.nombre].totalPartidos).toFixed(1) : '5.0';
-                                    const inicial = n.nombre.charAt(0).toUpperCase();
-                                    return `
-                                    <div class="bg-stadium-950 border border-emerald-500/25 rounded-xl pl-1.5 pr-2.5 py-1 flex items-center gap-2">
-                                        <span class="w-5 h-5 rounded-lg bg-emerald-500/20 text-emerald-300 font-display text-[11px] font-extrabold flex items-center justify-center">${inicial}</span>
-                                        <span class="text-xs font-bold text-white">${n.nombre}</span>
-                                        <span class="text-[10px] text-slate-400">${n.posicion || ''}</span>
-                                        <span class="text-[10px] font-bold text-amber-400">★${rep}</span>
-                                    </div>`;
-                                }).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
                     <div class="pt-3.5 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
-                        <div class="flex items-center gap-3">
-                            <div class="text-xs text-slate-400">
-                                Org: <strong class="text-slate-200 font-semibold">${p.organizador}</strong>
-                            </div>
-                            <div class="flex items-center gap-2 border-l border-white/10 pl-3">
-                                <button onclick="abrirModalCalificar('${p.id}')" class="text-[11px] text-amber-400/90 hover:text-amber-300 font-medium transition">★ Calificar</button>
-                                <button onclick="pedirPinBorrar('${p.id}', 'partido')" class="text-[11px] text-slate-500 hover:text-rose-400 transition">Eliminar</button>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-2 ml-auto">
-                            <button onclick="compartirWhatsApp('${p.cancha}', '${p.fecha}', '${p.hora}', '${p.modalidad}', ${p.faltan || 1}, '${p.puesto || ''}', '${p.nota || ''}', '${p.organizador}', '${p.vibe || ''}', ${p.esTorneo || false}, ${p.esRival || false})" class="bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 border border-white/10 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
-                                <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i>
-                                <span class="hidden sm:inline">Compartir</span>
-                            </button>
-
-                            ${!completo && !p.esRival ? `
-                                <button onclick="abrirModalSumarse('${p.id}')" class="btn-glow text-slate-950 text-xs font-extrabold px-3.5 py-2 rounded-xl transition active:scale-95 flex items-center gap-1.5">
-                                    <span>¡Me sumo!</span>
-                                </button>
-                            ` : ''}
-
-                            <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero coordinar.`)}" target="_blank" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
-                                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-                                <span>Chat</span>
-                            </a>
-                        </div>
+                        <div class="text-xs text-slate-400">Org: <strong class="text-slate-200 font-semibold">${p.organizador}</strong></div>
+                        <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero coordinar.`)}" target="_blank" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                            <span>Chat WhatsApp</span>
+                        </a>
                     </div>
                 </article>`;
             }).join('');
 
             lucide.createIcons();
         }
-
-        function renderizarCanchas() {
-            const ahora = new Date();
-            const vigentes = canchasCache.filter(c => !c.fecha || new Date(`${c.fecha}T23:59:59`) >= ahora);
-
-            // Separar turnos de Fútbol y Pádel
-            const turnosFutbol = vigentes.filter(c => !c.tipo || !c.tipo.toLowerCase().includes('pádel'));
-            const turnosPadel = vigentes.filter(c => c.tipo && c.tipo.toLowerCase().includes('pádel'));
-
-            renderizarSubListaCanchas('listaCanchasFutbol', turnosFutbol, '🏟️', 'No hay turnos de fútbol libres publicados', 'Los complejos de fútbol de Sáenz Peña publican acá sus horarios disponibles de último momento.');
-            renderizarSubListaCanchas('listaCanchasPadel', turnosPadel, '🥎', 'No hay turnos de pádel libres publicados', 'Los complejos de pádel de Sáenz Peña publican acá sus canchas vidriadas o de muro disponibles.');
-        }
-
-        function renderizarSubListaCanchas(elementId, listaTurnos, iconoVacio, tituloVacio, descVacia) {
-            const contenedor = document.getElementById(elementId);
-            if (!listaTurnos.length) {
-                contenedor.innerHTML = `
-                    <div class="card-pro rounded-3xl p-10 text-center">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">${iconoVacio}</div>
-                        <h3 class="font-display text-base font-bold text-white">${tituloVacio}</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">${descVacia}</p>
-                    </div>`;
-                return;
-            }
-
-            let gruposPorFecha = {};
-            listaTurnos.forEach(c => {
-                const fechaKey = c.fecha || hoyStr;
-                if (!gruposPorFecha[fechaKey]) gruposPorFecha[fechaKey] = [];
-                gruposPorFecha[fechaKey].push(c);
-            });
-
-            const fechasOrdenadas = Object.keys(gruposPorFecha).sort();
-
-            contenedor.innerHTML = fechasOrdenadas.map(fecha => {
-                const turnosDelDia = gruposPorFecha[fecha];
-                const [anio, mes, dia] = fecha.split('-');
-                const fechaFormateada = `${dia}/${mes}/${anio}`;
-                const etiquetaDia = (fecha === hoyStr) ? `🔥 HOY • ${fechaFormateada}` : `📅 ${fechaFormateada}`;
-
-                let gruposPorComplejo = {};
-                turnosDelDia.forEach(t => {
-                    const compKey = t.complejo || 'Complejo Deportivo';
-                    if (!gruposPorComplejo[compKey]) gruposPorComplejo[compKey] = [];
-                    gruposPorComplejo[compKey].push(t);
-                });
-
-                const htmlComplejos = Object.keys(gruposPorComplejo).map(nombreComp => {
-                    const turnosComp = gruposPorComplejo[nombreComp];
-                    return `
-                    <div class="card-pro rounded-3xl p-5 space-y-3.5">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
-                            <div>
-                                <h4 class="font-display text-base font-extrabold text-white flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                                    ${nombreComp}
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
-                                    <i data-lucide="map-pin" class="w-3 h-3 text-emerald-400"></i>
-                                    ${turnosComp[0]?.direccion || 'Sáenz Peña'}
-                                </p>
-                            </div>
-                            <span class="text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
-                                ${turnosComp.length} ${turnosComp.length === 1 ? 'turno' : 'turnos'}
-                            </span>
-                        </div>
-
-                        <div class="space-y-2.5">
-                            ${turnosComp.map(c => {
-                                const telLimpio = (c.whatsapp || '').replace(/\D/g, '');
-                                const msg = encodeURIComponent(`¡Hola! Vi en *Falta Uno SP* el turno libre en *${c.complejo}* (${c.numeroCancha} - ${c.tipo}) para el día ${fechaFormateada} (${c.horarios}) por ${c.precio}. ¿Sigue disponible?`);
-                                return `
-                                <div class="bg-stadium-950/90 border border-white/10 hover:border-emerald-500/30 rounded-2xl p-3.5 flex items-center justify-between gap-3 transition">
-                                    <div>
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <span class="font-display text-sm font-bold text-white">${c.numeroCancha}</span>
-                                            <span class="bg-white/5 text-slate-300 border border-white/10 text-[10px] font-semibold px-2 py-0.5 rounded-md">${c.tipo}</span>
-                                        </div>
-                                        <div class="flex items-center gap-3 text-xs">
-                                            <span class="text-slate-300 font-medium flex items-center gap-1">
-                                                <i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-400"></i> ${c.horarios}
-                                            </span>
-                                            <span class="font-display text-sm font-extrabold text-emerald-400">${c.precio}</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-2 shrink-0">
-                                        <button onclick="pedirPinBorrar('${c.id}', 'cancha')" class="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition" title="Eliminar turno">
-                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                        </button>
-                                        <a href="https://wa.me/549${telLimpio}?text=${msg}" target="_blank" class="btn-glow text-slate-950 text-xs font-extrabold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5">
-                                            <span>Reservar</span>
-                                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                                        </a>
-                                    </div>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                    </div>`;
-                }).join('');
-
-                return `
-                <div class="space-y-3.5">
-                    <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 px-3.5 py-1.5 rounded-xl font-display text-xs font-extrabold tracking-wide">${etiquetaDia}</div>
-                    <div class="space-y-4">${htmlComplejos}</div>
-                </div>`;
-            }).join('');
-
-            lucide.createIcons();
-        }
-
-        window.guardarPartido = async (e) => {
-            e.preventDefault();
-            if (!db) return alert("Conectando a base de datos...");
-            const tipo = document.getElementById('tipoConvocatoria').value;
-            const nuevoPartido = {
-                esTorneo: tipo === 'torneo',
-                esRival: tipo === 'rival',
-                cancha: document.getElementById('canchaCustom').value.trim(),
-                fecha: document.getElementById('fechaPartido').value,
-                hora: document.getElementById('hora').value,
-                vibe: document.getElementById('vibePartido').value,
-                modalidad: document.getElementById('modalidad').value,
-                faltan: tipo === 'rival' ? 0 : parseInt(document.getElementById('faltan').value, 10),
-                puesto: document.getElementById('puesto').value || 'Cualquiera',
-                organizador: document.getElementById('organizador').value.trim(),
-                whatsapp: document.getElementById('whatsapp').value.trim(),
-                nota: document.getElementById('nota').value.trim(),
-                anotados: [],
-                creadoEn: serverTimestamp()
-            };
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), nuevoPartido);
-            document.getElementById('formPartido').reset();
-            window.cerrarModalPartido();
-        };
-
-        window.guardarTurno = async (e) => {
-            e.preventDefault();
-            if (!db) return alert("Conectando...");
-            if (!complejoVerificadoActual) return alert("⚠️ Ingresá un PIN válido de 4 dígitos.");
-            const nuevoTurno = {
-                complejo: complejoVerificadoActual.nombre,
-                numeroCancha: document.getElementById('turnoNumeroCancha').value.trim(),
-                fecha: document.getElementById('turnoFecha').value,
-                tipo: document.getElementById('turnoTipo').value,
-                horarios: document.getElementById('turnoHorarios').value.trim(),
-                precio: document.getElementById('turnoPrecio').value.trim(),
-                whatsapp: complejoVerificadoActual.whatsapp,
-                direccion: complejoVerificadoActual.direccion,
-                creadoEn: serverTimestamp()
-            };
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
-            document.getElementById('formTurno').reset();
-            window.cerrarModalTurno();
-        };
-
-        window.confirmarSumarse = async () => {
-            const id = document.getElementById('partidoIdSumarse').value;
-            const nombre = document.getElementById('nombreJugadorSumarse').value.trim();
-            const posicion = document.getElementById('posicionJugadorSumarse').value;
-            if (!nombre) return alert("Escribí tu nombre o apodo.");
-
-            localStorage.setItem('clb_apodo', nombre);
-            const partidoActual = partidosCache.find(p => p.id === id);
-            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'matches', id);
-            await updateDoc(ref, { anotados: arrayUnion({ nombre, posicion }) });
-            window.cerrarModalSumarse();
-            if (partidoActual) {
-                const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
-                const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* (${posicion}) y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎`);
-                window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
-            }
-        };
 
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
@@ -1668,33 +1435,29 @@
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), (snap) => {
                             canchasCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            renderizarCanchas();
+                            if (!document.getElementById('modalPerfilComplejo').classList.contains('hidden') && complejoSeleccionadoModal) {
+                                renderizarGrillaHorariosModal();
+                            }
+                            if (!document.getElementById('modalPanelAutogestion').classList.contains('hidden') && complejoAutogestionadoActual) {
+                                renderizarTurnosAutogestion();
+                            }
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'admin_complexes'), (snap) => {
                             complejosAdminCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            renderizarComplejosBotones();
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminComplejos();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_pub1'), (snap) => {
                             pub1Cache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminPub1();
                             actualizarRotacionPublicidades();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_pub2'), (snap) => {
-                            pub2Cache = snap.docs.map(d => ({ id: d.id, ...d.data()}));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminPub2();
+                            pub2Cache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             actualizarRotacionPublicidades();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
                             renderizarTercerTiempo();
-                        });
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
-                            snap.docs.forEach(d => {
-                                const val = d.data();
-                                if (val?.data) { try { reputacionCache = JSON.parse(val.data); } catch(e){} }
-                            });
-                            renderizarPartidos();
                         });
                     }
                 });
