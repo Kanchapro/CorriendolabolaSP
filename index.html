@@ -202,16 +202,36 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS LIBRES -->
-        <section id="vista-canchas" class="hidden">
-            <div id="listaCanchas" class="space-y-6">
-                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos disponibles...</div>
+        <!-- SECCIÓN 2: CANCHAS LIBRES (CON 2 SOLAPAS: FÚTBOL / PÁDEL) -->
+        <section id="vista-canchas" class="hidden space-y-4">
+            <!-- Solapas internas de Canchas -->
+            <div class="grid grid-cols-2 gap-2 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
+                <button id="subtab-canchas-futbol" onclick="cambiarSubTabCanchas('futbol')" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
+                    <span>⚽</span> Canchas de Fútbol
+                </button>
+                <button id="subtab-canchas-padel" onclick="cambiarSubTabCanchas('padel')" class="py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                    <span>🥎</span> Canchas de Pádel
+                </button>
+            </div>
+
+            <!-- Contenedor Sub-solapa Fútbol -->
+            <div id="subvista-canchas-futbol" class="space-y-4">
+                <div id="listaCanchasFutbol" class="space-y-4">
+                    <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de fútbol...</div>
+                </div>
+            </div>
+
+            <!-- Contenedor Sub-solapa Pádel -->
+            <div id="subvista-canchas-padel" class="hidden space-y-4">
+                <div id="listaCanchasPadel" class="space-y-4">
+                    <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de pádel...</div>
+                </div>
             </div>
         </section>
 
         <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
-            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950">
+            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
                         🍻
@@ -221,6 +241,11 @@
                         <p class="text-xs text-slate-400 mt-0.5">Kioscos, casas de picadas, bebidas y comercios recomendados en Sáenz Peña.</p>
                     </div>
                 </div>
+                <!-- BOTÓN MERCADO PAGO AUSPICIOS AUTOMÁTICOS -->
+                <a href="https://mpago.la/2zWb7r6" target="_blank" class="w-full sm:w-auto bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shrink-0">
+                    <span>💳 Auspiciar Local ($)</span>
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
             </div>
 
             <div id="listaTercerTiempo" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -660,7 +685,7 @@
             }
         });
 
-        // Registro inline de Service Worker seguro mediante Blob (para evitar errores 404 de archivos externos)
+        // Registro inline de Service Worker seguro mediante Blob
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
@@ -690,6 +715,7 @@
 
         let db, auth;
         let tabActual = 'falta-uno';
+        let subTabCanchasActual = 'futbol';
         let filtroActual = 'Fútbol';
         let partidosCache = [];
         let canchasCache = [];
@@ -788,6 +814,27 @@
                 vistaTercerTiempo.classList.remove('hidden');
                 btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Publicar";
+            }
+        };
+
+        window.cambiarSubTabCanchas = (subtab) => {
+            subTabCanchasActual = subtab;
+            const subFutbol = document.getElementById('subvista-canchas-futbol');
+            const subPadel = document.getElementById('subvista-canchas-padel');
+            const btnFutbol = document.getElementById('subtab-canchas-futbol');
+            const btnPadel = document.getElementById('subtab-canchas-padel');
+
+            subFutbol.classList.add('hidden');
+            subPadel.classList.add('hidden');
+            btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+
+            if (subtab === 'futbol') {
+                subFutbol.classList.remove('hidden');
+                btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
+            } else {
+                subPadel.classList.remove('hidden');
+                btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
             }
         };
 
@@ -1432,22 +1479,31 @@
         }
 
         function renderizarCanchas() {
-            const contenedor = document.getElementById('listaCanchas');
             const ahora = new Date();
             const vigentes = canchasCache.filter(c => !c.fecha || new Date(`${c.fecha}T23:59:59`) >= ahora);
 
-            if (vigentes.length === 0) {
+            // Separar turnos de Fútbol y Pádel
+            const turnosFutbol = vigentes.filter(c => !c.tipo || !c.tipo.toLowerCase().includes('pádel'));
+            const turnosPadel = vigentes.filter(c => c.tipo && c.tipo.toLowerCase().includes('pádel'));
+
+            renderizarSubListaCanchas('listaCanchasFutbol', turnosFutbol, '🏟️', 'No hay turnos de fútbol libres publicados', 'Los complejos de fútbol de Sáenz Peña publican acá sus horarios disponibles de último momento.');
+            renderizarSubListaCanchas('listaCanchasPadel', turnosPadel, '🥎', 'No hay turnos de pádel libres publicados', 'Los complejos de pádel de Sáenz Peña publican acá sus canchas vidriadas o de muro disponibles.');
+        }
+
+        function renderizarSubListaCanchas(elementId, listaTurnos, iconoVacio, tituloVacio, descVacia) {
+            const contenedor = document.getElementById(elementId);
+            if (!listaTurnos.length) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🏟️</div>
-                        <h3 class="font-display text-base font-bold text-white">No hay turnos libres publicados</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Los complejos deportivos de Sáenz Peña publican acá sus horarios disponibles de último momento.</p>
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">${iconoVacio}</div>
+                        <h3 class="font-display text-base font-bold text-white">${tituloVacio}</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">${descVacia}</p>
                     </div>`;
                 return;
             }
 
             let gruposPorFecha = {};
-            vigentes.forEach(c => {
+            listaTurnos.forEach(c => {
                 const fechaKey = c.fecha || hoyStr;
                 if (!gruposPorFecha[fechaKey]) gruposPorFecha[fechaKey] = [];
                 gruposPorFecha[fechaKey].push(c);
