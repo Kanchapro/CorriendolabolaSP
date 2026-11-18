@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Falta Uno SP ⚽ | Comunidad Deportiva Sáenz Peña</title>
     
-    <!-- Configuración PWA -->
+    <!-- Configuración PWA e Icono de la App -->
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png">
     <meta name="theme-color" content="#050a14">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,7 +15,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tipografías Profesionales: Outfit (Títulos deportivos) + Plus Jakarta Sans (UI) -->
+    <!-- Tipografías Profesionales -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -53,7 +54,6 @@
             background-attachment: fixed;
         }
 
-        /* Header estilo cristal oscuro */
         .header-pro {
             background: rgba(5, 10, 20, 0.85);
             backdrop-filter: blur(16px);
@@ -61,7 +61,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         }
 
-        /* Tarjetas con profundidad y borde sutil */
         .card-pro {
             background: linear-gradient(145deg, rgba(16, 27, 51, 0.9) 0%, rgba(11, 19, 36, 0.95) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -75,7 +74,6 @@
             box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.15);
         }
 
-        /* Botón principal con brillo */
         .btn-glow {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.45);
@@ -85,7 +83,6 @@
             box-shadow: 0 6px 25px -2px rgba(16, 185, 129, 0.6);
         }
 
-        /* Animación de entrada para modales */
         @keyframes modalFadeIn {
             from { opacity: 0; transform: translateY(16px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -94,7 +91,6 @@
             animation: modalFadeIn 0.22s ease-out forwards;
         }
 
-        /* Ocultar barra de scroll en filtros */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -127,10 +123,10 @@
         <div class="max-w-3xl mx-auto px-4 py-3.5">
             <div class="flex items-center justify-between gap-3 mb-3.5">
                 
-                <!-- Marca y Estado en Vivo -->
+                <!-- Marca con el NUEVO LOGO -->
                 <div class="flex items-center gap-3">
                     <div class="relative">
-                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png" alt="Logo Falta Uno SP" class="w-11 h-11 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg">
+                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-11 h-11 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950">
                         <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
                     </div>
                     <div>
@@ -180,7 +176,6 @@
 
         <!-- SECCIÓN 1: CONVOCATORIAS / TORNEOS / RIVALES -->
         <section id="vista-falta-uno">
-            <!-- Barra de Filtros tipo Píldoras -->
             <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-5">
                 <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn shrink-0 bg-emerald-500 text-slate-950 text-xs font-bold py-2 px-4 rounded-full shadow-sm transition">
                     Todos
@@ -199,7 +194,6 @@
                 </button>
             </div>
 
-            <!-- Listado de Convocatorias -->
             <div id="listaPartidos" class="space-y-4">
                 <div class="card-pro rounded-2xl p-10 text-center">
                     <div class="inline-block w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-3"></div>
@@ -234,13 +228,11 @@
     <!-- ==================== BANNERS PUBLICITARIOS INFERIORES ==================== -->
     <div class="fixed bottom-0 left-0 right-0 z-30 bg-[#050a14]/95 backdrop-blur-xl border-t border-white/10 py-2 px-3">
         <div class="max-w-3xl mx-auto grid grid-cols-2 gap-2.5 items-center">
-            <!-- Banner 1 -->
             <div class="bg-stadium-900/90 border border-white/10 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
                 <div id="contenedorBanner1" class="w-full transition-opacity duration-500">
                     <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Sponsor Oficial</span>
                 </div>
             </div>
-            <!-- Banner 2 -->
             <div class="bg-stadium-900/90 border border-amber-500/25 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
                 <div id="contenedorBanner2" class="w-full transition-opacity duration-500">
                     <span class="text-[10px] font-bold text-amber-500/80 uppercase tracking-wider">🍻 Tercer Tiempo</span>
@@ -298,11 +290,11 @@
                     </div>
                     <div id="campoFaltanContainer">
                         <label class="block text-xs font-bold text-slate-300 mb-1.5" id="labelFaltanTexto">Faltan</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                     </div>
                     <div id="campoPuestoContainer">
                         <label class="block text-xs font-bold text-slate-300 mb-1.5" id="labelPuestoTexto">Puesto</label>
-                        <select id="puesto" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></select>
+                        <select id="puesto" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></select>
                     </div>
                 </div>
 
@@ -600,7 +592,6 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Inicializar iconos Lucide
         lucide.createIcons();
 
         const miFirebaseConfig = {
@@ -629,7 +620,6 @@
         let indiceAd1 = 0, indiceAd2 = 0;
         let timerAd1 = null, timerAd2 = null;
 
-        // PWA Install Banner
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -650,7 +640,6 @@
             document.getElementById('bannerInstalacion').classList.add('hidden');
         };
 
-        // Notificaciones Push Nativas
         window.solicitarPermisoNotificaciones = async () => {
             if (!("Notification" in window)) return alert("Este navegador no soporta notificaciones.");
             const permiso = await Notification.requestPermission();
@@ -660,7 +649,7 @@
                     const reg = await navigator.serviceWorker.ready;
                     reg.showNotification("¡Falta Uno SP Conectado! ⚽", {
                         body: "Te avisaremos cada vez que se arme un partido en Sáenz Peña.",
-                        icon: "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png"
+                        icon: "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png"
                     });
                 }
             } else {
@@ -670,7 +659,6 @@
 
         const hoyStr = new Date().toISOString().split('T')[0];
 
-        // Navegación Tabs
         window.cambiarTab = (tab) => {
             tabActual = tab;
             const vistaFalta = document.getElementById('vista-falta-uno');
@@ -773,7 +761,6 @@
             }
         };
 
-        // Admin Modals
         window.abrirModalAdmin = () => {
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('modalAdminLogin').classList.remove('hidden');
@@ -1048,7 +1035,6 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
         };
 
-        // Renderizado Profesional de Partidos (Match Center Cards)
         function renderizarPartidos() {
             const contenedor = document.getElementById('listaPartidos');
             const ahora = new Date();
@@ -1083,12 +1069,10 @@
                 const [, mes, dia] = (p.fecha || hoyStr).split('-');
                 const fechaFormateada = `${dia}/${mes}`;
 
-                // Etiqueta de Categoría
                 let badgeTipo = `<span class="bg-white/5 text-slate-300 border border-white/10 text-[11px] font-semibold px-2.5 py-1 rounded-lg">${p.modalidad}</span>`;
                 if (p.esTorneo) badgeTipo = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">🏆 Torneo</span>`;
                 if (p.esRival) badgeTipo = `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">🤝 Buscan Rival</span>`;
 
-                // Bloque de Contador Derecho
                 let bloqueContador = '';
                 if (p.esRival) {
                     bloqueContador = `
@@ -1112,7 +1096,6 @@
 
                 return `
                 <article class="card-pro rounded-3xl p-5 ${completo ? 'opacity-75' : ''}">
-                    <!-- Fila Superior: Fecha, Categoría y Contador -->
                     <div class="flex justify-between items-start gap-3 mb-3.5">
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 flex-wrap mb-2">
@@ -1132,7 +1115,6 @@
                         ${bloqueContador}
                     </div>
 
-                    <!-- Barra de Progreso de Cupos (solo si busca jugadores) -->
                     ${!p.esRival ? `
                         <div class="mb-3.5">
                             <div class="flex justify-between text-[10px] font-semibold text-slate-400 mb-1">
@@ -1145,14 +1127,12 @@
                         </div>
                     ` : ''}
 
-                    <!-- Nota del Organizador -->
                     ${p.nota ? `
                         <div class="bg-stadium-950/80 border border-white/5 rounded-xl px-3.5 py-2.5 mb-3.5 text-xs text-slate-300 flex items-start gap-2">
                             <span class="text-slate-500 mt-0.5">💬</span>
                             <p class="leading-relaxed">${p.nota}</p>
                         </div>` : ''}
 
-                    <!-- Jugadores Anotados con Avatar -->
                     ${anotados.length > 0 ? `
                         <div class="mb-4">
                             <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Confirmados en lista:</span>
@@ -1174,7 +1154,6 @@
                         </div>
                     ` : ''}
 
-                    <!-- Footer de la Tarjeta: Organizador y Acciones -->
                     <div class="pt-3.5 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
                         <div class="flex items-center gap-3">
                             <div class="text-xs text-slate-400">
@@ -1214,7 +1193,6 @@
             lucide.createIcons();
         }
 
-        // Renderizado Profesional de Canchas Libres
         function renderizarCanchas() {
             const contenedor = document.getElementById('listaCanchas');
             const ahora = new Date();
@@ -1317,7 +1295,6 @@
             lucide.createIcons();
         }
 
-        // Guardado en Firestore
         window.guardarPartido = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando a base de datos...");
@@ -1380,7 +1357,6 @@
             }
         };
 
-        // Inicialización Firebase
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
