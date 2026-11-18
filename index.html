@@ -410,46 +410,40 @@
         </div>
     </div>
 
-    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO -->
+    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO (HORARIOS FIJOS 15:00 A 01:00) -->
     <div id="modalPanelAutogestion" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
                 <div>
                     <h2 id="tituloAutogestionComp" class="font-display text-lg font-extrabold text-white">Panel de Complejo</h2>
-                    <p class="text-xs text-emerald-400 font-medium">Administración de horarios y semáforos</p>
+                    <p class="text-xs text-emerald-400 font-medium">Generación automática (15:00 a 01:00 hs)</p>
                 </div>
                 <button onclick="cerrarPanelAutogestion()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <!-- Formulario agregar horario -->
-            <form onsubmit="agregarHorarioAutogestion(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10 mb-5">
-                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Agregar Nuevo Turno / Horario</h3>
+            <!-- Formulario simplificado con horarios fijos -->
+            <form onsubmit="generarGrillaFijaAutogestion(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10 mb-5">
+                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Cargar Cancha y Horarios Fijos</h3>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Cancha</label>
-                        <input type="text" id="autoCancha" placeholder="Ej: Cancha 1 (Sintética)" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="autoCancha" placeholder="Ej: Cancha 1" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Fecha</label>
                         <input type="date" id="autoFecha" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Horario</label>
-                        <input type="text" id="autoHorario" placeholder="Ej: 21:00 hs" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Valor / Precio</label>
-                        <input type="text" id="autoPrecio" placeholder="Ej: $28.000" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
-                    </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-300 mb-1">Precio por Turno (Ej: 28000 o $28.000)</label>
+                    <input type="text" id="autoPrecio" placeholder="Ej: 30000" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                 </div>
-                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Publicar Turno en Grilla</button>
+                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Generar de 15:00 a 01:00 hs automáticamente ⚡</button>
             </form>
 
-            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Tus turnos cargados (Tocá para cambiar 🟢 / 🔴)</h3>
+            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Turnos activos (Tocá para cambiar Libre 🟢 / Ocupado 🔴)</h3>
             <div id="listaTurnosAutogestion" class="space-y-2.5">
                 <!-- Se llena dinámicamente -->
             </div>
@@ -817,7 +811,6 @@
             }
         };
 
-        // GESTIÓN DE PERFILES Y GRILLAS DE HORARIOS POR COMPLEJO
         function renderizarComplejosBotones() {
             const contenedor = document.getElementById('listaComplejosBotones');
             if (!complejosAdminCache.length) {
@@ -863,7 +856,6 @@
             const msgWspGen = encodeURIComponent(`¡Hola ${comp.nombre}! Vi su perfil en *Falta Uno SP* y quiero consultar por canchas y horarios.`);
             document.getElementById('btnChatComplejoModal').href = `https://wa.me/549${telLimpio}?text=${msgWspGen}`;
 
-            // Generar fechas: Hoy, Mañana, Pasado
             const d0 = new Date();
             const d1 = new Date(); d1.setDate(d0.getDate() + 1);
             const d2 = new Date(); d2.setDate(d0.getDate() + 2);
@@ -873,11 +865,6 @@
             const s2 = d2.toISOString().split('T')[0];
 
             fechaSeleccionadaModal = s0;
-
-            const formatD = (d) => {
-                const parts = d.toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'numeric' }).split(',');
-                return parts.join(' ');
-            };
 
             const grillaDias = document.getElementById('grillaDiasComplejo');
             grillaDias.innerHTML = `
@@ -921,7 +908,7 @@
             }
 
             contenedor.innerHTML = turnosDelComplejo.map(t => {
-                const disponible = t.disponible !== false; // Por defecto verde si no está especificado en falso
+                const disponible = t.disponible !== false;
                 const telLimpio = (complejoSeleccionadoModal.whatsapp || '').replace(/\D/g, '');
                 const msgReserva = encodeURIComponent(`¡Hola ${complejoSeleccionadoModal.nombre}! Quiero reservar el turno de la ${t.numeroCancha} (${t.horarios}) para el día ${t.fecha} por ${t.precio}. ¿Está disponible? 🟢`);
 
@@ -952,7 +939,7 @@
             }).join('');
         }
 
-        // AUTOGESTIÓN DE COMPLEJOS POR PIN
+        // AUTOGESTIÓN DE COMPLEJOS POR PIN (GENERACIÓN DE 15:00 A 01:00 HS)
         window.abrirModalAdminPinComplejo = () => {
             document.getElementById('inputPinComplejoAutogestion').value = '';
             document.getElementById('modalAdminPinComplejo').classList.remove('hidden');
@@ -975,23 +962,48 @@
         };
         window.cerrarPanelAutogestion = () => document.getElementById('modalPanelAutogestion').classList.add('hidden');
 
-        window.agregarHorarioAutogestion = async (e) => {
+        window.generarGrillaFijaAutogestion = async (e) => {
             e.preventDefault();
             if (!db || !complejoAutogestionadoActual) return;
-            const nuevoTurno = {
-                complejo: complejoAutogestionadoActual.nombre,
-                numeroCancha: document.getElementById('autoCancha').value.trim(),
-                fecha: document.getElementById('autoFecha').value,
-                horarios: document.getElementById('autoHorario').value.trim(),
-                precio: document.getElementById('autoPrecio').value.trim(),
-                disponible: true, // Luz verde por defecto
-                creadoEn: serverTimestamp()
-            };
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
+
+            const cancha = document.getElementById('autoCancha').value.trim();
+            const fecha = document.getElementById('autoFecha').value;
+            let precioInput = document.getElementById('autoPrecio').value.trim();
+
+            if (!precioInput.startsWith('$')) {
+                precioInput = '$' + precioInput;
+            }
+
+            // Franjas horarias fijas de 15:00 a 01:00 hs (cada 1 hora)
+            const franjasFijas = [
+                "15:00 a 16:00 hs",
+                "16:00 a 17:00 hs",
+                "17:00 a 18:00 hs",
+                "18:00 a 19:00 hs",
+                "19:00 a 20:00 hs",
+                "20:00 a 21:00 hs",
+                "21:00 a 22:00 hs",
+                "22:00 a 23:00 hs",
+                "23:00 a 00:00 hs",
+                "00:00 a 01:00 hs"
+            ];
+
+            for (const horarios of franjasFijas) {
+                const nuevoTurno = {
+                    complejo: complejoAutogestionadoActual.nombre,
+                    numeroCancha: cancha,
+                    fecha: fecha,
+                    horarios: horarios,
+                    precio: precioInput,
+                    disponible: true,
+                    creadoEn: serverTimestamp()
+                };
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
+            }
+
             document.getElementById('autoCancha').value = '';
-            document.getElementById('autoHorario').value = '';
             document.getElementById('autoPrecio').value = '';
-            alert("✅ Turno agregado a la grilla.");
+            alert("✅ ¡Grilla fija de 15:00 a 01:00 hs generada con éxito!");
             renderizarTurnosAutogestion();
         };
 
@@ -1001,13 +1013,12 @@
 
             const misTurnos = canchasCache.filter(c => c.complejo === complejoAutogestionadoActual.nombre);
             if (!misTurnos.length) {
-                contenedor.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">No cargaste turnos todavía.</p>`;
+                contenedor.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">No hay turnos generados todavía.</p>`;
                 return;
             }
 
             contenedor.innerHTML = misTurnos.map(t => {
                 const disponible = t.disponible !== false;
-                const luzColor = disponible ? 'bg-emerald-500' : 'bg-rose-500';
                 const textoEstado = disponible ? '🟢 Libre (Verde)' : '🔴 Ocupado (Rojo)';
                 return `
                 <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
@@ -1386,7 +1397,6 @@
                 const totalBuscados = p.faltan || 1;
                 const restantes = Math.max(0, totalBuscados - anotados.length);
                 const completo = !p.esRival && restantes === 0;
-                const porcentajeLleno = Math.min(100, Math.round((anotados.length / totalBuscados) * 100));
                 const telLimpio = (p.whatsapp || '').replace(/\D/g, '');
                 const [, mes, dia] = (p.fecha || hoyStr).split('-');
                 const fechaFormateada = `${dia}/${mes}`;
