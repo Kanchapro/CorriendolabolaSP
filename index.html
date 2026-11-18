@@ -118,40 +118,36 @@
         </div>
     </div>
 
-    <!-- ==================== HEADER PROFESIONAL LIMPIO ==================== -->
+    <!-- ==================== HEADER PROFESIONAL ==================== -->
     <header class="header-pro sticky top-0 z-40">
         <div class="max-w-3xl mx-auto px-4 py-3">
-            <div class="flex items-center justify-between gap-3 mb-3">
+            
+            <!-- Fila Superior: Izquierda (Compartir/Noti) - Centro (Logo y Nombre) - Derecha (Publicar) -->
+            <div class="grid grid-cols-3 items-center gap-2 mb-3">
                 
-                <!-- Marca con Logo (Doble toque secreto para Administrar) -->
-                <div class="flex items-center gap-3 cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
-                    <div class="relative">
-                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950">
-                        <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-1.5">
-                            <h1 class="font-display text-base sm:text-lg font-black tracking-tight text-white leading-none">
-                                FALTA UNO <span class="text-emerald-400">SP</span>
-                            </h1>
-                            <span class="hidden sm:inline-block text-[9px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
-                                Live
-                            </span>
-                        </div>
-                        <p id="statusText" class="text-[10px] text-slate-400 font-medium mt-0.5">
-                            Sáenz Peña, Chaco
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Controles Superiores Mínimos -->
-                <div class="flex items-center gap-2">
-                    <button onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95" title="Compartir Aplicación">
+                <!-- Izquierda: Botones Compartir y Notificaciones -->
+                <div class="flex items-center gap-1.5 justify-start">
+                    <button onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
                         <i data-lucide="share-2" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="solicitarPermisoNotificaciones()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95" title="Activar Alertas de Partidos">
+                    <button onclick="solicitarPermisoNotificaciones()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Activar Alertas de Partidos">
                         <i data-lucide="bell" class="w-4 h-4"></i>
                     </button>
+                </div>
+
+                <!-- Centro: Logo y Título (Doble toque secreto para Administrar) -->
+                <div class="flex flex-col items-center text-center cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
+                    <div class="relative mb-1">
+                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950 mx-auto">
+                        <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
+                    </div>
+                    <h1 class="font-display text-xs sm:text-sm font-black tracking-tight text-white leading-none">
+                        FALTA UNO <span class="text-emerald-400">SP</span>
+                    </h1>
+                </div>
+
+                <!-- Derecha: Botón Publicar -->
+                <div class="flex justify-end">
                     <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-3.5 h-9 rounded-xl flex items-center gap-1.5 shadow-md">
                         <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
                         <span id="textoBotonPrincipal">Publicar</span>
@@ -1277,7 +1273,7 @@
                     <div class="card-pro rounded-3xl p-10 text-center">
                         <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🥅</div>
                         <h3 class="font-display text-base font-bold text-white">No hay convocatorias activas</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">¿Te falta un jugador o buscás rival? Tocá el botón "+ Publicar" arriba a la derecha.</p>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">¿Te falta un jugador o buscás rival? Tocá el botón "Publicar" arriba a la derecha.</p>
                     </div>`;
                 return;
             }
@@ -1572,7 +1568,6 @@
 
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
             try {
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
@@ -1582,7 +1577,6 @@
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         statusDot.className = "absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14] animate-pulse";
-                        statusText.textContent = "En vivo • Sáenz Peña, Chaco";
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
                             partidosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
