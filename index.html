@@ -13,7 +13,6 @@
     <meta property="og:type" content="website">
 
     <!-- Configuración PWA e Icono de la App -->
-    <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png">
     <meta name="theme-color" content="#050a14">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -129,9 +128,7 @@
     <header class="header-pro sticky top-0 z-40">
         <div class="max-w-3xl mx-auto px-4 py-3">
             
-            <!-- Fila Superior: Izquierda (Compartir/Noti) - Centro (Logo Grande y Nombre) - Derecha (Publicar) -->
             <div class="grid grid-cols-3 items-center gap-2 mb-3">
-                
                 <!-- Izquierda: Botones Compartir y Notificaciones -->
                 <div class="flex items-center gap-1.5 justify-start">
                     <button onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
@@ -142,7 +139,7 @@
                     </button>
                 </div>
 
-                <!-- Centro: Logo Más Grande y Título (Doble toque secreto para Administrar) -->
+                <!-- Centro: Logo y Título (Doble toque secreto para Administrar) -->
                 <div class="flex flex-col items-center text-center cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
                     <div class="relative mb-1.5">
                         <img src="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png" alt="Logo Falta Uno SP" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-xl shadow-emerald-500/10 bg-stadium-950 mx-auto">
@@ -205,29 +202,16 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS LIBRES (CON 2 SOLAPAS) -->
-        <section id="vista-canchas" class="hidden space-y-5">
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="setSubTabCanchas('futbol')" id="subtab-canchas-futbol" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5">
-                    <span>⚽</span> Canchas de Fútbol
-                </button>
-                <button onclick="setSubTabCanchas('padel')" id="subtab-canchas-padel" class="py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:bg-stadium-800 bg-stadium-900 border border-white/10 transition flex items-center justify-center gap-1.5">
-                    <span>🥎</span> Canchas de Pádel
-                </button>
-            </div>
-
-            <div id="listaCanchasFutbol" class="space-y-6">
-                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de fútbol...</div>
-            </div>
-
-            <div id="listaCanchasPadel" class="space-y-6 hidden">
-                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de pádel...</div>
+        <!-- SECCIÓN 2: CANCHAS LIBRES -->
+        <section id="vista-canchas" class="hidden">
+            <div id="listaCanchas" class="space-y-6">
+                <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos disponibles...</div>
             </div>
         </section>
 
         <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
-            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950">
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
                         🍻
@@ -237,10 +221,6 @@
                         <p class="text-xs text-slate-400 mt-0.5">Kioscos, casas de picadas, bebidas y comercios recomendados en Sáenz Peña.</p>
                     </div>
                 </div>
-                <!-- BOTÓN DE PAGO AUTOMÁTICO MERCADO PAGO ($1000 - 48HS) -->
-                <a href="https://link.mercadopago.com.ar/TUPERFILMERCADOPAGO" target="_blank" onclick="prepararPublicacionAutogestionada()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold px-4 py-3 rounded-xl transition shadow-lg shrink-0 flex items-center gap-2">
-                    <span>📢 Publicá tu comercio (48hs - $1.000)</span>
-                </a>
             </div>
 
             <div id="listaTercerTiempo" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -356,57 +336,6 @@
                 <button type="submit" class="w-full btn-glow text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2">
                     <span>Publicar en el Tablero</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL AUTOGESTIONADO TERCER TIEMPO (SE ABRE TRAS PAGAR EN MP) -->
-    <div id="modalPagoTercerTiempo" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-stadium-900 border border-amber-500/30 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
-            <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
-                <div class="flex items-center gap-2.5">
-                    <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base">🍻</span>
-                    <h2 class="font-display text-lg font-extrabold text-white">¡Pago verificado! Cargá tu anuncio</h2>
-                </div>
-                <button onclick="cerrarModalPagoTercerTiempo()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <form id="formPagoTercerTiempo" onsubmit="guardarTercerTiempoAutogestionado(event)" class="space-y-4">
-                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3 text-xs text-amber-300">
-                    ✨ Tu comercio estará activo automáticamente durante <strong>48 horas</strong> en la sección <i>Tercer Tiempo</i>.
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Nombre del Comercio / Kiosco</label>
-                    <input type="text" id="pagoTtTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">URL de la Imagen / Logo</label>
-                    <input type="url" id="pagoTtImgUrl" placeholder="https://..." required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white font-mono focus:outline-none focus:border-amber-500 transition">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp (Pedidos)</label>
-                        <input type="tel" id="pagoTtWsp" placeholder="3644123456" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Categoría</label>
-                        <input type="text" id="pagoTtCategoria" placeholder="Ej: Bebidas / Picadas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Descripción corta o Promo</label>
-                    <input type="text" id="pagoTtDesc" placeholder="Ej: Envíos a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                </div>
-
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2">
-                    ¡Publicar por 48 horas! 🚀
                 </button>
             </form>
         </div>
@@ -731,12 +660,19 @@
             }
         });
 
-        // Registrar Service Worker para PWA
+        // Registro inline de Service Worker seguro mediante Blob (para evitar errores 404 de archivos externos)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+                const swCode = `
+                    self.addEventListener('install', e => self.skipWaiting());
+                    self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+                    self.addEventListener('fetch', e => {});
+                `;
+                const blob = new Blob([swCode], { type: 'text/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl)
+                    .then(reg => console.log('Service Worker PWA registrado con éxito'))
+                    .catch(err => console.log('Service Worker no disponible', err));
             });
         }
 
@@ -754,7 +690,6 @@
 
         let db, auth;
         let tabActual = 'falta-uno';
-        let subTabCanchasActual = 'futbol';
         let filtroActual = 'Fútbol';
         let partidosCache = [];
         let canchasCache = [];
@@ -856,26 +791,6 @@
             }
         };
 
-        window.setSubTabCanchas = (subtab) => {
-            subTabCanchasActual = subtab;
-            const btnFutbol = document.getElementById('subtab-canchas-futbol');
-            const btnPadel = document.getElementById('subtab-canchas-padel');
-            const contFutbol = document.getElementById('listaCanchasFutbol');
-            const contPadel = document.getElementById('listaCanchasPadel');
-
-            if (subtab === 'futbol') {
-                btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5";
-                btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:bg-stadium-800 bg-stadium-900 border border-white/10 transition flex items-center justify-center gap-1.5";
-                contFutbol.classList.remove('hidden');
-                contPadel.classList.add('hidden');
-            } else {
-                btnPadel.className = "py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5";
-                btnFutbol.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:bg-stadium-800 bg-stadium-900 border border-white/10 transition flex items-center justify-center gap-1.5";
-                contPadel.classList.remove('hidden');
-                contFutbol.classList.add('hidden');
-            }
-        };
-
         window.manejarBotonPrincipal = () => {
             if (tabActual === 'falta-uno' || tabActual === 'tercer-tiempo') window.abrirModalPartido();
             else window.abrirModalTurno();
@@ -902,41 +817,6 @@
             complejoVerificadoActual = null;
         };
         window.cerrarModalTurno = () => document.getElementById('modalTurno').classList.add('hidden');
-
-        // Funciones para Tercer Tiempo Automático
-        window.prepararPublicacionAutogestionada = () => {
-            // Guarda en memoria que el usuario intentó pagar
-            localStorage.setItem('intentando_pago_tt', 'true');
-        };
-
-        window.cerrarModalPagoTercerTiempo = () => {
-            document.getElementById('modalPagoTercerTiempo').classList.add('hidden');
-        };
-
-        window.guardarTercerTiempoAutogestionado = async (e) => {
-            e.preventDefault();
-            if (!db) return alert("Conectando...");
-            
-            // Calculamos 48 horas de vigencia exacta a partir de ahora
-            const expiraEn = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
-
-            const nuevoComercio = {
-                titulo: document.getElementById('pagoTtTitle').value.trim(),
-                imgUrl: document.getElementById('pagoTtImgUrl').value.trim(),
-                whatsapp: document.getElementById('pagoTtWsp').value.trim().replace(/\D/g, ''),
-                categoria: document.getElementById('pagoTtCategoria').value.trim(),
-                descripcion: document.getElementById('pagoTtDesc').value.trim(),
-                expiraEn: expiraEn,
-                creadoEn: serverTimestamp()
-            };
-
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
-            document.getElementById('formPagoTercerTiempo').reset();
-            localStorage.removeItem('intentando_pago_tt');
-            cerrarModalPagoTercerTiempo();
-            alert("🚀 ¡Tu comercio ya está publicado por 48 horas en Tercer Tiempo!");
-            cambiarTab('tercer-tiempo');
-        };
 
         window.toggleCamposTorneo = () => {
             const tipo = document.getElementById('tipoConvocatoria').value;
@@ -1070,14 +950,12 @@
         window.guardarTercerTiempoAdmin = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
-            const expiraEn = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 días para admin
             const nuevoComercio = {
                 titulo: document.getElementById('ttTitle').value.trim(),
                 imgUrl: document.getElementById('ttImgUrl').value.trim(),
                 whatsapp: document.getElementById('ttWsp').value.trim().replace(/\D/g, ''),
                 categoria: document.getElementById('ttCategoria').value.trim(),
                 descripcion: document.getElementById('ttDesc').value.trim(),
-                expiraEn: expiraEn,
                 creadoEn: serverTimestamp()
             };
             await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
@@ -1167,25 +1045,17 @@
 
         function renderizarTercerTiempo() {
             const contenedor = document.getElementById('listaTercerTiempo');
-            const ahora = new Date();
-
-            // Filtrar solo los que aún no pasaron su fecha de expiración de 48hs
-            const vigentes = tercerTiempoCache.filter(t => {
-                if (!t.expiraEn) return true; // Si es viejo sin expiraEn, se muestra
-                return new Date(t.expiraEn) > ahora;
-            });
-
-            if (!vigentes.length) {
+            if (!tercerTiempoCache.length) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center col-span-full">
                         <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🍻</div>
-                        <h3 class="font-display text-base font-bold text-white">No hay comercios activos</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Sé el primero en publicar tu local o kiosco tocando el botón de arriba.</p>
+                        <h3 class="font-display text-base font-bold text-white">Pronto más comercios</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Acá vas a encontrar kioscos, picadas y bebidas para el post-partido.</p>
                     </div>`;
                 return;
             }
 
-            contenedor.innerHTML = vigentes.map(t => {
+            contenedor.innerHTML = tercerTiempoCache.map(t => {
                 const telLimpio = (t.whatsapp || '').replace(/\D/g, '');
                 const msgWsp = encodeURIComponent(`¡Hola ${t.titulo}! Vi su comercio en la sección *Tercer Tiempo* de *Falta Uno SP* y quiero hacerles un pedido / consulta.`);
                 return `
@@ -1562,30 +1432,22 @@
         }
 
         function renderizarCanchas() {
+            const contenedor = document.getElementById('listaCanchas');
             const ahora = new Date();
             const vigentes = canchasCache.filter(c => !c.fecha || new Date(`${c.fecha}T23:59:59`) >= ahora);
 
-            const turnosFutbol = vigentes.filter(c => !c.tipo || c.tipo.toLowerCase().includes('fútbol') || c.tipo.toLowerCase().includes('futsal'));
-            const turnosPadel = vigentes.filter(c => c.tipo && c.tipo.toLowerCase().includes('pádel'));
-
-            renderizarListaSubTabCanchas('listaCanchasFutbol', turnosFutbol, '⚽', 'No hay turnos libres de fútbol publicados.');
-            renderizarListaSubTabCanchas('listaCanchasPadel', turnosPadel, '🥎', 'No hay turnos libres de pádel publicados.');
-        }
-
-        function renderizarListaSubTabCanchas(elementId, listaTurnos, icono, mensajeVacio) {
-            const contenedor = document.getElementById(elementId);
-            if (!listaTurnos.length) {
+            if (vigentes.length === 0) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">${icono}</div>
-                        <h3 class="font-display text-base font-bold text-white">${mensajeVacio}</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Los complejos deportivos de Sáenz Peña publican acá sus horarios disponibles.</p>
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🏟️</div>
+                        <h3 class="font-display text-base font-bold text-white">No hay turnos libres publicados</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Los complejos deportivos de Sáenz Peña publican acá sus horarios disponibles de último momento.</p>
                     </div>`;
                 return;
             }
 
             let gruposPorFecha = {};
-            listaTurnos.forEach(c => {
+            vigentes.forEach(c => {
                 const fechaKey = c.fecha || hoyStr;
                 if (!gruposPorFecha[fechaKey]) gruposPorFecha[fechaKey] = [];
                 gruposPorFecha[fechaKey].push(c);
@@ -1734,16 +1596,6 @@
 
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
-
-            // Detectar si el usuario acaba de volver de pagar en Mercado Pago
-            if (localStorage.getItem('intentando_pago_tt') === 'true') {
-                localStorage.removeItem('intentando_pago_tt');
-                setTimeout(() => {
-                    cambiarTab('tercer-tiempo');
-                    document.getElementById('modalPagoTercerTiempo').classList.remove('hidden');
-                }, 1000);
-            }
-
             try {
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
@@ -1778,7 +1630,7 @@
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel'].classList?.contains('hidden')) renderizarAdminTercerTiempo();
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
                             renderizarTercerTiempo();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
