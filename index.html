@@ -205,9 +205,8 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS LIBRES (CON 2 SOLAPAS: FÚTBOL Y PÁDEL) -->
+        <!-- SECCIÓN 2: CANCHAS LIBRES (CON 2 SOLAPAS) -->
         <section id="vista-canchas" class="hidden space-y-5">
-            <!-- Solapas internas de Canchas -->
             <div class="grid grid-cols-2 gap-2">
                 <button onclick="setSubTabCanchas('futbol')" id="subtab-canchas-futbol" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-sm transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Canchas de Fútbol
@@ -217,12 +216,10 @@
                 </button>
             </div>
 
-            <!-- Contenedor Turnos Fútbol -->
             <div id="listaCanchasFutbol" class="space-y-6">
                 <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de fútbol...</div>
             </div>
 
-            <!-- Contenedor Turnos Pádel -->
             <div id="listaCanchasPadel" class="space-y-6 hidden">
                 <div class="text-center py-12 text-slate-400 text-sm">Buscando turnos de pádel...</div>
             </div>
@@ -230,7 +227,7 @@
 
         <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
-            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950">
+            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
                         🍻
@@ -240,6 +237,10 @@
                         <p class="text-xs text-slate-400 mt-0.5">Kioscos, casas de picadas, bebidas y comercios recomendados en Sáenz Peña.</p>
                     </div>
                 </div>
+                <!-- BOTÓN DE PAGO AUTOMÁTICO MERCADO PAGO ($1000 - 48HS) -->
+                <a href="https://link.mercadopago.com.ar/TUPERFILMERCADOPAGO" target="_blank" onclick="prepararPublicacionAutogestionada()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold px-4 py-3 rounded-xl transition shadow-lg shrink-0 flex items-center gap-2">
+                    <span>📢 Publicá tu comercio (48hs - $1.000)</span>
+                </a>
             </div>
 
             <div id="listaTercerTiempo" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -311,7 +312,6 @@
                     </div>
                 </div>
 
-                <!-- CAMPO: ESTILO / CLIMA DEL PARTIDO -->
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5">Clima / Estilo del Partido</label>
                     <select id="vibePartido" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
@@ -356,6 +356,57 @@
                 <button type="submit" class="w-full btn-glow text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2">
                     <span>Publicar en el Tablero</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL AUTOGESTIONADO TERCER TIEMPO (SE ABRE TRAS PAGAR EN MP) -->
+    <div id="modalPagoTercerTiempo" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-stadium-900 border border-amber-500/30 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
+            <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base">🍻</span>
+                    <h2 class="font-display text-lg font-extrabold text-white">¡Pago verificado! Cargá tu anuncio</h2>
+                </div>
+                <button onclick="cerrarModalPagoTercerTiempo()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="formPagoTercerTiempo" onsubmit="guardarTercerTiempoAutogestionado(event)" class="space-y-4">
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3 text-xs text-amber-300">
+                    ✨ Tu comercio estará activo automáticamente durante <strong>48 horas</strong> en la sección <i>Tercer Tiempo</i>.
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Nombre del Comercio / Kiosco</label>
+                    <input type="text" id="pagoTtTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">URL de la Imagen / Logo</label>
+                    <input type="url" id="pagoTtImgUrl" placeholder="https://..." required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-sm text-white font-mono focus:outline-none focus:border-amber-500 transition">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp (Pedidos)</label>
+                        <input type="tel" id="pagoTtWsp" placeholder="3644123456" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Categoría</label>
+                        <input type="text" id="pagoTtCategoria" placeholder="Ej: Bebidas / Picadas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Descripción corta o Promo</label>
+                    <input type="text" id="pagoTtDesc" placeholder="Ej: Envíos a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2">
+                    ¡Publicar por 48 horas! 🚀
                 </button>
             </form>
         </div>
@@ -852,6 +903,41 @@
         };
         window.cerrarModalTurno = () => document.getElementById('modalTurno').classList.add('hidden');
 
+        // Funciones para Tercer Tiempo Automático
+        window.prepararPublicacionAutogestionada = () => {
+            // Guarda en memoria que el usuario intentó pagar
+            localStorage.setItem('intentando_pago_tt', 'true');
+        };
+
+        window.cerrarModalPagoTercerTiempo = () => {
+            document.getElementById('modalPagoTercerTiempo').classList.add('hidden');
+        };
+
+        window.guardarTercerTiempoAutogestionado = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+            
+            // Calculamos 48 horas de vigencia exacta a partir de ahora
+            const expiraEn = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
+
+            const nuevoComercio = {
+                titulo: document.getElementById('pagoTtTitle').value.trim(),
+                imgUrl: document.getElementById('pagoTtImgUrl').value.trim(),
+                whatsapp: document.getElementById('pagoTtWsp').value.trim().replace(/\D/g, ''),
+                categoria: document.getElementById('pagoTtCategoria').value.trim(),
+                descripcion: document.getElementById('pagoTtDesc').value.trim(),
+                expiraEn: expiraEn,
+                creadoEn: serverTimestamp()
+            };
+
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
+            document.getElementById('formPagoTercerTiempo').reset();
+            localStorage.removeItem('intentando_pago_tt');
+            cerrarModalPagoTercerTiempo();
+            alert("🚀 ¡Tu comercio ya está publicado por 48 horas en Tercer Tiempo!");
+            cambiarTab('tercer-tiempo');
+        };
+
         window.toggleCamposTorneo = () => {
             const tipo = document.getElementById('tipoConvocatoria').value;
             const labelTexto = document.getElementById('labelLugarTexto');
@@ -984,12 +1070,14 @@
         window.guardarTercerTiempoAdmin = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
+            const expiraEn = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 días para admin
             const nuevoComercio = {
                 titulo: document.getElementById('ttTitle').value.trim(),
                 imgUrl: document.getElementById('ttImgUrl').value.trim(),
                 whatsapp: document.getElementById('ttWsp').value.trim().replace(/\D/g, ''),
                 categoria: document.getElementById('ttCategoria').value.trim(),
                 descripcion: document.getElementById('ttDesc').value.trim(),
+                expiraEn: expiraEn,
                 creadoEn: serverTimestamp()
             };
             await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
@@ -1079,17 +1167,25 @@
 
         function renderizarTercerTiempo() {
             const contenedor = document.getElementById('listaTercerTiempo');
-            if (!tercerTiempoCache.length) {
+            const ahora = new Date();
+
+            // Filtrar solo los que aún no pasaron su fecha de expiración de 48hs
+            const vigentes = tercerTiempoCache.filter(t => {
+                if (!t.expiraEn) return true; // Si es viejo sin expiraEn, se muestra
+                return new Date(t.expiraEn) > ahora;
+            });
+
+            if (!vigentes.length) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center col-span-full">
                         <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🍻</div>
-                        <h3 class="font-display text-base font-bold text-white">Pronto más comercios</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Acá vas a encontrar kioscos, picadas y bebidas para el post-partido.</p>
+                        <h3 class="font-display text-base font-bold text-white">No hay comercios activos</h3>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Sé el primero en publicar tu local o kiosco tocando el botón de arriba.</p>
                     </div>`;
                 return;
             }
 
-            contenedor.innerHTML = tercerTiempoCache.map(t => {
+            contenedor.innerHTML = vigentes.map(t => {
                 const telLimpio = (t.whatsapp || '').replace(/\D/g, '');
                 const msgWsp = encodeURIComponent(`¡Hola ${t.titulo}! Vi su comercio en la sección *Tercer Tiempo* de *Falta Uno SP* y quiero hacerles un pedido / consulta.`);
                 return `
@@ -1469,7 +1565,6 @@
             const ahora = new Date();
             const vigentes = canchasCache.filter(c => !c.fecha || new Date(`${c.fecha}T23:59:59`) >= ahora);
 
-            // Separar turnos en Fútbol y Pádel
             const turnosFutbol = vigentes.filter(c => !c.tipo || c.tipo.toLowerCase().includes('fútbol') || c.tipo.toLowerCase().includes('futsal'));
             const turnosPadel = vigentes.filter(c => c.tipo && c.tipo.toLowerCase().includes('pádel'));
 
@@ -1639,6 +1734,16 @@
 
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
+
+            // Detectar si el usuario acaba de volver de pagar en Mercado Pago
+            if (localStorage.getItem('intentando_pago_tt') === 'true') {
+                localStorage.removeItem('intentando_pago_tt');
+                setTimeout(() => {
+                    cambiarTab('tercer-tiempo');
+                    document.getElementById('modalPagoTercerTiempo').classList.remove('hidden');
+                }, 1000);
+            }
+
             try {
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
@@ -1673,7 +1778,7 @@
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
+                            if (!document.getElementById('modalAdminPanel'].classList?.contains('hidden')) renderizarAdminTercerTiempo();
                             renderizarTercerTiempo();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
