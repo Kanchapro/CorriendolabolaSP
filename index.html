@@ -118,45 +118,41 @@
         </div>
     </div>
 
-    <!-- ==================== HEADER PROFESIONAL ==================== -->
+    <!-- ==================== HEADER PROFESIONAL LIMPIO ==================== -->
     <header class="header-pro sticky top-0 z-40">
-        <div class="max-w-3xl mx-auto px-4 py-3.5">
-            <div class="flex items-center justify-between gap-3 mb-3.5">
+        <div class="max-w-3xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between gap-3 mb-3">
                 
-                <!-- Marca con Logo -->
-                <div class="flex items-center gap-3">
+                <!-- Marca con Logo (Doble toque secreto para Administrar) -->
+                <div class="flex items-center gap-3 cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
                     <div class="relative">
-                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-11 h-11 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950">
-                        <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
+                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950">
+                        <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-display text-lg sm:text-xl font-black tracking-tight text-white leading-none">
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="font-display text-base sm:text-lg font-black tracking-tight text-white leading-none">
                                 FALTA UNO <span class="text-emerald-400">SP</span>
                             </h1>
-                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                            <span class="hidden sm:inline-block text-[9px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
                                 Live
                             </span>
                         </div>
-                        <p id="statusText" class="text-[11px] text-slate-400 font-medium mt-1">
-                            Presidencia Roque Sáenz Peña, Chaco
+                        <p id="statusText" class="text-[10px] text-slate-400 font-medium mt-0.5">
+                            Sáenz Peña, Chaco
                         </p>
                     </div>
                 </div>
 
-                <!-- Controles Superiores -->
+                <!-- Controles Superiores Mínimos -->
                 <div class="flex items-center gap-2">
-                    <!-- NUEVO BOTÓN COMPARTIR APLICACIÓN -->
-                    <button onclick="compartirAplicacion()" class="w-10 h-10 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95" title="Compartir Aplicación">
+                    <button onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95" title="Compartir Aplicación">
                         <i data-lucide="share-2" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="solicitarPermisoNotificaciones()" class="w-10 h-10 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95" title="Activar Alertas de Partidos">
+                    <button onclick="solicitarPermisoNotificaciones()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95" title="Activar Alertas de Partidos">
                         <i data-lucide="bell" class="w-4 h-4"></i>
                     </button>
-                    <button onclick="abrirModalAdmin()" class="w-10 h-10 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 flex items-center justify-center transition active:scale-95" title="Panel Administrador">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
-                    </button>
-                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-4 h-10 rounded-xl flex items-center gap-1.5">
+                    <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-3.5 h-9 rounded-xl flex items-center gap-1.5 shadow-md">
                         <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
                         <span id="textoBotonPrincipal">Publicar</span>
                     </button>
@@ -165,13 +161,13 @@
 
             <!-- 3 Pestañas de Navegación -->
             <div class="grid grid-cols-3 gap-1.5 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
-                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
+                <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
                     <span>⚽</span> Convocatorias
                 </button>
-                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
                     <span>🏟️</span> Canchas
                 </button>
-                <button id="tab-tercer-tiempo" onclick="cambiarTab('tercer-tiempo')" class="py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                <button id="tab-tercer-tiempo" onclick="cambiarTab('tercer-tiempo')" class="py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
                     <span>🍻</span> 3er Tiempo
                 </button>
             </div>
@@ -183,7 +179,6 @@
 
         <!-- SECCIÓN 1: CONVOCATORIAS -->
         <section id="vista-falta-uno">
-            <!-- Grilla 2x2 para filtros (Fútbol, Pádel, Torneos, Rival) sin scroll horizontal -->
             <div class="grid grid-cols-2 gap-2 mb-5">
                 <button onclick="setFiltro('Fútbol')" id="filtro-Fútbol" class="filtro-btn bg-emerald-500 text-slate-950 text-xs font-bold py-2.5 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Fútbol
@@ -214,7 +209,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 3: TERCER TIEMPO (Kioscos y Comercios) -->
+        <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
             <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950">
                 <div class="flex items-center gap-3.5">
@@ -442,7 +437,7 @@
                 </button>
             </div>
 
-            <!-- Navegación Admin (4 solapas ahora) -->
+            <!-- Navegación Admin -->
             <div class="grid grid-cols-4 gap-1 bg-stadium-950 p-1 rounded-xl mb-5 border border-white/10">
                 <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
                 <button onclick="cambiarTabAdmin('pub1')" id="tabAdminPub1" class="py-2 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition">Pub 1</button>
@@ -647,6 +642,14 @@
 
         lucide.createIcons();
 
+        // Atajo por teclado secreto para admin: Ctrl + Shift + A
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                abrirModalAdmin();
+            }
+        });
+
         // Registrar Service Worker para PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -670,7 +673,7 @@
 
         let db, auth;
         let tabActual = 'falta-uno';
-        let filtroActual = 'Fútbol'; // Arranca directo en Fútbol por defecto
+        let filtroActual = 'Fútbol';
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
@@ -703,7 +706,6 @@
             document.getElementById('bannerInstalacion').classList.add('hidden');
         };
 
-        // FUNCIÓN PARA COMPARTIR LA APLICACIÓN
         window.compartirAplicacion = async () => {
             const tituloApp = "Falta Uno SP ⚽";
             const textoApp = "¡Unite a la comunidad deportiva de Sáenz Peña! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo en Falta Uno SP:";
@@ -711,14 +713,8 @@
 
             if (navigator.share) {
                 try {
-                    await navigator.share({
-                        title: tituloApp,
-                        text: textoApp,
-                        url: urlApp
-                    });
-                } catch (err) {
-                    console.log('Compartición cancelada o error', err);
-                }
+                    await navigator.share({ title: tituloApp, text: textoApp, url: urlApp });
+                } catch (err) {}
             } else {
                 const mensajeWsp = encodeURIComponent(`${textoApp}\n${urlApp}`);
                 window.open(`https://api.whatsapp.com/send?text=${mensajeWsp}`, '_blank');
@@ -755,10 +751,9 @@
             const btnTabTercer = document.getElementById('tab-tercer-tiempo');
             const textoBtnPrincipal = document.getElementById('textoBotonPrincipal');
 
-            // Resetear estilos de las 3 solapas
-            btnTabFalta.className = "py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
-            btnTabCanchas.className = "py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
-            btnTabTercer.className = "py-2.5 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabFalta.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
 
             vistaFalta.classList.add('hidden');
             vistaCanchas.classList.add('hidden');
@@ -766,15 +761,15 @@
 
             if (tab === 'falta-uno') {
                 vistaFalta.classList.remove('hidden');
-                btnTabFalta.className = "py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
+                btnTabFalta.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Publicar";
             } else if (tab === 'canchas') {
                 vistaCanchas.classList.remove('hidden');
-                btnTabCanchas.className = "py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
+                btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Turno Libre";
             } else if (tab === 'tercer-tiempo') {
                 vistaTercerTiempo.classList.remove('hidden');
-                btnTabTercer.className = "py-2.5 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
+                btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Publicar";
             }
         };
@@ -1586,7 +1581,7 @@
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
-                        statusDot.className = "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 ring-2 ring-[#050a14] animate-pulse";
+                        statusDot.className = "absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14] animate-pulse";
                         statusText.textContent = "En vivo • Sáenz Peña, Chaco";
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
