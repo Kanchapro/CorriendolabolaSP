@@ -122,7 +122,7 @@
     <header class="header-pro sticky top-0 z-40">
         <div class="max-w-3xl mx-auto px-4 py-3">
             
-            <!-- Fila Superior: Izquierda (Compartir/Noti) - Centro (Logo y Nombre) - Derecha (Publicar) -->
+            <!-- Fila Superior: Izquierda (Compartir/Noti) - Centro (Logo Grande y Nombre) - Derecha (Publicar) -->
             <div class="grid grid-cols-3 items-center gap-2 mb-3">
                 
                 <!-- Izquierda: Botones Compartir y Notificaciones -->
@@ -135,11 +135,11 @@
                     </button>
                 </div>
 
-                <!-- Centro: Logo y Título (Doble toque secreto para Administrar) -->
+                <!-- Centro: Logo Más Grande y Título (Doble toque secreto para Administrar) -->
                 <div class="flex flex-col items-center text-center cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
-                    <div class="relative mb-1">
-                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950 mx-auto">
-                        <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
+                    <div class="relative mb-1.5">
+                        <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-xl shadow-emerald-500/10 bg-stadium-950 mx-auto">
+                        <span id="statusDot" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14]"></span>
                     </div>
                     <h1 class="font-display text-xs sm:text-sm font-black tracking-tight text-white leading-none">
                         FALTA UNO <span class="text-emerald-400">SP</span>
@@ -1576,7 +1576,7 @@
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
-                        statusDot.className = "absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14] animate-pulse";
+                        statusDot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14] animate-pulse";
 
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
                             partidosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
