@@ -123,7 +123,7 @@
         <div class="max-w-3xl mx-auto px-4 py-3.5">
             <div class="flex items-center justify-between gap-3 mb-3.5">
                 
-                <!-- Marca con el NUEVO LOGO -->
+                <!-- Marca con Logo -->
                 <div class="flex items-center gap-3">
                     <div class="relative">
                         <img src="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png" alt="Logo Falta Uno SP" class="w-11 h-11 rounded-2xl object-cover ring-2 ring-emerald-500/40 shadow-lg bg-stadium-950">
@@ -159,7 +159,7 @@
                 </div>
             </div>
 
-            <!-- Navegación Tipo Segmented Control -->
+            <!-- Pestañas de Navegación -->
             <div class="grid grid-cols-2 gap-1.5 bg-stadium-900/90 border border-white/10 p-1 rounded-2xl">
                 <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2">
                     <span>⚽</span> Convocatorias
@@ -174,7 +174,7 @@
     <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
     <main class="max-w-3xl w-full mx-auto px-4 py-6 flex-1">
 
-        <!-- SECCIÓN 1: CONVOCATORIAS / TORNEOS / RIVALES -->
+        <!-- SECCIÓN 1: CONVOCATORIAS -->
         <section id="vista-falta-uno">
             <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-5">
                 <button onclick="setFiltro('todos')" id="filtro-todos" class="filtro-btn shrink-0 bg-emerald-500 text-slate-950 text-xs font-bold py-2 px-4 rounded-full shadow-sm transition">
@@ -225,18 +225,26 @@
         </section>
     </main>
 
-    <!-- ==================== BANNERS PUBLICITARIOS INFERIORES ==================== -->
+    <!-- ==================== BANNERS PUBLICITARIOS INFERIORES (PUBLICIDAD 1 Y PUBLICIDAD 2) ==================== -->
     <div class="fixed bottom-0 left-0 right-0 z-30 bg-[#050a14]/95 backdrop-blur-xl border-t border-white/10 py-2 px-3">
-        <div class="max-w-3xl mx-auto grid grid-cols-2 gap-2.5 items-center">
-            <div class="bg-stadium-900/90 border border-white/10 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
-                <div id="contenedorBanner1" class="w-full transition-opacity duration-500">
-                    <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Sponsor Oficial</span>
+        <div class="max-w-3xl mx-auto">
+            <!-- Contenedor dinámico que se divide en 2 o se une en 1 según si hay publicidad conjunta -->
+            <div id="contenedorPublicidadesInferiores" class="grid grid-cols-2 gap-2.5 items-center">
+                
+                <!-- Publicidad 1 (Izquierda) -->
+                <div id="wrapperPub1" class="bg-stadium-900/90 border border-white/10 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
+                    <div id="contenedorPub1" class="w-full transition-opacity duration-500">
+                        <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Publicidad 1</span>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-stadium-900/90 border border-amber-500/25 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
-                <div id="contenedorBanner2" class="w-full transition-opacity duration-500">
-                    <span class="text-[10px] font-bold text-amber-500/80 uppercase tracking-wider">🍻 Tercer Tiempo</span>
+
+                <!-- Publicidad 2 (Derecha) -->
+                <div id="wrapperPub2" class="bg-stadium-900/90 border border-white/10 rounded-xl p-1 text-center h-14 flex items-center justify-center overflow-hidden">
+                    <div id="contenedorPub2" class="w-full transition-opacity duration-500">
+                        <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Publicidad 2</span>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -409,7 +417,7 @@
                 <i data-lucide="shield-check" class="w-6 h-6"></i>
             </div>
             <h3 class="font-display text-lg font-extrabold text-white mb-1">Panel Administrador</h3>
-            <p class="text-xs text-slate-400 mb-4">Ingresá tu clave maestra para gestionar complejos y banners.</p>
+            <p class="text-xs text-slate-400 mb-4">Ingresá tu clave maestra para gestionar complejos y publicidades.</p>
             <input type="password" id="adminPasswordInput" placeholder="Contraseña..." class="w-full bg-stadium-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white mb-4 focus:outline-none focus:border-emerald-500">
             <div class="flex gap-2.5">
                 <button onclick="cerrarModalAdmin()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-sm transition">Cancelar</button>
@@ -429,8 +437,8 @@
 
             <div class="grid grid-cols-3 gap-1.5 bg-stadium-950 p-1 rounded-xl mb-5 border border-white/10">
                 <button onclick="cambiarTabAdmin('complejos')" id="tabAdminComplejos" class="py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition">Complejos</button>
-                <button onclick="cambiarTabAdmin('sponsors')" id="tabAdminSponsors" class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">Sponsors</button>
-                <button onclick="cambiarTabAdmin('tercerTiempo')" id="tabAdminTercerTiempo" class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">🍻 3er Tiempo</button>
+                <button onclick="cambiarTabAdmin('pub1')" id="tabAdminPub1" class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">Publicidad 1</button>
+                <button onclick="cambiarTabAdmin('pub2')" id="tabAdminPub2" class="py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">Publicidad 2</button>
             </div>
 
             <!-- TAB 1: COMPLEJOS -->
@@ -462,77 +470,96 @@
                 <div id="listaComplejosAdmin" class="space-y-2.5"></div>
             </div>
 
-            <!-- TAB 2: SPONSORS -->
-            <div id="seccionAdminSponsors" class="space-y-4 hidden">
-                <form id="formAgregarAdAdmin" onsubmit="guardarAdAdmin(event, 'ads_banners', 'Banner 1')" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Banner Izquierdo (Sponsors)</h3>
+            <!-- TAB 2: PUBLICIDAD 1 -->
+            <div id="seccionAdminPub1" class="space-y-4 hidden">
+                <form id="formAgregarPub1" onsubmit="guardarAdAdmin(event, 'ads_pub1', 'Publicidad 1')" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Agregar a Publicidad 1 (Izquierda)</h3>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local</label>
-                        <input type="text" id="adminAdTitle" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local / Marca</label>
+                        <input type="text" id="pub1Title" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL Imagen / GIF</label>
-                        <input type="url" id="adminAdImgUrl" placeholder="https://..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <input type="url" id="pub1ImgUrl" placeholder="https://..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp</label>
-                            <input type="tel" id="adminAdWsp" placeholder="3644..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <input type="tel" id="pub1Wsp" placeholder="3644..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">Duración (seg)</label>
-                            <input type="number" id="adminAdSeconds" min="3" max="60" value="6" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <input type="number" id="pub1Seconds" min="3" max="60" value="6" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje predefinido</label>
-                        <input type="text" id="adminAdMsg" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="pub1Msg" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-                    <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar Banner</button>
+                    
+                    <!-- Casilla especial para cuando adquieren ambas juntas -->
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3">
+                        <input type="checkbox" id="pub1Doble" class="w-4 h-4 accent-emerald-500 rounded">
+                        <div>
+                            <label for="pub1Doble" class="text-xs font-bold text-emerald-300 cursor-pointer">Adquirió Publicidad Conjunta (Ocupa toda la pantalla)</label>
+                            <p class="text-[10px] text-slate-400">Si se marca, este banner se mostrará abarcando Publicidad 1 y Publicidad 2 en simultáneo.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en Publicidad 1</button>
                 </form>
-                <div id="listaAdsAdmin" class="space-y-2.5"></div>
+                <div id="listaPub1Admin" class="space-y-2.5"></div>
             </div>
 
-            <!-- TAB 3: TERCER TIEMPO -->
-            <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
-                <form id="formAgregarTtAdmin" onsubmit="guardarAdAdmin(event, 'tercer_tiempo_banners', 'Tercer Tiempo')" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-amber-500/20">
-                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Banner Derecho (3er Tiempo)</h3>
+            <!-- TAB 3: PUBLICIDAD 2 -->
+            <div id="seccionAdminPub2" class="space-y-4 hidden">
+                <form id="formAgregarPub2" onsubmit="guardarAdAdmin(event, 'ads_pub2', 'Publicidad 2')" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Agregar a Publicidad 2 (Derecha)</h3>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre Kiosco / Bar</label>
-                        <input type="text" id="ttTitle" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Local / Marca</label>
+                        <input type="text" id="pub2Title" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL Imagen / GIF</label>
-                        <input type="url" id="ttImgUrl" placeholder="https://..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <input type="url" id="pub2ImgUrl" placeholder="https://..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp</label>
-                            <input type="tel" id="ttWsp" placeholder="3644..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <input type="tel" id="pub2Wsp" placeholder="3644..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">Duración (seg)</label>
-                            <input type="number" id="ttSeconds" min="3" max="60" value="6" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <input type="number" id="pub2Seconds" min="3" max="60" value="6" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                         </div>
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mensaje predefinido</label>
-                        <input type="text" id="ttMsg" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="pub2Msg" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar Promo</button>
+                    
+                    <!-- Casilla especial para cuando adquieren ambas juntas -->
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3">
+                        <input type="checkbox" id="pub2Doble" class="w-4 h-4 accent-emerald-500 rounded">
+                        <div>
+                            <label for="pub2Doble" class="text-xs font-bold text-emerald-300 cursor-pointer">Adquirió Publicidad Conjunta (Ocupa toda la pantalla)</label>
+                            <p class="text-[10px] text-slate-400">Si se marca, este banner se mostrará abarcando Publicidad 1 y Publicidad 2 en simultáneo.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en Publicidad 2</button>
                 </form>
-                <div id="listaTtAdmin" class="space-y-2.5"></div>
+                <div id="listaPub2Admin" class="space-y-2.5"></div>
             </div>
         </div>
     </div>
 
-    <!-- ==================== MODAL SUMARSE ==================== -->
+    <!-- ==================== MODALES VARIOS ==================== -->
     <div id="modalSumarse" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-sm rounded-3xl p-6 shadow-2xl modal-animate">
             <h3 class="font-display text-lg font-extrabold text-white mb-1">🙋‍♂️ ¡Me sumo al partido!</h3>
-            <p class="text-xs text-slate-400 mb-4">Completá tus datos para anotarte y avisarle al organizador.</p>
+            <p class="text-xs text-slate-400 mb-4">Completá tus datos para anotarte.</p>
             <input type="hidden" id="partidoIdSumarse">
-            
             <div class="space-y-3.5 mb-5">
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5">Tu Nombre / Apodo</label>
@@ -549,7 +576,6 @@
                     </select>
                 </div>
             </div>
-
             <div class="flex gap-2.5">
                 <button onclick="cerrarModalSumarse()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-sm transition">Cancelar</button>
                 <button onclick="confirmarSumarse()" class="flex-1 btn-glow text-slate-950 font-extrabold py-2.5 rounded-xl text-sm transition">Confirmar 📲</button>
@@ -557,11 +583,10 @@
         </div>
     </div>
 
-    <!-- ==================== MODAL CALIFICAR ==================== -->
     <div id="modalCalificar" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto modal-animate">
             <h3 class="font-display text-lg font-extrabold text-white mb-1">⭐ Reputación de Jugadores</h3>
-            <p class="text-xs text-slate-400 mb-4">Confirmá quiénes cumplieron y asistieron al partido.</p>
+            <p class="text-xs text-slate-400 mb-4">Confirmá quiénes asistieron al partido.</p>
             <input type="hidden" id="partidoIdCalificar">
             <div id="listaJugadoresACalificar" class="space-y-2.5 mb-5"></div>
             <div class="flex gap-2.5">
@@ -571,11 +596,10 @@
         </div>
     </div>
 
-    <!-- ==================== MODAL BORRAR ==================== -->
     <div id="modalBorrarTurno" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-sm rounded-3xl p-6 shadow-2xl modal-animate">
             <h3 class="font-display text-lg font-extrabold text-white mb-1">🗑️ Eliminar Publicación</h3>
-            <p class="text-xs text-slate-400 mb-4">Ingresá el PIN del complejo o la clave de administrador.</p>
+            <p class="text-xs text-slate-400 mb-4">Ingresá el PIN del complejo o la clave admin.</p>
             <input type="hidden" id="turnoIdBorrar">
             <input type="hidden" id="tipoBorrar">
             <input type="password" id="pinBorrarInput" placeholder="PIN o Clave..." class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-3 text-center tracking-widest font-bold text-sm text-white mb-4 focus:outline-none focus:border-rose-500">
@@ -612,13 +636,13 @@
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
-        let adsCache = [];
-        let tercerTiempoCache = [];
+        let pub1Cache = [];
+        let pub2Cache = [];
         let reputacionCache = {};
         let complejoVerificadoActual = null;
 
-        let indiceAd1 = 0, indiceAd2 = 0;
-        let timerAd1 = null, timerAd2 = null;
+        let indicePub1 = 0, indicePub2 = 0;
+        let timerPub1 = null, timerPub2 = null;
 
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -653,7 +677,7 @@
                     });
                 }
             } else {
-                alert("❌ Permiso denegado. Podés habilitarlo desde la configuración del navegador.");
+                alert("❌ Permiso denegado.");
             }
         };
 
@@ -772,8 +796,8 @@
                 cerrarModalAdmin();
                 document.getElementById('modalAdminPanel').classList.remove('hidden');
                 renderizarAdminComplejos();
-                renderizarAdminAds();
-                renderizarAdminTercerTiempo();
+                renderizarAdminPub1();
+                renderizarAdminPub2();
             } else {
                 alert("❌ Contraseña incorrecta");
             }
@@ -781,14 +805,14 @@
         window.cerrarPanelAdmin = () => document.getElementById('modalAdminPanel').classList.add('hidden');
 
         window.cambiarTabAdmin = (tab) => {
-            ['Complejos', 'Sponsors', 'TercerTiempo'].forEach(t => {
+            ['Complejos', 'Pub1', 'Pub2'].forEach(t => {
                 document.getElementById(`seccionAdmin${t}`).classList.add('hidden');
                 document.getElementById(`tabAdmin${t}`).className = "py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
             });
-            const map = { complejos: 'Complejos', sponsors: 'Sponsors', tercerTiempo: 'TercerTiempo' };
+            const map = { complejos: 'Complejos', pub1: 'Pub1', pub2: 'Pub2' };
             const key = map[tab];
             document.getElementById(`seccionAdmin${key}`).classList.remove('hidden');
-            document.getElementById(`tabAdmin${key}`).className = `py-2 rounded-lg text-xs font-bold ${tab === 'tercerTiempo' ? 'bg-amber-500' : 'bg-emerald-500'} text-slate-950 transition`;
+            document.getElementById(`tabAdmin${key}`).className = "py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition";
         };
 
         window.guardarComplejoAdmin = async (e) => {
@@ -816,18 +840,19 @@
         window.guardarAdAdmin = async (e, coleccion, nombreSeccion) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
-            const isTt = coleccion === 'tercer_tiempo_banners';
+            const isPub1 = coleccion === 'ads_pub1';
             const nuevoAd = {
-                titulo: document.getElementById(isTt ? 'ttTitle' : 'adminAdTitle').value.trim(),
-                imgUrl: document.getElementById(isTt ? 'ttImgUrl' : 'adminAdImgUrl').value.trim(),
-                whatsapp: document.getElementById(isTt ? 'ttWsp' : 'adminAdWsp').value.trim().replace(/\D/g, ''),
-                mensaje: document.getElementById(isTt ? 'ttMsg' : 'adminAdMsg').value.trim(),
-                segundos: parseInt(document.getElementById(isTt ? 'ttSeconds' : 'adminAdSeconds').value, 10) || 6,
+                titulo: document.getElementById(isPub1 ? 'pub1Title' : 'pub2Title').value.trim(),
+                imgUrl: document.getElementById(isPub1 ? 'pub1ImgUrl' : 'pub2ImgUrl').value.trim(),
+                whatsapp: document.getElementById(isPub1 ? 'pub1Wsp' : 'pub2Wsp').value.trim().replace(/\D/g, ''),
+                mensaje: document.getElementById(isPub1 ? 'pub1Msg' : 'pub2Msg').value.trim(),
+                segundos: parseInt(document.getElementById(isPub1 ? 'pub1Seconds' : 'pub2Seconds').value, 10) || 6,
+                esDoble: document.getElementById(isPub1 ? 'pub1Doble' : 'pub2Doble').checked,
                 creadoEn: serverTimestamp()
             };
             await addDoc(collection(db, 'artifacts', appId, 'public', 'data', coleccion), nuevoAd);
-            document.getElementById(isTt ? 'formAgregarTtAdmin' : 'formAgregarAdAdmin').reset();
-            alert(`✅ Banner guardado en ${nombreSeccion}.`);
+            document.getElementById(isPub1 ? 'formAgregarPub1' : 'formAgregarPub2').reset();
+            alert(`✅ Anuncio guardado en ${nombreSeccion}.`);
         };
 
         window.eliminarAdAdmin = async (id, coleccion) => {
@@ -853,60 +878,123 @@
             `).join('');
         }
 
-        function renderizarAdminAds() {
-            const c = document.getElementById('listaAdsAdmin');
-            if (!adsCache.length) { c.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">Sin anuncios.</p>`; return; }
-            c.innerHTML = adsCache.map(a => `
+        function renderizarAdminPub1() {
+            const c = document.getElementById('listaPub1Admin');
+            if (!pub1Cache.length) { c.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">Sin anuncios en Publicidad 1.</p>`; return; }
+            c.innerHTML = pub1Cache.map(a => `
                 <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
                         <img src="${a.imgUrl}" class="w-12 h-8 object-cover rounded border border-white/10 shrink-0">
                         <div class="min-w-0">
-                            <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                            <div class="flex items-center gap-1.5">
+                                <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                                ${a.esDoble ? '<span class="bg-amber-500/20 text-amber-300 text-[9px] font-bold px-1.5 py-0.5 rounded">Doble</span>' : ''}
+                            </div>
                             <p class="text-[10px] text-slate-400 truncate">📱 549${a.whatsapp} • ⏱️ ${a.segundos}s</p>
                         </div>
                     </div>
-                    <button onclick="eliminarAdAdmin('${a.id}', 'ads_banners')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
+                    <button onclick="eliminarAdAdmin('${a.id}', 'ads_pub1')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
                 </div>
             `).join('');
         }
 
-        function renderizarAdminTercerTiempo() {
-            const c = document.getElementById('listaTtAdmin');
-            if (!tercerTiempoCache.length) { c.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">Sin promos.</p>`; return; }
-            c.innerHTML = tercerTiempoCache.map(a => `
-                <div class="bg-stadium-950 border border-amber-500/20 rounded-xl p-3 flex items-center justify-between gap-2">
+        function renderizarAdminPub2() {
+            const c = document.getElementById('listaPub2Admin');
+            if (!pub2Cache.length) { c.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">Sin anuncios en Publicidad 2.</p>`; return; }
+            c.innerHTML = pub2Cache.map(a => `
+                <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
                         <img src="${a.imgUrl}" class="w-12 h-8 object-cover rounded border border-white/10 shrink-0">
                         <div class="min-w-0">
-                            <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                            <div class="flex items-center gap-1.5">
+                                <h4 class="text-xs font-bold text-white truncate">${a.titulo}</h4>
+                                ${a.esDoble ? '<span class="bg-amber-500/20 text-amber-300 text-[9px] font-bold px-1.5 py-0.5 rounded">Doble</span>' : ''}
+                            </div>
                             <p class="text-[10px] text-slate-400 truncate">📱 549${a.whatsapp} • ⏱️ ${a.segundos}s</p>
                         </div>
                     </div>
-                    <button onclick="eliminarAdAdmin('${a.id}', 'tercer_tiempo_banners')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
+                    <button onclick="eliminarAdAdmin('${a.id}', 'ads_pub2')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
                 </div>
             `).join('');
         }
 
-        function iniciarRotacionBanner1() {
-            if (timerAd1) clearTimeout(timerAd1);
-            const cont1 = document.getElementById('contenedorBanner1');
-            if (!adsCache.length) { cont1.innerHTML = `<span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Sponsor Oficial</span>`; return; }
-            if (indiceAd1 >= adsCache.length) indiceAd1 = 0;
-            const ad = adsCache[indiceAd1];
-            const link = `https://wa.me/549${ad.whatsapp}?text=${encodeURIComponent(ad.mensaje || 'Hola!')}`;
-            cont1.innerHTML = `<a href="${link}" target="_blank" class="block w-full text-center"><img src="${ad.imgUrl}" alt="${ad.titulo}" class="h-12 mx-auto rounded-lg object-contain hover:scale-[1.02] transition"></a>`;
-            timerAd1 = setTimeout(() => { indiceAd1++; iniciarRotacionBanner1(); }, (ad.segundos || 6) * 1000);
-        }
+        // Sistema inteligente de rotación con soporte para Publicidad Conjunta / Doble
+        function actualizarRotacionPublicidades() {
+            if (timerPub1) clearTimeout(timerPub1);
+            if (timerPub2) clearTimeout(timerPub2);
 
-        function iniciarRotacionBanner2() {
-            if (timerAd2) clearTimeout(timerAd2);
-            const cont2 = document.getElementById('contenedorBanner2');
-            if (!tercerTiempoCache.length) { cont2.innerHTML = `<span class="text-[10px] font-bold text-amber-500/80 uppercase tracking-wider">🍻 Tercer Tiempo</span>`; return; }
-            if (indiceAd2 >= tercerTiempoCache.length) indiceAd2 = 0;
-            const ad = tercerTiempoCache[indiceAd2];
-            const link = `https://wa.me/549${ad.whatsapp}?text=${encodeURIComponent(ad.mensaje || 'Hola!')}`;
-            cont2.innerHTML = `<a href="${link}" target="_blank" class="block w-full text-center"><img src="${ad.imgUrl}" alt="${ad.titulo}" class="h-12 mx-auto rounded-lg object-contain hover:scale-[1.02] transition"></a>`;
-            timerAd2 = setTimeout(() => { indiceAd2++; iniciarRotacionBanner2(); }, (ad.segundos || 6) * 1000);
+            const gridContainer = document.getElementById('contenedorPublicidadesInferiores');
+            const wrapperPub1 = document.getElementById('wrapperPub1');
+            const wrapperPub2 = document.getElementById('wrapperPub2');
+            const cont1 = document.getElementById('contenedorPub1');
+            const cont2 = document.getElementById('contenedorPub2');
+
+            let anuncioPub1 = pub1Cache.length ? pub1Cache[indicePub1 % pub1Cache.length] : null;
+            let anuncioPub2 = pub2Cache.length ? pub2Cache[indicePub2 % pub2Cache.length] : null;
+
+            // CASO A: Si Publicidad 1 es DOBLE (ocupa toda la pantalla)
+            if (anuncioPub1 && anuncioPub1.esDoble) {
+                gridContainer.className = "grid grid-cols-1 items-center";
+                wrapperPub2.style.display = "none";
+                wrapperPub1.style.display = "flex";
+                
+                const linkWsp = `https://wa.me/549${anuncioPub1.whatsapp}?text=${encodeURIComponent(anuncioPub1.mensaje || 'Hola!')}`;
+                cont1.innerHTML = `<a href="${linkWsp}" target="_blank" class="block w-full text-center group"><img src="${anuncioPub1.imgUrl}" alt="${anuncioPub1.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition"></a>`;
+                
+                timerPub1 = setTimeout(() => {
+                    indicePub1++;
+                    actualizarRotacionPublicidades();
+                }, (anuncioPub1.segundos || 6) * 1000);
+                return;
+            }
+
+            // CASO B: Si Publicidad 2 es DOBLE (ocupa toda la pantalla)
+            if (anuncioPub2 && anuncioPub2.esDoble) {
+                gridContainer.className = "grid grid-cols-1 items-center";
+                wrapperPub1.style.display = "none";
+                wrapperPub2.style.display = "flex";
+                
+                const linkWsp = `https://wa.me/549${anuncioPub2.whatsapp}?text=${encodeURIComponent(anuncioPub2.mensaje || 'Hola!')}`;
+                cont2.innerHTML = `<a href="${linkWsp}" target="_blank" class="block w-full text-center group"><img src="${anuncioPub2.imgUrl}" alt="${anuncioPub2.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition"></a>`;
+                
+                timerPub2 = setTimeout(() => {
+                    indicePub2++;
+                    actualizarRotacionPublicidades();
+                }, (anuncioPub2.segundos || 6) * 1000);
+                return;
+            }
+
+            // CASO C: Funcionamiento Normal (Dos publicidades separadas lado a lado)
+            gridContainer.className = "grid grid-cols-2 gap-2.5 items-center";
+            wrapperPub1.style.display = "flex";
+            wrapperPub2.style.display = "flex";
+
+            // Renderizar Pub 1
+            if (!anuncioPub1) {
+                cont1.innerHTML = `<span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Publicidad 1</span>`;
+            } else {
+                const linkWsp1 = `https://wa.me/549${anuncioPub1.whatsapp}?text=${encodeURIComponent(anuncioPub1.mensaje || 'Hola!')}`;
+                cont1.innerHTML = `<a href="${linkWsp1}" target="_blank" class="block w-full text-center group"><img src="${anuncioPub1.imgUrl}" alt="${anuncioPub1.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition"></a>`;
+            }
+
+            // Renderizar Pub 2
+            if (!anuncioPub2) {
+                cont2.innerHTML = `<span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Publicidad 2</span>`;
+            } else {
+                const linkWsp2 = `https://wa.me/549${anuncioPub2.whatsapp}?text=${encodeURIComponent(anuncioPub2.mensaje || 'Hola!')}`;
+                cont2.innerHTML = `<a href="${linkWsp2}" target="_blank" class="block w-full text-center group"><img src="${anuncioPub2.imgUrl}" alt="${anuncioPub2.titulo}" class="h-12 mx-auto rounded shadow object-contain group-hover:scale-[1.01] transition"></a>`;
+            }
+
+            const tiempoMax = Math.max(
+                anuncioPub1 ? (anuncioPub1.segundos || 6) * 1000 : 6000,
+                anuncioPub2 ? (anuncioPub2.segundos || 6) * 1000 : 6000
+            );
+
+            timerPub1 = setTimeout(() => {
+                indicePub1++;
+                indicePub2++;
+                actualizarRotacionPublicidades();
+            }, tiempoMax);
         }
 
         window.verificarPin = () => {
@@ -1383,15 +1471,15 @@
                             complejosAdminCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminComplejos();
                         });
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_banners'), (snap) => {
-                            adsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminAds();
-                            iniciarRotacionBanner1();
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_pub1'), (snap) => {
+                            pub1Cache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminPub1();
+                            actualizarRotacionPublicidades();
                         });
-                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo_banners'), (snap) => {
-                            tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
-                            iniciarRotacionBanner2();
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'ads_pub2'), (snap) => {
+                            pub2Cache = snap.docs.map(d => ({ id: d.id, ...d.data()}));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminPub2();
+                            actualizarRotacionPublicidades();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
                             snap.docs.forEach(d => {
