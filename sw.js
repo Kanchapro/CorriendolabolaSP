@@ -1,8 +1,19 @@
+const CACHE_NAME = 'falta-uno-sp-v3';
+
 self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (key !== CACHE_NAME) {
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
   return self.clients.claim();
 });
 
@@ -10,16 +21,12 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
 
-// Escuchar notificaciones Push enviadas al celular
+// Escuchar notificaciones Push
 self.addEventListener('push', (event) => {
   let data = { title: "Falta Uno SP ⚽", body: "¡Hay una nueva convocatoria en la ciudad!" };
   
   if (event.data) {
-    try {
-      data = event.data.json();
-    } catch (e) {
-      data.body = event.data.text();
-    }
+    try { data = event.data.json(); } catch (e) { data.body = event.data.text(); }
   }
 
   const options = {
@@ -34,7 +41,6 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// Acción al hacer clic sobre la notificación en el celu
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   event.waitUntil(
