@@ -1,49 +1,53 @@
-const CACHE_NAME = 'falta-uno-sp-v3';
+const CACHE_NAME = 'faltaunosp-cache-v2';
+const urlsToCache = [
+  '/',
+  './index.html',
+  './manifest.json',
+  './logo.png',
+  'https://cdn.tailwindcss.com',
+  'https://unpkg.com/lucide@latest'
+];
 
-self.addEventListener('install', (e) => {
-  self.skipWaiting();
+// Instalación del Service Worker
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => self.skipWaiting())
+  );
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (key !== CACHE_NAME) {
-          return caches.delete(key);
+// Activación y limpieza de cachés viejas
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// Interceptación de peticiones de red
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
+          return response;
         }
-      }));
-    })
-  );
-  return self.clients.claim();
-});
-
-self.addEventListener('fetch', (e) => {
-  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-});
-
-// Escuchar notificaciones Push
-self.addEventListener('push', (event) => {
-  let data = { title: "Falta Uno SP ⚽", body: "¡Hay una nueva convocatoria en la ciudad!" };
-  
-  if (event.data) {
-    try { data = event.data.json(); } catch (e) { data.body = event.data.text(); }
-  }
-
-  const options = {
-    body: data.body,
-    icon: 'https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png',
-    badge: 'https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png',
-    vibrate: [200, 100, 200]
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(data.title, options)
-  );
-});
-
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    clients.openWindow('/CorriendolabolaSP/')
+        return fetch(event.request).catch(() => {
+          // Si falla la red y es una navegación, se puede mostrar una vista previa o index
+          if (event.request.mode === 'navigate') {
+            return caches.match('./index.html');
+          }
+        });
+      })
   );
 });
