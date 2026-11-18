@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Falta Uno SP ⚽ | Comunidad Deportiva Sáenz Peña</title>
     
+    <!-- ==================== METADATOS DE COMPARTIR (OPEN GRAPH / WHATSAPP) ==================== -->
+    <meta property="og:title" content="Falta Uno SP ⚽ | Comunidad Deportiva Sáenz Peña">
+    <meta property="og:description" content="¡Unite a la comunidad deportiva! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo. 🏟️🔥">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png">
+    <meta property="og:url" content="https://kanchapro.app/">
+    <meta property="og:type" content="website">
+
     <!-- Configuración PWA e Icono de la App -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_0000000062d4820e83c4713b40a6b2a5.png">
@@ -704,7 +711,7 @@
 
         window.compartirAplicacion = async () => {
             const tituloApp = "Falta Uno SP ⚽";
-            const textoApp = "¡Unite a la comunidad deportiva de Sáenz Peña! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo en Falta Uno SP:";
+            const textoApp = "🏟️ ¡Unite a la comunidad deportiva de Sáenz Peña! Encontrá partidos, armá tus convocatorias, revisá canchas libres y pedí para el tercer tiempo en Falta Uno SP:";
             const urlApp = window.location.origin + window.location.pathname;
 
             if (navigator.share) {
@@ -1562,7 +1569,7 @@
             if (partidoActual) {
                 const telLimpio = (partidoActual.whatsapp || '').replace(/\D/g, '');
                 const textoWsp = encodeURIComponent(`¡Hola ${partidoActual.organizador}! Soy *${nombre}* (${posicion}) y acabo de anotarme en *Falta Uno SP* para tu convocatoria en (${partidoActual.cancha}). ¡Confirmame así ya quedamos en contacto! ⚽🥎`);
-                window.open(`https://wa.me/549${telLimpio}?text=${textoWsp}`, '_blank');
+                window.open(`https://api.whatsapp.com/send?text=${telLimpio}&text=${textoWsp}`, '_blank');
             }
         };
 
@@ -1602,7 +1609,7 @@
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
+                            if (!document.getElementById('modalAdminPanel'].classList?.contains('hidden')) renderizarAdminTercerTiempo();
                             renderizarTercerTiempo();
                         });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'reputations'), (snap) => {
