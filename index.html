@@ -79,6 +79,11 @@
 
                 <!-- Botones Superiores -->
                 <div class="flex items-center gap-2">
+                    <!-- Botón Alertas Push -->
+                    <button onclick="solicitarPermisoNotificaciones()" class="w-10 h-10 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-emerald-300 border border-emerald-500/30 flex items-center justify-center text-sm transition shadow-sm" title="Activar Alertas">
+                        🔔
+                    </button>
+                    <!-- Botón Panel Administrador -->
                     <button onclick="abrirModalAdmin()" class="w-10 h-10 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-emerald-300 border border-emerald-500/30 flex items-center justify-center text-sm transition shadow-sm" title="Panel Administrador">
                         ⚙️
                     </button>
@@ -201,7 +206,7 @@
                     </div>
                     <div id="campoFaltanContainer">
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelFaltanTexto">¿Cuántos faltan?</label>
-                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                        <input type="number" id="faltan" min="1" max="15" value="1" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white">
                     </div>
                     <div id="campoPuestoContainer">
                         <label class="block text-xs font-semibold text-slate-300 mb-1" id="labelPuestoTexto">Puesto</label>
@@ -546,6 +551,27 @@
 
         window.cerrarBannerInstalacion = () => {
             document.getElementById('bannerInstalacion').classList.add('hidden');
+        };
+
+        // Función para solicitar permisos de notificaciones push nativas
+        window.solicitarPermisoNotificaciones = async () => {
+            if (!("Notification" in window)) {
+                alert("Este navegador no soporta notificaciones.");
+                return;
+            }
+            const permiso = await Notification.requestPermission();
+            if (permiso === "granted") {
+                alert("✅ ¡Alertas activadas! Recibirás avisos de nuevos partidos.");
+                if ('serviceWorker' in navigator) {
+                    const reg = await navigator.serviceWorker.ready;
+                    reg.showNotification("¡Falta Uno SP Conectado! ⚽", {
+                        body: "Te avisaremos cada vez que se arme un partido.",
+                        icon: "https://raw.githubusercontent.com/Kanchapro/CorriendolabolaSP/refs/heads/main/file_000000004f34820e8ec7d013ff84aecc.png"
+                    });
+                }
+            } else {
+                alert("❌ Permiso denegado desde el navegador.");
+            }
         };
 
         const hoyStr = new Date().toISOString().split('T')[0];
@@ -940,8 +966,6 @@
 
             let detalleFaltan = esRival ? `` : `🥅 *Faltan:* ${faltan} jugador(es)${puesto && puesto !== 'Cualquiera' ? ` (Puesto: *${puesto}*)` : ''}\n`;
             let textoNota = nota ? `💬 _"${nota}"_\n` : '';
-
-            // Obtiene la URL actual de la página (tu GitHub Pages)
             const linkWeb = window.location.href;
 
             let mensaje = `${titulo}\n\n` +
@@ -1037,7 +1061,7 @@
                             <button onclick="abrirModalCalificar('${p.id}')" class="text-[10px] text-amber-400 hover:underline">⭐ Calificar</button>
                         </div>
                         <div class="flex gap-2">
-                            <!-- Botón de Compartir a WhatsApp con enlace a la web -->
+                            <!-- Botón Compartir a WhatsApp -->
                             <button onclick="compartirWhatsApp('${p.cancha}', '${p.fecha}', '${p.hora}', '${p.modalidad}', ${p.faltan || 1}, '${p.puesto || ''}', '${p.nota || ''}', '${p.organizador}', ${p.esTorneo || false}, ${p.esRival || false})" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1">
                                 📢 Compartir
                             </button>
