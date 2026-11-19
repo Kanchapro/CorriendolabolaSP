@@ -101,7 +101,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-32 antialiased selection:bg-emerald-500 selection:text-slate-950">
+<body class="min-h-screen flex flex-col pb-36 antialiased selection:bg-emerald-500 selection:text-slate-950">
 
     <!-- ==================== BANNER FLOTANTE DE INSTALACIÓN ==================== -->
     <div id="bannerInstalacion" class="hidden fixed top-3 left-3 right-3 max-w-xl mx-auto z-50 bg-slate-900/95 border border-emerald-500/50 text-white px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-xl flex items-center justify-between gap-3 modal-animate">
@@ -128,7 +128,7 @@
     <header class="header-pro sticky top-0 z-40">
         <div class="max-w-3xl mx-auto px-4 py-3">
             
-            <div class="grid grid-cols-3 items-center gap-2 mb-3">
+            <div class="grid grid-cols-3 items-center gap-2 mb-2">
                 <!-- Izquierda: Botones Compartir y Notificaciones -->
                 <div class="flex items-center gap-1.5 justify-start">
                     <button onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
@@ -157,6 +157,14 @@
                         <span id="textoBotonPrincipal">Publicar</span>
                     </button>
                 </div>
+            </div>
+
+            <!-- Indicador de Personas en Línea (Tiempo Real) -->
+            <div class="flex items-center justify-center gap-2 mb-3 bg-emerald-500/10 border border-emerald-500/20 py-1.5 px-3 rounded-xl max-w-xs mx-auto text-center">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-[11px] font-bold text-emerald-300">
+                    <span id="contadorOnline">1</span> personas navegando ahora en Sáenz Peña 🏟️
+                </span>
             </div>
 
             <!-- 3 Pestañas de Navegación -->
@@ -202,7 +210,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS (AUTOGESTIÓN Y SOLAPAS DEPORTIVAS) -->
+        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS -->
         <section id="vista-canchas" class="hidden space-y-4">
             <div class="card-pro rounded-2xl p-4 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
                 <div>
@@ -215,7 +223,6 @@
                 </button>
             </div>
 
-            <!-- Solapas de Canchas: Fútbol vs Pádel -->
             <div class="grid grid-cols-2 gap-2 bg-stadium-900 p-1 rounded-2xl border border-white/10">
                 <button onclick="setSubTabCanchas('Futbol')" id="subtab-Futbol" class="py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Complejos de Fútbol
@@ -225,7 +232,6 @@
                 </button>
             </div>
 
-            <!-- Listado de Botones de Complejos -->
             <div id="listaComplejosBotones" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="card-pro rounded-2xl p-8 text-center col-span-full">
                     <div class="inline-block w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-3"></div>
@@ -246,7 +252,6 @@
                         <p class="text-xs text-slate-400 mt-0.5">Kioscos, casas de picadas, bebidas y comercios recomendados en Sáenz Peña.</p>
                     </div>
                 </div>
-                <!-- BOTÓN MERCADO PAGO AUSPICIOS AUTOMÁTICOS -->
                 <a href="https://mpago.la/2uXPnd7" target="_blank" class="w-full sm:w-auto bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shrink-0">
                     <span>💳 Auspiciar Local ($)</span>
                     <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -384,15 +389,8 @@
                 </button>
             </div>
 
-            <!-- Solapas de Días -->
-            <div id="grillaDiasComplejo" class="grid grid-cols-3 gap-1.5 bg-stadium-950 p-1 rounded-2xl mb-4 border border-white/10">
-                <!-- Se llena dinámicamente -->
-            </div>
-
-            <!-- Grilla de Horarios y Canchas -->
-            <div id="contenedorGrillaHorarios" class="space-y-3 mb-5">
-                <!-- Se llena dinámicamente -->
-            </div>
+            <div id="grillaDiasComplejo" class="grid grid-cols-3 gap-1.5 bg-stadium-950 p-1 rounded-2xl mb-4 border border-white/10"></div>
+            <div id="contenedorGrillaHorarios" class="space-y-3 mb-5"></div>
 
             <div class="pt-3 border-t border-white/10 flex justify-between items-center">
                 <a id="btnChatComplejoModal" href="#" target="_blank" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
@@ -420,7 +418,7 @@
         </div>
     </div>
 
-    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO (HORARIOS FIJOS CRONOLÓGICOS) -->
+    <!-- MODAL PANEL AUTOGESTIÓN COMPLEJO -->
     <div id="modalPanelAutogestion" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
@@ -433,7 +431,6 @@
                 </button>
             </div>
 
-            <!-- Formulario simplificado -->
             <form onsubmit="generarGrillaFijaAutogestion(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10 mb-5">
                 <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Cargar Cancha y Horarios en Orden Cronológico</h3>
                 <div class="grid grid-cols-2 gap-3">
@@ -454,9 +451,7 @@
             </form>
 
             <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Turnos activos (Tocá para cambiar Libre 🟢 / Ocupado 🔴)</h3>
-            <div id="listaTurnosAutogestion" class="space-y-2.5">
-                <!-- Se llena dinámicamente -->
-            </div>
+            <div id="listaTurnosAutogestion" class="space-y-2.5"></div>
         </div>
     </div>
 
@@ -476,7 +471,7 @@
         </div>
     </div>
 
-    <!-- MODAL ADMIN PANEL (CON SELECTOR DE DEPORTE) -->
+    <!-- MODAL ADMIN PANEL -->
     <div id="modalAdminPanel" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
@@ -628,53 +623,11 @@
         </div>
     </div>
 
-    <!-- OTROS MODALES DE ACCIÓN -->
-    <div id="modalSumarse" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-stadium-900 border border-white/15 w-full max-w-sm rounded-3xl p-6 shadow-2xl modal-animate">
-            <h3 class="font-display text-lg font-extrabold text-white mb-1">🙋‍♂️ ¡Me sumo al partido!</h3>
-            <p class="text-xs text-slate-400 mb-4">Completá tus datos para anotarte.</p>
-            <input type="hidden" id="partidoIdSumarse">
-            <div class="space-y-3.5 mb-5">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Tu Nombre / Apodo</label>
-                    <input type="text" id="nombreJugadorSumarse" placeholder="Ej: Dani" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Posición en Cancha</label>
-                    <select id="posicionJugadorSumarse" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <option value="Arquero">🧤 Arquero</option>
-                        <option value="Defensor">🛡️ Defensor</option>
-                        <option value="Mediocampista">⚙️ Mediocampista</option>
-                        <option value="Delantero">⚡ Delantero</option>
-                        <option value="Revés / Drive">🎾 Pádel (Revés / Drive)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex gap-2.5">
-                <button onclick="cerrarModalSumarse()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-sm transition">Cancelar</button>
-                <button onclick="confirmarSumarse()" class="flex-1 btn-glow text-slate-950 font-extrabold py-2.5 rounded-xl text-sm transition">Confirmar 📲</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="modalCalificar" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-stadium-900 border border-white/15 w-full max-w-md rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto modal-animate">
-            <h3 class="font-display text-lg font-extrabold text-white mb-1">⭐ Reputación de Jugadores</h3>
-            <p class="text-xs text-slate-400 mb-4">Confirmá quiénes asistieron al partido.</p>
-            <input type="hidden" id="partidoIdCalificar">
-            <div id="listaJugadoresACalificar" class="space-y-2.5 mb-5"></div>
-            <div class="flex gap-2.5">
-                <button onclick="cerrarModalCalificar()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-sm">Cerrar</button>
-                <button onclick="guardarCalificaciones()" class="flex-1 btn-glow text-slate-950 font-extrabold py-2.5 rounded-xl text-sm">Guardar ⭐</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ==================== LÓGICA DE APLICACIÓN ==================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         lucide.createIcons();
 
@@ -720,7 +673,6 @@
         let pub1Cache = [];
         let pub2Cache = [];
         let tercerTiempoCache = [];
-        let reputacionCache = {};
         
         let complejoSeleccionadoModal = null;
         let fechaSeleccionadaModal = '';
@@ -846,8 +798,6 @@
 
         function renderizarComplejosBotones() {
             const contenedor = document.getElementById('listaComplejosBotones');
-            
-            // Filtrar complejos por deporte (Si no tienen la propiedad deporte, se asume Fútbol por compatibilidad)
             const complejosFiltrados = complejosAdminCache.filter(comp => {
                 const deporte = comp.deporte || 'Futbol';
                 return deporte === subTabCanchasActual;
@@ -939,18 +889,10 @@
 
             const turnosDelComplejo = canchasCache.filter(c => c.complejo === complejoSeleccionadoModal.nombre && c.fecha === fechaSeleccionadaModal);
 
-            // ORDEN CRONOLÓGICO ESTRICTO DE 15:00 A 01:00 HS
             const ordenHorarios = [
-                "15:00 a 16:00 hs",
-                "16:00 a 17:00 hs",
-                "17:00 a 18:00 hs",
-                "18:00 a 19:00 hs",
-                "19:00 a 20:00 hs",
-                "20:00 a 21:00 hs",
-                "21:00 a 22:00 hs",
-                "22:00 a 23:00 hs",
-                "23:00 a 00:00 hs",
-                "00:00 a 01:00 hs"
+                "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
+                "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
+                "23:00 a 00:00 hs", "00:00 a 01:00 hs"
             ];
 
             turnosDelComplejo.sort((a, b) => {
@@ -1001,7 +943,6 @@
             }).join('');
         }
 
-        // AUTOGESTIÓN DE COMPLEJOS POR PIN (GENERACIÓN CRONOLÓGICA DE 15:00 A 01:00 HS)
         window.abrirModalAdminPinComplejo = () => {
             document.getElementById('inputPinComplejoAutogestion').value = '';
             document.getElementById('modalAdminPinComplejo').classList.remove('hidden');
@@ -1036,18 +977,10 @@
                 precioInput = '$' + precioInput;
             }
 
-            // Franjas horarias estrictamente en orden cronológico
             const franjasFijas = [
-                "15:00 a 16:00 hs",
-                "16:00 a 17:00 hs",
-                "17:00 a 18:00 hs",
-                "18:00 a 19:00 hs",
-                "19:00 a 20:00 hs",
-                "20:00 a 21:00 hs",
-                "21:00 a 22:00 hs",
-                "22:00 a 23:00 hs",
-                "23:00 a 00:00 hs",
-                "00:00 a 01:00 hs"
+                "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
+                "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
+                "23:00 a 00:00 hs", "00:00 a 01:00 hs"
             ];
 
             for (const horarios of franjasFijas) {
@@ -1074,7 +1007,6 @@
             if (!complejoAutogestionadoActual) return;
 
             const misTurnos = canchasCache.filter(c => c.complejo === complejoAutogestionadoActual.nombre);
-            
             const ordenHorarios = [
                 "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
                 "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
@@ -1128,7 +1060,6 @@
             }
         };
 
-        // ADMINISTRADOR GENERAL
         window.abrirModalAdmin = () => {
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('modalAdminLogin').classList.remove('hidden');
@@ -1166,7 +1097,7 @@
             const nuevo = {
                 nombre: document.getElementById('adminNombreComp').value.trim(),
                 pin: document.getElementById('adminPinComp').value.trim(),
-                deporte: document.getElementById('adminDeporteComp').value, // 'Futbol' o 'Padel'
+                deporte: document.getElementById('adminDeporteComp').value,
                 direccion: document.getElementById('adminDirComp').value.trim(),
                 whatsapp: document.getElementById('adminWspComp').value.trim(),
                 creadoEn: serverTimestamp()
@@ -1506,6 +1437,43 @@
             lucide.createIcons();
         }
 
+        // SISTEMA DE PRESENCIA EN LÍNEA EN TIEMPO REAL
+        function iniciarPresenciaOnline(db, auth) {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const sessionId = 'user_' + Math.random().toString(36).substring(2, 9);
+                    const refPresencia = doc(db, 'artifacts', appId, 'public', 'data', 'presence', sessionId);
+
+                    // Registrar presencia inicial y mantenerla activa cada 20 segundos
+                    const latido = async () => {
+                        try {
+                            await setDoc(refPresencia, { ultimoAcceso: serverTimestamp() }, { merge: true });
+                        } catch (e) {}
+                    };
+
+                    latido();
+                    setInterval(latido, 20000);
+
+                    // Escuchar cuántos usuarios tuvieron actividad en los últimos 45 segundos
+                    onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'presence'), (snap) => {
+                        const ahora = Date.now();
+                        let contador = 0;
+                        snap.forEach(d => {
+                            const data = d.data();
+                            if (data.ultimoAcceso) {
+                                const tiempoMs = data.ultimoAcceso.toMillis ? data.ultimoAcceso.toMillis() : ahora;
+                                // Si mandó señal en los últimos 45 segundos, se cuenta como activo
+                                if ((ahora - tiempoMs) < 45000) {
+                                    contador++;
+                                }
+                            }
+                        });
+                        document.getElementById('contadorOnline').textContent = Math.max(1, contador);
+                    });
+                }
+            });
+        }
+
         async function iniciarApp() {
             const statusDot = document.getElementById('statusDot');
             try {
@@ -1513,6 +1481,8 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
                 await signInAnonymously(auth);
+
+                iniciarPresenciaOnline(db, auth);
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
