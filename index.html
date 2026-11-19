@@ -139,7 +139,7 @@
                     </button>
                 </div>
 
-                <!-- Centro: Logo y Título (Doble toque secreto para Administrar) -->
+                <!-- Centro: Logo y Título (Doble toque secreto para Administrador General) -->
                 <div class="flex flex-col items-center text-center cursor-pointer select-none" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
                     <div class="relative mb-1.5">
                         <img src="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png" alt="Logo Falta Uno SP" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-xl shadow-emerald-500/10 bg-stadium-950 mx-auto">
@@ -150,7 +150,7 @@
                     </h1>
                 </div>
 
-                <!-- Derecha: Botón Publicar -->
+                <!-- Derecha: Botón Publicar / Solicitar Complejo -->
                 <div class="flex justify-end">
                     <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-3.5 h-9 rounded-xl flex items-center gap-1.5 shadow-md">
                         <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
@@ -210,19 +210,28 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS -->
-        <section id="vista-canchas" class="hidden space-y-4">
-            <div class="card-pro rounded-2xl p-4 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
-                <div>
-                    <h3 class="font-display text-sm font-bold text-white">🏟️ Complejos Deportivos</h3>
-                    <p class="text-[11px] text-slate-400">Elegí un complejo para ver sus canchas y horarios libres o administrar con tu PIN.</p>
+        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS (DISEÑO COMPACTO Y ACCESO PIN / WHATSAPP) -->
+        <section id="vista-canchas" class="hidden space-y-3">
+            <div class="card-pro rounded-2xl p-3 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <h3 class="font-display text-xs font-bold text-white truncate">🏟️ Gestión de Complejos</h3>
+                    <p class="text-[10px] text-slate-400 truncate">¿Tenés complejo? Pedinos tu PIN o ingresá.</p>
                 </div>
-                <button onclick="abrirModalAdminPinComplejo()" class="btn-glow text-slate-950 font-extrabold text-[11px] px-3 py-2 rounded-xl transition shrink-0 flex items-center gap-1.5">
-                    <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
-                    <span>Soy Complejo (PIN)</span>
-                </button>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <!-- Botón para pedir PIN por WhatsApp -->
+                    <button onclick="solicitarPinComplejoWsp()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[10px] px-2.5 py-2 rounded-xl transition flex items-center gap-1 shadow-md">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        <span>Pedir PIN</span>
+                    </button>
+                    <!-- Botón compacto para ingresar PIN y administrar -->
+                    <button onclick="abrirModalAdminPinComplejo()" class="bg-stadium-800 hover:bg-stadium-700 text-emerald-400 border border-emerald-500/30 font-extrabold text-[10px] px-2.5 py-2 rounded-xl transition flex items-center gap-1">
+                        <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+                        <span>Soy Complejo</span>
+                    </button>
+                </div>
             </div>
 
+            <!-- Solapas de Canchas: Fútbol vs Pádel -->
             <div class="grid grid-cols-2 gap-2 bg-stadium-900 p-1 rounded-2xl border border-white/10">
                 <button onclick="setSubTabCanchas('Futbol')" id="subtab-Futbol" class="py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Complejos de Fútbol
@@ -232,6 +241,7 @@
                 </button>
             </div>
 
+            <!-- Listado de Botones de Complejos -->
             <div id="listaComplejosBotones" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="card-pro rounded-2xl p-8 text-center col-span-full">
                     <div class="inline-block w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-3"></div>
@@ -627,9 +637,17 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         lucide.createIcons();
+
+        // Número de WhatsApp administrador para solicitar PIN (Cámbialo si es necesario)
+        const NUMERO_ADMIN_WSP = "5493644000000";
+
+        window.solicitarPinComplejoWsp = () => {
+            const mensaje = encodeURIComponent("¡Hola! Quiero sumar mi complejo deportivo a *Falta Uno SP* y necesito que me habiliten mi PIN de acceso para autogestionar mis horarios. 🏟️");
+            window.open(`https://wa.me/${NUMERO_ADMIN_WSP}?text=${mensaje}`, '_blank');
+        };
 
         window.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
@@ -709,7 +727,7 @@
             } else if (tab === 'canchas') {
                 vistaCanchas.classList.remove('hidden');
                 btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
-                textoBtnPrincipal.textContent = "Nuevo Complejo";
+                textoBtnPrincipal.textContent = "Pedir PIN";
             } else if (tab === 'tercer-tiempo') {
                 vistaTercerTiempo.classList.remove('hidden');
                 btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
@@ -719,7 +737,7 @@
 
         window.manejarBotonPrincipal = () => {
             if (tabActual === 'falta-uno' || tabActual === 'tercer-tiempo') window.abrirModalPartido();
-            else window.abrirModalAdmin();
+            else window.solicitarPinComplejoWsp();
         };
 
         window.abrirModalPartido = () => {
@@ -808,7 +826,7 @@
                     <div class="card-pro rounded-3xl p-10 text-center col-span-full">
                         <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🏟️</div>
                         <h3 class="font-display text-base font-bold text-white">No hay complejos de ${subTabCanchasActual === 'Futbol' ? 'Fútbol' : 'Pádel'}</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Agregá complejos desde el panel de administración.</p>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Pedinos tu PIN para dar de alta tu complejo.</p>
                     </div>`;
                 return;
             }
@@ -1437,14 +1455,12 @@
             lucide.createIcons();
         }
 
-        // SISTEMA DE PRESENCIA EN LÍNEA EN TIEMPO REAL
         function iniciarPresenciaOnline(db, auth) {
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     const sessionId = 'user_' + Math.random().toString(36).substring(2, 9);
                     const refPresencia = doc(db, 'artifacts', appId, 'public', 'data', 'presence', sessionId);
 
-                    // Registrar presencia inicial y mantenerla activa cada 20 segundos
                     const latido = async () => {
                         try {
                             await setDoc(refPresencia, { ultimoAcceso: serverTimestamp() }, { merge: true });
@@ -1454,7 +1470,6 @@
                     latido();
                     setInterval(latido, 20000);
 
-                    // Escuchar cuántos usuarios tuvieron actividad en los últimos 45 segundos
                     onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'presence'), (snap) => {
                         const ahora = Date.now();
                         let contador = 0;
@@ -1462,7 +1477,6 @@
                             const data = d.data();
                             if (data.ultimoAcceso) {
                                 const tiempoMs = data.ultimoAcceso.toMillis ? data.ultimoAcceso.toMillis() : ahora;
-                                // Si mandó señal en los últimos 45 segundos, se cuenta como activo
                                 if ((ahora - tiempoMs) < 45000) {
                                     contador++;
                                 }
