@@ -150,10 +150,10 @@
                     </h1>
                 </div>
 
-                <!-- Derecha: Botón Publicar / Solicitar Complejo -->
+                <!-- Derecha: Botón Dinámico (Publicar Convocatoria o Auspiciar Local con Mercado Pago) -->
                 <div class="flex justify-end">
                     <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-3.5 h-9 rounded-xl flex items-center gap-1.5 shadow-md">
-                        <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                        <i id="iconoBotonPrincipal" data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
                         <span id="textoBotonPrincipal">Publicar</span>
                     </button>
                 </div>
@@ -210,7 +210,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS (DISEÑO COMPACTO Y ACCESO PIN / WHATSAPP) -->
+        <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS -->
         <section id="vista-canchas" class="hidden space-y-3">
             <div class="card-pro rounded-2xl p-3 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
                 <div class="min-w-0">
@@ -218,12 +218,10 @@
                     <p class="text-[10px] text-slate-400 truncate">¿Tenés complejo? Pedinos tu PIN o ingresá.</p>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                    <!-- Botón para pedir PIN por WhatsApp -->
                     <button onclick="solicitarPinComplejoWsp()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[10px] px-2.5 py-2 rounded-xl transition flex items-center gap-1 shadow-md">
                         <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
                         <span>Pedir PIN</span>
                     </button>
-                    <!-- Botón compacto para ingresar PIN y administrar -->
                     <button onclick="abrirModalAdminPinComplejo()" class="bg-stadium-800 hover:bg-stadium-700 text-emerald-400 border border-emerald-500/30 font-extrabold text-[10px] px-2.5 py-2 rounded-xl transition flex items-center gap-1">
                         <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
                         <span>Soy Complejo</span>
@@ -231,7 +229,6 @@
                 </div>
             </div>
 
-            <!-- Solapas de Canchas: Fútbol vs Pádel -->
             <div class="grid grid-cols-2 gap-2 bg-stadium-900 p-1 rounded-2xl border border-white/10">
                 <button onclick="setSubTabCanchas('Futbol')" id="subtab-Futbol" class="py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Complejos de Fútbol
@@ -241,7 +238,6 @@
                 </button>
             </div>
 
-            <!-- Listado de Botones de Complejos -->
             <div id="listaComplejosBotones" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="card-pro rounded-2xl p-8 text-center col-span-full">
                     <div class="inline-block w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-3"></div>
@@ -252,14 +248,15 @@
 
         <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
-            <div class="card-pro rounded-2xl p-5 border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- BANNER / TARJETA INCENTIVO PARA COMERCIOS (OFERTAS, 2X1, PICADAS) -->
+            <div class="card-pro rounded-2xl p-5 border-amber-500/30 bg-gradient-to-br from-amber-500/15 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
                         🍻
                     </div>
                     <div>
-                        <h2 class="font-display text-base font-bold text-white">El Tercer Tiempo</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Kioscos, casas de picadas, bebidas y comercios recomendados en Sáenz Peña.</p>
+                        <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
+                        <p class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
                     </div>
                 </div>
                 <a href="https://mpago.la/2uXPnd7" target="_blank" class="w-full sm:w-auto bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shrink-0">
@@ -641,8 +638,8 @@
 
         lucide.createIcons();
 
-        // Número de WhatsApp administrador para solicitar PIN (Cámbialo si es necesario)
         const NUMERO_ADMIN_WSP = "5493644000000";
+        const LINK_MERCADO_PAGO = "https://mpago.la/2uXPnd7";
 
         window.solicitarPinComplejoWsp = () => {
             const mensaje = encodeURIComponent("¡Hola! Quiero sumar mi complejo deportivo a *Falta Uno SP* y necesito que me habiliten mi PIN de acceso para autogestionar mis horarios. 🏟️");
@@ -710,7 +707,9 @@
             const btnTabFalta = document.getElementById('tab-falta-uno');
             const btnTabCanchas = document.getElementById('tab-canchas');
             const btnTabTercer = document.getElementById('tab-tercer-tiempo');
+            
             const textoBtnPrincipal = document.getElementById('textoBotonPrincipal');
+            const iconoBtnPrincipal = document.getElementById('iconoBotonPrincipal');
 
             btnTabFalta.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
             btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
@@ -724,20 +723,29 @@
                 vistaFalta.classList.remove('hidden');
                 btnTabFalta.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Publicar";
+                iconoBtnPrincipal.setAttribute('data-lucide', 'plus');
             } else if (tab === 'canchas') {
                 vistaCanchas.classList.remove('hidden');
                 btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
                 textoBtnPrincipal.textContent = "Pedir PIN";
+                iconoBtnPrincipal.setAttribute('data-lucide', 'key-round');
             } else if (tab === 'tercer-tiempo') {
                 vistaTercerTiempo.classList.remove('hidden');
                 btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
-                textoBtnPrincipal.textContent = "Publicar";
+                textoBtnPrincipal.textContent = "Auspiciar Local ($)";
+                iconoBtnPrincipal.setAttribute('data-lucide', 'credit-card');
             }
+            lucide.createIcons();
         };
 
         window.manejarBotonPrincipal = () => {
-            if (tabActual === 'falta-uno' || tabActual === 'tercer-tiempo') window.abrirModalPartido();
-            else window.solicitarPinComplejoWsp();
+            if (tabActual === 'falta-uno') {
+                window.abrirModalPartido();
+            } else if (tabActual === 'canchas') {
+                window.solicitarPinComplejoWsp();
+            } else if (tabActual === 'tercer-tiempo') {
+                window.open(LINK_MERCADO_PAGO, '_blank');
+            }
         };
 
         window.abrirModalPartido = () => {
