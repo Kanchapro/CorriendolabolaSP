@@ -129,13 +129,10 @@
         <div class="max-w-3xl mx-auto px-4 py-3">
             
             <div class="grid grid-cols-3 items-center gap-2 mb-2">
-                <!-- Izquierda: Botones Compartir y Notificaciones -->
+                <!-- Izquierda: Botón Compartir -->
                 <div class="flex items-center gap-1.5 justify-start">
-                    <button onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
+                    <button type="button" onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
                         <i data-lucide="share-2" class="w-4 h-4"></i>
-                    </button>
-                    <button onclick="solicitarPermisoNotificaciones()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Activar Alertas de Partidos">
-                        <i data-lucide="bell" class="w-4 h-4"></i>
                     </button>
                 </div>
 
@@ -172,7 +169,7 @@
                 <button id="tab-falta-uno" onclick="cambiarTab('falta-uno')" class="py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5">
                     <span>⚽</span> Convocatorias
                 </button>
-                <button id="tab-canchas" onclick="cambiarTab('canchas')" class="py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                <button id="tab-canchas" onclick="manejarClickTabCanchas()" class="py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5 select-none" title="Tocá para ver canchas • Doble toque rápido para ingresar PIN">
                     <span>🏟️</span> Canchas
                 </button>
                 <button id="tab-tercer-tiempo" onclick="cambiarTab('tercer-tiempo')" class="py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
@@ -229,7 +226,7 @@
             </div>
 
             <p class="text-[11px] text-slate-500 text-center pt-1">
-                Tip: Tocá un complejo para ver su grilla o hacé <strong class="text-slate-400">doble click</strong> sobre la cancha para ingresar tu PIN de administración.
+                Tip: Tocá el botón <strong class="text-slate-400">Canchas</strong> dos veces rápidas para ingresar tu PIN o tocá un complejo para ver su grilla.
             </p>
         </section>
 
@@ -471,6 +468,66 @@
                     <span>Publicar en Tercer Tiempo (72 hs)</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR COMERCIO TERCER TIEMPO (ADMIN) -->
+    <div id="modalEditarTercerTiempo" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
+            <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center">
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </span>
+                    <div>
+                        <h2 class="font-display text-lg font-extrabold text-white">Editar Comercio</h2>
+                        <p class="text-[11px] text-slate-400">Modificá los datos o renová la vigencia de 72 hs</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cerrarModalEditarTercerTiempo()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="formEditarTercerTiempo" onsubmit="guardarEdicionTercerTiempo(event)" class="space-y-4">
+                <input type="hidden" id="editTtId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Nombre del Comercio</label>
+                    <input type="text" id="editTtTitle" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Foto o Logo del Local (opcional)</label>
+                    <div class="flex items-center gap-3 bg-stadium-950 border border-white/10 rounded-xl p-2.5">
+                        <img id="previewEditTtImg" src="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png" alt="Vista previa" class="w-12 h-12 rounded-xl object-cover border border-sky-500/30 shrink-0 bg-stadium-900">
+                        <div class="min-w-0 flex-1">
+                            <input type="file" id="editTtImgFile" accept="image/*" onchange="previsualizarArchivoTercerTiempo(this, 'previewEditTtImg')" class="block w-full text-xs text-slate-300 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30 cursor-pointer">
+                            <p class="text-[10px] text-slate-500 mt-1">Dejalo vacío para mantener la foto actual.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp (sin 0 ni 15)</label>
+                        <input type="tel" id="editTtWsp" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Categoría</label>
+                        <input type="text" id="editTtCategoria" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Descripción corta o Promo</label>
+                    <input type="text" id="editTtDesc" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div class="bg-stadium-950/90 border border-white/10 rounded-xl p-3 flex items-center gap-3">
+                    <input type="checkbox" id="editTtRenovar72Hs" class="w-4 h-4 accent-sky-500 rounded">
+                    <label for="editTtRenovar72Hs" class="text-xs font-semibold text-slate-200 cursor-pointer">Renovar vigencia de 72 horas desde ahora</label>
+                </div>
+                <div class="flex gap-2.5 pt-1">
+                    <button type="button" onclick="cerrarModalEditarTercerTiempo()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-3 rounded-xl text-xs transition">Cancelar</button>
+                    <button type="submit" id="btnSubmitEditTt" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold py-3 rounded-xl text-xs transition">Guardar Cambios</button>
+                </div>
             </form>
         </div>
     </div>
@@ -811,9 +868,56 @@
         const LOGO_FALLBACK = "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png";
         const DURACION_72HS_MS = 72 * 60 * 60 * 1000;
 
+        let ultimoClickTabCanchas = 0;
+
         function obtenerLinkWhatsAppAdmin(mensaje) {
             return `https://wa.me/${NUMERO_ADMIN_WSP}?text=${encodeURIComponent(mensaje)}`;
         }
+
+        window.compartirAplicacion = async () => {
+            const urlApp = (window.location.href && window.location.href.startsWith('http'))
+                ? window.location.href
+                : 'https://faltaunosp.kanchapro.app/';
+            const datosCompartir = {
+                title: 'Falta Uno SP ⚽',
+                text: '¡Unite a Falta Uno SP! Encontrá partidos, canchas libres y promos del 3er tiempo en Sáenz Peña. 🏟️🔥',
+                url: urlApp
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(datosCompartir);
+                    return;
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return;
+                }
+            }
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(urlApp);
+                    alert(`✅ Enlace copiado al portapapeles:\n${urlApp}`);
+                    return;
+                }
+            } catch (e) {}
+
+            prompt('Copiá este enlace para compartir Falta Uno SP:', urlApp);
+        };
+
+        window.manejarClickTabCanchas = () => {
+            const ahora = Date.now();
+            const esDobleToqueRapido = (ahora - ultimoClickTabCanchas) <= 350;
+            ultimoClickTabCanchas = ahora;
+
+            if (tabActual !== 'canchas') {
+                window.cambiarTab('canchas');
+            }
+
+            if (esDobleToqueRapido) {
+                ultimoClickTabCanchas = 0;
+                window.abrirModalAdminPinComplejo();
+            }
+        };
 
         window.solicitarPinComercioWsp = () => {
             const mensaje = "¡Hola! Quiero publicar mi kiosco o local en *Tercer Tiempo* de *Falta Uno SP* y necesito que me asignen un PIN de comercio. 🍻";
@@ -1016,8 +1120,8 @@
                     btnLibreAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition";
                     btnMpAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
                 } else {
-                    btnMpAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold bg-sky-500 text-slate-950 transition";
                     btnLibreAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+                    btnMpAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold bg-sky-500 text-slate-950 transition";
                 }
             }
 
@@ -1190,6 +1294,74 @@
             }
         };
 
+        window.abrirModalEditarTercerTiempo = (idComercio) => {
+            const comercio = tercerTiempoCache.find(t => t.id === idComercio);
+            if (!comercio) return;
+
+            document.getElementById('editTtId').value = comercio.id;
+            document.getElementById('editTtTitle').value = comercio.titulo || '';
+            document.getElementById('editTtWsp').value = comercio.whatsapp || '';
+            document.getElementById('editTtCategoria').value = comercio.categoria || '';
+            document.getElementById('editTtDesc').value = comercio.descripcion || '';
+            document.getElementById('editTtImgFile').value = '';
+            document.getElementById('previewEditTtImg').src = comercio.imgUrl || LOGO_FALLBACK;
+            document.getElementById('editTtRenovar72Hs').checked = false;
+
+            document.getElementById('modalEditarTercerTiempo').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.cerrarModalEditarTercerTiempo = () => {
+            document.getElementById('modalEditarTercerTiempo').classList.add('hidden');
+        };
+
+        window.guardarEdicionTercerTiempo = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+
+            const idComercio = document.getElementById('editTtId').value;
+            const original = tercerTiempoCache.find(t => t.id === idComercio);
+            if (!original) return;
+
+            const fileInput = document.getElementById('editTtImgFile');
+            const archivo = fileInput?.files?.[0];
+            const renovar72 = document.getElementById('editTtRenovar72Hs').checked;
+
+            const btnSubmit = document.getElementById('btnSubmitEditTt');
+            const textoOriginal = btnSubmit.innerHTML;
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<span>Guardando...</span>`;
+
+            try {
+                const imgActualizada = archivo
+                    ? await comprimirImagenArchivo(archivo)
+                    : (original.imgUrl || LOGO_FALLBACK);
+
+                const datosActualizados = {
+                    titulo: document.getElementById('editTtTitle').value.trim(),
+                    whatsapp: document.getElementById('editTtWsp').value.trim().replace(/\D/g, ''),
+                    categoria: document.getElementById('editTtCategoria').value.trim(),
+                    descripcion: document.getElementById('editTtDesc').value.trim(),
+                    imgUrl: imgActualizada,
+                    actualizadoEn: serverTimestamp()
+                };
+
+                if (renovar72) {
+                    datosActualizados.venceEn = Date.now() + DURACION_72HS_MS;
+                }
+
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo', idComercio), datosActualizados);
+                window.cerrarModalEditarTercerTiempo();
+                alert("✅ Comercio actualizado correctamente.");
+            } catch (err) {
+                alert("❌ " + (err.message || "No se pudo actualizar el comercio."));
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = textoOriginal;
+                lucide.createIcons();
+            }
+        };
+
         window.cambiarTab = (tab) => {
             tabActual = tab;
             const vistaFalta = document.getElementById('vista-falta-uno');
@@ -1204,7 +1376,7 @@
             const iconoBtnPrincipal = document.getElementById('iconoBotonPrincipal');
 
             btnTabFalta.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
-            btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5 select-none";
             btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
 
             vistaFalta.classList.add('hidden');
@@ -1218,7 +1390,7 @@
                 iconoBtnPrincipal.setAttribute('data-lucide', 'plus');
             } else if (tab === 'canchas') {
                 vistaCanchas.classList.remove('hidden');
-                btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
+                btnTabCanchas.className = "py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5 select-none";
                 textoBtnPrincipal.textContent = "Pedir PIN";
                 iconoBtnPrincipal.setAttribute('data-lucide', 'key-round');
             } else if (tab === 'tercer-tiempo') {
@@ -1823,7 +1995,10 @@
                             <p class="text-[10px] text-amber-400 font-semibold">${t.categoria}${t.ubicacion ? ' • 📍 GPS' : ''}</p>
                         </div>
                     </div>
-                    <button onclick="eliminarTercerTiempoAdmin('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="abrirModalEditarTercerTiempo('${t.id}')" class="bg-sky-500/15 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 text-xs px-2.5 py-1.5 rounded-lg font-semibold">Editar</button>
+                        <button type="button" onclick="eliminarTercerTiempoAdmin('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold">Eliminar</button>
+                    </div>
                 </div>
             `;
             }).join('');
