@@ -920,6 +920,14 @@
             return `https://wa.me/${NUMERO_ADMIN_WSP}?text=${encodeURIComponent(mensaje)}`;
         }
 
+        function formatearPuestoLegible(puesto) {
+            const limpio = (puesto || '').trim();
+            if (!limpio || limpio.toLowerCase() === 'cualquiera' || limpio.toLowerCase() === 'cualquier puesto') {
+                return 'Cualquier puesto';
+            }
+            return limpio;
+        }
+
         window.compartirAplicacion = async () => {
             const urlApp = (window.location.href && window.location.href.startsWith('http'))
                 ? window.location.href
@@ -1502,7 +1510,7 @@
                 ['Fútbol 5', 'Fútbol 7', 'Fútbol 8', 'Fútbol 11', 'Futsal', 'Pádel Dobles', 'Pádel Single'].forEach(m => {
                     selectModalidad.innerHTML += `<option value="${m}">${m}</option>`;
                 });
-                ['Cualquiera', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero', 'Revés', 'Drive'].forEach(p => {
+                ['Cualquier puesto', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero', 'Revés', 'Drive'].forEach(p => {
                     selectPuesto.innerHTML += `<option value="${p}">${p}</option>`;
                 });
             } else if (tipo === 'falta1_futbol') {
@@ -1511,7 +1519,7 @@
                 ['Fútbol 5', 'Fútbol 7', 'Fútbol 8', 'Fútbol 11', 'Futsal'].forEach(m => {
                     selectModalidad.innerHTML += `<option value="${m}">${m}</option>`;
                 });
-                ['Cualquiera', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero'].forEach(p => {
+                ['Cualquier puesto', 'Arquero', 'Defensor', 'Mediocampista', 'Delantero'].forEach(p => {
                     selectPuesto.innerHTML += `<option value="${p}">${p}</option>`;
                 });
             } else if (tipo === 'falta1_padel') {
@@ -1520,7 +1528,7 @@
                 ['Pádel Dobles', 'Pádel Single'].forEach(m => {
                     selectModalidad.innerHTML += `<option value="${m}">${m}</option>`;
                 });
-                ['Cualquiera', 'Revés', 'Drive', 'Izquierdo', 'Derecho'].forEach(p => {
+                ['Cualquier puesto', 'Revés', 'Drive', 'Izquierdo', 'Derecho'].forEach(p => {
                     selectPuesto.innerHTML += `<option value="${p}">${p}</option>`;
                 });
             }
@@ -2224,11 +2232,29 @@
             renderizarPartidos();
         };
 
+        window.manejarClickWhatsAppPartido = async (event, partidoId, urlWsp) => {
+            event.preventDefault();
+            try {
+                if (db && partidoId) {
+                    await updateDoc(
+                        doc(db, 'artifacts', appId, 'public', 'data', 'matches', partidoId),
+                        { estado: 'en_suspenso', puestoEnSuspensoEn: serverTimestamp() }
+                    );
+                }
+            } catch (err) {
+                console.error("No se pudo poner en suspenso:", err);
+            } finally {
+                window.open(urlWsp, '_blank');
+            }
+        };
+
         window.guardarPartido = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
             const tipo = document.getElementById('tipoConvocatoria').value;
+            const puestoElegido = formatearPuestoLegible(document.getElementById('puesto').value);
             const nuevoPartido = {
+                estado: 'activa',
                 esTorneo: tipo === 'torneo',
                 esRival: tipo === 'rival',
                 cancha: document.getElementById('canchaCustom').value.trim(),
@@ -2237,7 +2263,7 @@
                 vibe: document.getElementById('vibePartido').value,
                 modalidad: document.getElementById('modalidad').value,
                 faltan: tipo === 'rival' ? 0 : parseInt(document.getElementById('faltan').value, 10),
-                puesto: document.getElementById('puesto').value || 'Cualquiera',
+                puesto: tipo === 'rival' ? 'Equipo rival' : puestoElegido,
                 organizador: document.getElementById('organizador').value.trim(),
                 whatsapp: document.getElementById('whatsapp').value.trim(),
                 nota: document.getElementById('nota').value.trim(),
@@ -2253,6 +2279,7 @@
             const contenedor = document.getElementById('listaPartidos');
             const ahora = new Date();
             let vigentes = partidosCache.filter(p => {
+                if (p.estado === 'en_suspenso') return false;
                 if (!p.fecha || !p.hora) return true;
                 return new Date(`${p.fecha}T${p.hora}:00`) >= ahora;
             });
@@ -2281,25 +2308,93 @@
                 const telLimpio = (p.whatsapp || '').replace(/\D/g, '');
                 const [, mes, dia] = (p.fecha || hoyStr).split('-');
                 const fechaFormateada = `${dia}/${mes}`;
+                const puestoTexto = formatearPuestoLegible(p.puesto);
+                const vibeTexto = p.vibe || '⚡ Recreativo / Por joda';
+                const notaTexto = (p.nota || '').trim();
+
+                let badgeTipo = '⚽ Falta Jugador';
+                let badgeTipoClase = 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+                if (p.esRival) {
+                    badgeTipo = '🤝 Buscan Rival';
+                    badgeTipoClase = 'bg-sky-500/15 text-sky-300 border-sky-500/30';
+                } else if (p.esTorneo) {
+                    badgeTipo = '🏆 Torneo';
+                    badgeTipoClase = 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+                }
+
+                const bloqueCupo = p.esRival
+                    ? `
+                        <div class="bg-stadium-950/90 border border-sky-500/30 rounded-2xl p-3.5 mb-3.5 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center text-base shrink-0">🤝</span>
+                                <div class="min-w-0">
+                                    <p class="text-[10px] font-bold uppercase tracking-wider text-sky-400">Buscan Rival</p>
+                                    <p class="font-display text-sm font-extrabold text-white truncate">${p.modalidad} • Amistoso</p>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-sky-500/15 text-sky-300 border border-sky-500/30 shrink-0">${vibeTexto}</span>
+                        </div>
+                    `
+                    : `
+                        <div class="bg-stadium-950/90 border ${completo ? 'border-slate-700' : 'border-emerald-500/35'} rounded-2xl p-3.5 mb-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="px-3 py-1.5 rounded-xl ${completo ? 'bg-slate-800 text-slate-400 border border-white/10' : 'bg-emerald-500 text-slate-950 shadow-sm'} font-display font-black text-xs sm:text-sm shrink-0">
+                                    ${completo ? 'COMPLETO' : `FALTA${restantes > 1 ? 'N' : ''} ${restantes}`}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Puesto buscado</p>
+                                    <p class="font-display text-sm sm:text-base font-extrabold text-white truncate">🎯 ${puestoTexto}</p>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white/5 text-slate-200 border border-white/10 self-start sm:self-center shrink-0">
+                                ${vibeTexto}
+                            </span>
+                        </div>
+                    `;
+
+                const bloqueNota = notaTexto
+                    ? `
+                        <div class="bg-amber-500/10 border border-amber-500/25 rounded-xl px-3.5 py-2 mb-3.5 flex items-start gap-2">
+                            <span class="text-xs shrink-0 mt-0.5">📌</span>
+                            <p class="text-xs text-amber-200 font-medium leading-relaxed">${notaTexto}</p>
+                        </div>
+                    `
+                    : '';
+
+                const msgWsp = p.esRival
+                    ? `¡Hola ${p.organizador}! Vi en *Falta Uno SP* que buscan rival de *${p.modalidad}* para el *${fechaFormateada}* a las *${p.hora} hs* en *${p.cancha}*. ¡Hablemos!`
+                    : `¡Hola ${p.organizador}! Vi en *Falta Uno SP* que falta${restantes > 1 ? 'n' : ''} *${restantes}* (*${puestoTexto}*) para *${p.modalidad}* el *${fechaFormateada}* a las *${p.hora} hs* en *${p.cancha}*. ¡Me sumo!`;
+
+                const urlWsp = `https://wa.me/549${telLimpio}?text=${encodeURIComponent(msgWsp)}`;
 
                 return `
                 <article class="card-pro rounded-3xl p-5 ${completo ? 'opacity-75' : ''}">
-                    <div class="flex justify-between items-start gap-3 mb-3.5">
+                    <div class="flex justify-between items-start gap-3 mb-3">
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 flex-wrap mb-2">
+                                <span class="${badgeTipoClase} border text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-lg">
+                                    ${badgeTipo}
+                                </span>
                                 <span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-1 rounded-lg">
                                     📅 ${fechaFormateada} • ${p.hora} hs
                                 </span>
                                 <span class="bg-white/5 text-slate-300 border border-white/10 text-[11px] font-semibold px-2.5 py-1 rounded-lg">${p.modalidad}</span>
                             </div>
-                            <h3 class="font-display text-lg font-extrabold text-white tracking-tight truncate">${p.cancha}</h3>
+                            <h3 class="font-display text-lg sm:text-xl font-extrabold text-white tracking-tight truncate">🏟️ ${p.cancha}</h3>
                         </div>
                     </div>
+
+                    ${bloqueCupo}
+                    ${bloqueNota}
+
                     <div class="pt-3.5 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
-                        <div class="text-xs text-slate-400">Org: <strong class="text-slate-200 font-semibold">${p.organizador}</strong></div>
-                        <a href="https://wa.me/549${telLimpio}?text=${encodeURIComponent(`¡Hola ${p.organizador}! Vi en *Falta Uno SP* tu convocatoria (${p.cancha}) y quiero coordinar.`)}" target="_blank" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
-                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-                            <span>Chat WhatsApp</span>
+                        <div class="text-xs text-slate-400 flex items-center gap-1.5">
+                            <span>👤 Org:</span>
+                            <strong class="text-slate-100 font-bold">${p.organizador}</strong>
+                        </div>
+                        <a href="${urlWsp}" onclick="manejarClickWhatsAppPartido(event, '${p.id}', '${urlWsp}')" class="btn-glow text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>${p.esRival ? 'Retar por WhatsApp' : 'Me sumo por WhatsApp'}</span>
                         </a>
                     </div>
                 </article>`;
