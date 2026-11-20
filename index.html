@@ -633,61 +633,6 @@
         </div>
     </div>
 
-    <!-- MODAL EDITAR COMPLEJO (ADMIN) -->
-    <div id="modalEditarComplejoAdmin" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-stadium-900 border border-white/15 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
-            <div class="flex justify-between items-center pb-3 mb-4 border-b border-white/10">
-                <div class="flex items-center gap-2">
-                    <span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center">
-                        <i data-lucide="pencil" class="w-4 h-4"></i>
-                    </span>
-                    <div>
-                        <h2 class="font-display text-base font-extrabold text-white">Editar Complejo</h2>
-                        <p class="text-[11px] text-slate-400">Actualizá PIN, datos o contacto</p>
-                    </div>
-                </div>
-                <button type="button" onclick="cerrarModalEditarComplejoAdmin()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <form id="formEditarComplejoAdmin" onsubmit="guardarEdicionComplejoAdmin(event)" class="space-y-3">
-                <input type="hidden" id="editCompId">
-                <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Nombre</label>
-                        <input type="text" id="editCompNombre" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">PIN (4 dígitos)</label>
-                        <input type="text" id="editCompPin" maxlength="4" pattern="\d{4}" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white tracking-widest font-bold focus:outline-none focus:border-sky-500">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Deporte</label>
-                        <select id="editCompDeporte" class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-sky-500">
-                            <option value="Futbol">⚽ Fútbol</option>
-                            <option value="Padel">🥎 Pádel</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">WhatsApp</label>
-                        <input type="tel" id="editCompWsp" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Dirección</label>
-                    <input type="text" id="editCompDir" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
-                </div>
-                <div class="flex gap-2 pt-1">
-                    <button type="button" onclick="cerrarModalEditarComplejoAdmin()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-xs transition">Cancelar</button>
-                    <button type="submit" id="btnSubmitEditComp" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition">Guardar Cambios</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- MODAL DETALLE / GRILLA DE HORARIOS DEL COMPLEJO -->
     <div id="modalPerfilComplejo" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-xl rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
@@ -1293,7 +1238,7 @@
                     self.addEventListener('activate', e => self.waitUntil(clients.claim()));
                     self.addEventListener('fetch', e => {});
                 `;
-                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const blob = new Blob([swCode], { type: 'text/javascript' });
                 const swUrl = URL.createObjectURL(blob);
                 navigator.serviceWorker.register(swUrl).catch(err => console.log(err));
             });
@@ -1632,90 +1577,6 @@
                 alert("✅ Comercio actualizado.");
             } catch (err) {
                 alert("❌ " + (err.message || "No se pudo actualizar."));
-            } finally {
-                btnSubmit.disabled = false;
-                btnSubmit.innerHTML = textoOriginal;
-                lucide.createIcons();
-            }
-        };
-
-        window.abrirModalEditarComplejoAdmin = (idComplejo) => {
-            const comp = complejosAdminCache.find(c => c.id === idComplejo);
-            if (!comp) return;
-
-            document.getElementById('editCompId').value = comp.id;
-            document.getElementById('editCompNombre').value = comp.nombre || '';
-            document.getElementById('editCompPin').value = comp.pin || '';
-            document.getElementById('editCompDeporte').value = comp.deporte === 'Padel' ? 'Padel' : 'Futbol';
-            document.getElementById('editCompWsp').value = comp.whatsapp || '';
-            document.getElementById('editCompDir').value = comp.direccion || '';
-
-            document.getElementById('modalEditarComplejoAdmin').classList.remove('hidden');
-            lucide.createIcons();
-        };
-
-        window.cerrarModalEditarComplejoAdmin = () => {
-            document.getElementById('modalEditarComplejoAdmin').classList.add('hidden');
-        };
-
-        window.guardarEdicionComplejoAdmin = async (e) => {
-            e.preventDefault();
-            if (!db) return alert("Conectando...");
-
-            const idComplejo = document.getElementById('editCompId').value;
-            const original = complejosAdminCache.find(c => c.id === idComplejo);
-            if (!original) return;
-
-            const nuevoNombre = document.getElementById('editCompNombre').value.trim();
-            const nuevoPin = document.getElementById('editCompPin').value.trim();
-            const nuevoDeporte = document.getElementById('editCompDeporte').value;
-            const nuevoWsp = document.getElementById('editCompWsp').value.trim();
-            const nuevaDir = document.getElementById('editCompDir').value.trim();
-
-            if (!/^\d{4}$/.test(nuevoPin)) {
-                return alert("❌ El PIN debe tener exactamente 4 dígitos numéricos.");
-            }
-
-            const btnSubmit = document.getElementById('btnSubmitEditComp');
-            const textoOriginal = btnSubmit.innerHTML;
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = `<span>Guardando...</span>`;
-
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_complexes', idComplejo), {
-                    nombre: nuevoNombre,
-                    pin: nuevoPin,
-                    deporte: nuevoDeporte,
-                    whatsapp: nuevoWsp,
-                    direccion: nuevaDir,
-                    actualizadoEn: serverTimestamp()
-                });
-
-                if (original.nombre && original.nombre !== nuevoNombre) {
-                    const turnosVinculados = canchasCache.filter(t => t.complejo === original.nombre);
-                    for (const turno of turnosVinculados) {
-                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courts', turno.id), {
-                            complejo: nuevoNombre
-                        });
-                    }
-                }
-
-                if (complejoAutogestionadoActual && complejoAutogestionadoActual.id === idComplejo) {
-                    complejoAutogestionadoActual = {
-                        ...complejoAutogestionadoActual,
-                        nombre: nuevoNombre,
-                        pin: nuevoPin,
-                        deporte: nuevoDeporte,
-                        whatsapp: nuevoWsp,
-                        direccion: nuevaDir
-                    };
-                    document.getElementById('tituloAutogestionComp').textContent = nuevoNombre;
-                }
-
-                window.cerrarModalEditarComplejoAdmin();
-                alert("✅ Complejo actualizado.");
-            } catch (err) {
-                alert("❌ " + (err.message || "No se pudo actualizar el complejo."));
             } finally {
                 btnSubmit.disabled = false;
                 btnSubmit.innerHTML = textoOriginal;
@@ -2326,10 +2187,7 @@
                         </div>
                         <p class="text-[10px] text-slate-400 truncate mt-0.5">${item.direccion} • ${item.whatsapp}</p>
                     </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <button type="button" onclick="abrirModalEditarComplejoAdmin('${item.id}')" class="bg-sky-500/15 hover:bg-sky-500/30 text-sky-300 text-[11px] px-2.5 py-1 rounded-lg font-semibold">Editar</button>
-                        <button type="button" onclick="eliminarComplejoAdmin('${item.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-[11px] px-2.5 py-1 rounded-lg font-semibold">Eliminar</button>
-                    </div>
+                    <button onclick="eliminarComplejoAdmin('${item.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-[11px] px-2.5 py-1 rounded-lg font-semibold shrink-0">Eliminar</button>
                 </div>
             `).join('');
         }
