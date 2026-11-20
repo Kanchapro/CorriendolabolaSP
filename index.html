@@ -87,6 +87,10 @@
             background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
         }
 
+        .tab-deshabilitada {
+            display: none !important;
+        }
+
         /* ==================== MODO CLARO ==================== */
         body.light-mode {
             background-color: #f1f5f9;
@@ -96,7 +100,7 @@
                 radial-gradient(circle at 85% 8%, rgba(14, 165, 233, 0.08) 0%, transparent 35%);
         }
         body.light-mode .header-pro {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             border-bottom: 1px solid rgba(15, 23, 42, 0.08);
         }
         body.light-mode .card-pro {
@@ -108,7 +112,7 @@
             border-color: rgba(16, 185, 129, 0.45);
         }
         body.light-mode .fixed.bottom-0 {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             border-top-color: rgba(15, 23, 42, 0.09);
         }
         body.light-mode .bg-stadium-950,
@@ -128,7 +132,7 @@
         body.light-mode .border-white\/10,
         body.light-mode .border-white\/15,
         body.light-mode .border-white\/5 {
-            border-color: rgba(15, 23, 42, 0.1) !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
         }
         body.light-mode .text-white {
             color: #0f172a !important;
@@ -140,6 +144,54 @@
         }
         body.light-mode .text-slate-400 {
             color: #64748b !important;
+        }
+        body.light-mode .text-emerald-300,
+        body.light-mode .text-emerald-400 {
+            color: #047857 !important;
+        }
+        body.light-mode .text-sky-300,
+        body.light-mode .text-sky-400 {
+            color: #0369a1 !important;
+        }
+        body.light-mode .text-amber-300,
+        body.light-mode .text-amber-400 {
+            color: #b45309 !important;
+        }
+        body.light-mode .text-amber-200\/90 {
+            color: #92400e !important;
+            font-weight: 700;
+        }
+        body.light-mode .bg-amber-500\/10 {
+            background-color: #fef3c7 !important;
+        }
+        body.light-mode .border-amber-500\/20,
+        body.light-mode .border-amber-500\/25 {
+            border-color: rgba(217, 119, 6, 0.35) !important;
+        }
+        body.light-mode .bg-emerald-500\/15 {
+            background-color: rgba(16, 185, 129, 0.14) !important;
+        }
+        body.light-mode .bg-sky-500\/15 {
+            background-color: rgba(14, 165, 233, 0.14) !important;
+        }
+        body.light-mode .bg-amber-500\/15 {
+            background-color: rgba(245, 158, 11, 0.16) !important;
+        }
+        body.light-mode .btn-glow,
+        body.light-mode .btn-glow span,
+        body.light-mode .bg-emerald-500,
+        body.light-mode .bg-emerald-500 span,
+        body.light-mode .bg-amber-500,
+        body.light-mode .bg-amber-500 span,
+        body.light-mode .bg-sky-500,
+        body.light-mode .bg-sky-500 span {
+            color: #052e16 !important;
+        }
+        body.light-mode .bg-amber-500,
+        body.light-mode .bg-amber-500 span,
+        body.light-mode .bg-sky-500,
+        body.light-mode .bg-sky-500 span {
+            color: #0f172a !important;
         }
         body.light-mode input,
         body.light-mode select {
@@ -1244,10 +1296,10 @@
 
             if (tabTt && barraTabs) {
                 if (tercerTiempoHabilitado) {
-                    tabTt.classList.remove('hidden');
+                    tabTt.classList.remove('hidden', 'tab-deshabilitada');
                     barraTabs.className = "grid grid-cols-3 gap-1 bg-stadium-900/90 border border-white/10 p-1 rounded-xl";
                 } else {
-                    tabTt.classList.add('hidden');
+                    tabTt.classList.add('hidden', 'tab-deshabilitada');
                     barraTabs.className = "grid grid-cols-2 gap-1 bg-stadium-900/90 border border-white/10 p-1 rounded-xl";
                     if (tabActual === 'tercer-tiempo') {
                         window.cambiarTab('falta-uno');
@@ -1550,7 +1602,7 @@
 
             btnTabFalta.className = "py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
             btnTabCanchas.className = "py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5 select-none";
-            btnTabTercer.className = "py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5";
+            btnTabTercer.className = `py-1.5 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5 ${!tercerTiempoHabilitado ? 'hidden tab-deshabilitada' : ''}`;
 
             vistaFalta.classList.add('hidden');
             vistaCanchas.classList.add('hidden');
