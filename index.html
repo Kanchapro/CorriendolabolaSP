@@ -652,8 +652,54 @@
                 <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Generar grilla en el rango seleccionado ⚡</button>
             </form>
 
-            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Turnos activos (Tocá para cambiar Libre 🟢 / Ocupado 🔴)</h3>
+            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Turnos activos (Editá o tocá para cambiar Libre 🟢 / Ocupado 🔴)</h3>
             <div id="listaTurnosAutogestion" class="space-y-2.5"></div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR TURNO DE CANCHA (AUTOGESTIÓN COMPLEJO) -->
+    <div id="modalEditarTurnoCancha" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-stadium-900 border border-white/15 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl modal-animate">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center">
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-display text-base font-extrabold text-white">Editar Turno de la Grilla</h3>
+                        <p class="text-[11px] text-slate-400">Modificá cancha, fecha, horario o precio</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cerrarModalEditarTurnoCancha()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="guardarEdicionTurnoCancha(event)" class="space-y-3.5">
+                <input type="hidden" id="editTurnoId">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Cancha</label>
+                        <input type="text" id="editTurnoCancha" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Fecha</label>
+                        <input type="date" id="editTurnoFecha" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-300 mb-1">Horario</label>
+                    <input type="text" id="editTurnoHorario" placeholder="Ej: 20:00 a 21:00 hs" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-300 mb-1">Precio</label>
+                    <input type="text" id="editTurnoPrecio" placeholder="Ej: $30000" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div class="flex gap-2.5 pt-1">
+                    <button type="button" onclick="cerrarModalEditarTurnoCancha()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold py-2.5 rounded-xl text-xs transition">Cancelar</button>
+                    <button type="submit" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition">Guardar Turno</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1609,14 +1655,14 @@
 
                 return `
                 <div class="bg-stadium-950 border ${estadoBorde} rounded-2xl p-3.5 flex items-center justify-between gap-3 transition">
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
                         <div class="w-3.5 h-3.5 rounded-full ${luzColor} shrink-0" title="${estadoTexto}"></div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h4 class="text-xs font-extrabold text-white">${t.numeroCancha}</h4>
-                                <span class="text-[10px] text-slate-400 font-medium">${t.horarios}</span>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h4 class="font-display text-base sm:text-lg font-black text-white tracking-tight leading-tight">${t.horarios}</h4>
+                                <span class="text-[10px] text-slate-400 font-semibold bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">${t.numeroCancha}</span>
                             </div>
-                            <span class="font-display text-xs font-black text-emerald-400">${t.precio}</span>
+                            <span class="text-[11px] font-bold text-emerald-400 block mt-0.5">${t.precio}</span>
                         </div>
                     </div>
                     ${disponible ? `
@@ -1624,7 +1670,7 @@
                             <span>Reservar 📲</span>
                         </a>
                     ` : `
-                        <span class="bg-rose-500/15 text-rose-300 text-[11px] font-bold px-3 py-1.5 rounded-xl border border-rose-500/30">Ocupado</span>
+                        <span class="bg-rose-500/15 text-rose-300 text-[11px] font-bold px-3 py-1.5 rounded-xl border border-rose-500/30 shrink-0">Ocupado</span>
                     `}
                 </div>`;
             }).join('');
@@ -1656,6 +1702,45 @@
             }
         };
         window.cerrarPanelAutogestion = () => document.getElementById('modalPanelAutogestion').classList.add('hidden');
+
+        window.abrirModalEditarTurnoCancha = (idTurno) => {
+            const turno = canchasCache.find(c => c.id === idTurno);
+            if (!turno) return;
+
+            document.getElementById('editTurnoId').value = turno.id;
+            document.getElementById('editTurnoCancha').value = turno.numeroCancha || '';
+            document.getElementById('editTurnoFecha').value = turno.fecha || hoyStr;
+            document.getElementById('editTurnoHorario').value = turno.horarios || '';
+            document.getElementById('editTurnoPrecio').value = turno.precio || '';
+
+            document.getElementById('modalEditarTurnoCancha').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.cerrarModalEditarTurnoCancha = () => {
+            document.getElementById('modalEditarTurnoCancha').classList.add('hidden');
+        };
+
+        window.guardarEdicionTurnoCancha = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+
+            const idTurno = document.getElementById('editTurnoId').value;
+            let precioEditado = document.getElementById('editTurnoPrecio').value.trim();
+            if (precioEditado && !precioEditado.startsWith('$')) {
+                precioEditado = '$' + precioEditado;
+            }
+
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courts', idTurno), {
+                numeroCancha: document.getElementById('editTurnoCancha').value.trim(),
+                fecha: document.getElementById('editTurnoFecha').value,
+                horarios: document.getElementById('editTurnoHorario').value.trim(),
+                precio: precioEditado
+            });
+
+            window.cerrarModalEditarTurnoCancha();
+            renderizarTurnosAutogestion();
+        };
 
         window.generarGrillaFijaAutogestion = async (e) => {
             e.preventDefault();
@@ -1714,21 +1799,22 @@
 
             contenedor.innerHTML = misTurnos.map(t => {
                 const disponible = t.disponible !== false;
-                const textoEstado = disponible ? '🟢 Libre (Verde)' : '🔴 Ocupado (Rojo)';
+                const textoEstado = disponible ? '🟢 Libre' : '🔴 Ocupado';
                 return `
                 <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-xs font-bold text-white">${t.numeroCancha} • ${t.horarios}</h4>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h4 class="text-xs font-bold text-white truncate">${t.numeroCancha} • ${t.horarios}</h4>
                             <span class="text-[10px] text-emerald-400 font-bold">${t.precio}</span>
                         </div>
                         <p class="text-[10px] text-slate-400 mt-0.5">📅 ${t.fecha}</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="toggleDisponibilidadTurno('${t.id}', ${!disponible})" class="text-xs font-bold px-3 py-1.5 rounded-lg border ${disponible ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border-rose-500/40'} transition">
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="abrirModalEditarTurnoCancha('${t.id}')" class="bg-sky-500/15 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 text-xs px-2.5 py-1.5 rounded-lg font-semibold">Editar</button>
+                        <button type="button" onclick="toggleDisponibilidadTurno('${t.id}', ${!disponible})" class="text-xs font-bold px-2.5 py-1.5 rounded-lg border ${disponible ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border-rose-500/40'} transition">
                             ${textoEstado}
                         </button>
-                        <button onclick="eliminarTurnoAutogestion('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg">Borrar</button>
+                        <button type="button" onclick="eliminarTurnoAutogestion('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg">Borrar</button>
                     </div>
                 </div>`;
             }).join('');
