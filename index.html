@@ -150,7 +150,7 @@
                     </h1>
                 </div>
 
-                <!-- Derecha: Botón Dinámico (Publicar Convocatoria, Pedir PIN o Auspiciar Local con Mercado Pago) -->
+                <!-- Derecha: Botón Dinámico (Publicar Convocatoria, Pedir PIN o Publicar/Auspiciar Local) -->
                 <div class="flex justify-end">
                     <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-3.5 h-9 rounded-xl flex items-center gap-1.5 shadow-md">
                         <i id="iconoBotonPrincipal" data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
@@ -241,8 +241,13 @@
                     🍻
                 </div>
                 <div>
-                    <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
-                    <p class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
+                        <span id="badgeModoTercerTiempo" class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            Alta Libre
+                        </span>
+                    </div>
+                    <p id="descModoTercerTiempo" class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
                 </div>
             </div>
 
@@ -358,6 +363,56 @@
 
                 <button type="submit" class="w-full btn-glow text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2">
                     <span>Publicar en el Tablero</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PUBLICAR COMERCIO TERCER TIEMPO (MODO LIBRE) -->
+    <div id="modalPublicarTercerTiempo" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
+            <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base">
+                        🍻
+                    </span>
+                    <div>
+                        <h2 class="font-display text-lg font-extrabold text-white">Publicar Local en 3er Tiempo</h2>
+                        <p class="text-[11px] text-emerald-400 font-semibold">Alta libre habilitada</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalTercerTiempoPublico()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="formPublicarTercerTiempo" onsubmit="guardarTercerTiempoPublico(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Nombre del Comercio</label>
+                    <input type="text" id="pubTtTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">URL de la Imagen / Logo</label>
+                    <input type="url" id="pubTtImgUrl" placeholder="https://..." required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp (sin 0 ni 15)</label>
+                        <input type="tel" id="pubTtWsp" placeholder="Ej: 3644123456" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Categoría</label>
+                        <input type="text" id="pubTtCategoria" placeholder="Ej: Bebidas / Picadas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Descripción corta o Promo</label>
+                    <input type="text" id="pubTtDesc" placeholder="Ej: Envíos a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2 shadow-lg">
+                    <span>Publicar en Tercer Tiempo</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
             </form>
@@ -626,6 +681,22 @@
             </div>
 
             <div id="seccionAdminTercerTiempo" class="space-y-4 hidden">
+                <!-- SELECTOR DE MODO DE ALTA EN TERCER TIEMPO (LIBRE vs MP) -->
+                <div class="bg-stadium-950/80 p-4 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modalidad de Alta de Comercios</h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Elegí si los comercios publican gratis (<strong>Libre</strong>) o van a <strong>Mercado Pago</strong>.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5 bg-stadium-900 p-1 rounded-xl border border-white/10 shrink-0">
+                        <button type="button" id="btnModoLibreAdmin" onclick="cambiarModoTercerTiempo('libre')" class="px-3 py-2 rounded-lg text-xs font-bold transition">
+                            Libre
+                        </button>
+                        <button type="button" id="btnModoMpAdmin" onclick="cambiarModoTercerTiempo('mp')" class="px-3 py-2 rounded-lg text-xs font-bold transition">
+                            MP ($)
+                        </button>
+                    </div>
+                </div>
+
                 <form id="formAgregarTercerTiempo" onsubmit="guardarTercerTiempoAdmin(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
                     <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Agregar Comercio / Kiosco (3er Tiempo)</h3>
                     <div>
@@ -740,6 +811,7 @@
         let tabActual = 'falta-uno';
         let filtroActual = 'Fútbol';
         let subTabCanchasActual = 'Futbol';
+        let modoTercerTiempo = 'mp'; // 'libre' | 'mp'
         let partidosCache = [];
         let canchasCache = [];
         let complejosAdminCache = [];
@@ -755,6 +827,88 @@
         let timerPub1 = null, timerPub2 = null;
 
         const hoyStr = new Date().toISOString().split('T')[0];
+
+        function aplicarEstadoUItercerTiempo() {
+            const textoBtnPrincipal = document.getElementById('textoBotonPrincipal');
+            const iconoBtnPrincipal = document.getElementById('iconoBotonPrincipal');
+            const badgeModo = document.getElementById('badgeModoTercerTiempo');
+            const descModo = document.getElementById('descModoTercerTiempo');
+            const btnLibreAdmin = document.getElementById('btnModoLibreAdmin');
+            const btnMpAdmin = document.getElementById('btnModoMpAdmin');
+
+            if (btnLibreAdmin && btnMpAdmin) {
+                if (modoTercerTiempo === 'libre') {
+                    btnLibreAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition";
+                    btnMpAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+                } else {
+                    btnMpAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold bg-sky-500 text-slate-950 transition";
+                    btnLibreAdmin.className = "px-3 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition";
+                }
+            }
+
+            if (badgeModo && descModo) {
+                if (modoTercerTiempo === 'libre') {
+                    badgeModo.textContent = "Alta Libre";
+                    badgeModo.className = "text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                    descModo.innerHTML = "Publicá tu local sin cargo por lanzamiento: cargá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido.";
+                } else {
+                    badgeModo.textContent = "Auspicio MP";
+                    badgeModo.className = "text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30";
+                    descModo.innerHTML = "Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.";
+                }
+            }
+
+            if (tabActual === 'tercer-tiempo' && textoBtnPrincipal && iconoBtnPrincipal) {
+                if (modoTercerTiempo === 'libre') {
+                    textoBtnPrincipal.textContent = "Publicar Local";
+                    iconoBtnPrincipal.setAttribute('data-lucide', 'plus');
+                } else {
+                    textoBtnPrincipal.textContent = "Auspiciar Local ($)";
+                    iconoBtnPrincipal.setAttribute('data-lucide', 'credit-card');
+                }
+                lucide.createIcons();
+            }
+        }
+
+        window.cambiarModoTercerTiempo = async (nuevoModo) => {
+            modoTercerTiempo = nuevoModo;
+            aplicarEstadoUItercerTiempo();
+            if (db) {
+                try {
+                    await setDoc(
+                        doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'tercer_tiempo_config'),
+                        { modo: nuevoModo, actualizadoEn: serverTimestamp() },
+                        { merge: true }
+                    );
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        };
+
+        window.abrirModalTercerTiempoPublico = () => {
+            document.getElementById('modalPublicarTercerTiempo').classList.remove('hidden');
+        };
+        window.cerrarModalTercerTiempoPublico = () => {
+            document.getElementById('modalPublicarTercerTiempo').classList.add('hidden');
+        };
+
+        window.guardarTercerTiempoPublico = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+            const nuevoComercio = {
+                titulo: document.getElementById('pubTtTitle').value.trim(),
+                imgUrl: document.getElementById('pubTtImgUrl').value.trim(),
+                whatsapp: document.getElementById('pubTtWsp').value.trim().replace(/\D/g, ''),
+                categoria: document.getElementById('pubTtCategoria').value.trim(),
+                descripcion: document.getElementById('pubTtDesc').value.trim(),
+                creadoEn: serverTimestamp()
+            };
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
+            document.getElementById('formPublicarTercerTiempo').reset();
+            window.cerrarModalTercerTiempoPublico();
+            alert("✅ ¡Tu comercio ya figura en Tercer Tiempo!");
+        };
 
         window.cambiarTab = (tab) => {
             tabActual = tab;
@@ -790,8 +944,13 @@
             } else if (tab === 'tercer-tiempo') {
                 vistaTercerTiempo.classList.remove('hidden');
                 btnTabTercer.className = "py-2 px-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-1.5";
-                textoBtnPrincipal.textContent = "Auspiciar Local ($)";
-                iconoBtnPrincipal.setAttribute('data-lucide', 'credit-card');
+                if (modoTercerTiempo === 'libre') {
+                    textoBtnPrincipal.textContent = "Publicar Local";
+                    iconoBtnPrincipal.setAttribute('data-lucide', 'plus');
+                } else {
+                    textoBtnPrincipal.textContent = "Auspiciar Local ($)";
+                    iconoBtnPrincipal.setAttribute('data-lucide', 'credit-card');
+                }
             }
             lucide.createIcons();
         };
@@ -802,7 +961,11 @@
             } else if (tabActual === 'canchas') {
                 window.solicitarPinComplejoWsp();
             } else if (tabActual === 'tercer-tiempo') {
-                window.open(LINK_MERCADO_PAGO, '_blank');
+                if (modoTercerTiempo === 'libre') {
+                    window.abrirModalTercerTiempoPublico();
+                } else {
+                    window.open(LINK_MERCADO_PAGO, '_blank');
+                }
             }
         };
 
@@ -1141,6 +1304,7 @@
             if (document.getElementById('adminPasswordInput').value.trim() === 'atitomelero') {
                 cerrarModalAdmin();
                 document.getElementById('modalAdminPanel').classList.remove('hidden');
+                aplicarEstadoUItercerTiempo();
                 renderizarAdminComplejos();
                 renderizarAdminPub1();
                 renderizarAdminPub2();
@@ -1160,6 +1324,7 @@
             const key = map[tab];
             document.getElementById(`seccionAdmin${key}`).classList.remove('hidden');
             document.getElementById(`tabAdmin${key}`).className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
+            if (tab === 'tercertiempo') aplicarEstadoUItercerTiempo();
         };
 
         window.guardarComplejoAdmin = async (e) => {
@@ -1550,11 +1715,18 @@
                 await signInAnonymously(auth);
 
                 iniciarPresenciaOnline(db, auth);
+                aplicarEstadoUItercerTiempo();
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         statusDot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-[#050a14] animate-pulse";
 
+                        onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'tercer_tiempo_config'), (snap) => {
+                            if (snap.exists() && snap.data().modo) {
+                                modoTercerTiempo = snap.data().modo === 'libre' ? 'libre' : 'mp';
+                                aplicarEstadoUItercerTiempo();
+                            }
+                        });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'matches'), (snap) => {
                             partidosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarPartidos();
