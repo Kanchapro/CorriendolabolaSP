@@ -369,7 +369,7 @@
         </div>
     </div>
 
-    <!-- MODAL PUBLICAR COMERCIO TERCER TIEMPO (MODO LIBRE) -->
+    <!-- MODAL PUBLICAR COMERCIO TERCER TIEMPO (MODO LIBRE - SUBIDA DESDE CELU) -->
     <div id="modalPublicarTercerTiempo" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
@@ -393,8 +393,14 @@
                     <input type="text" id="pubTtTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">URL de la Imagen / Logo</label>
-                    <input type="url" id="pubTtImgUrl" placeholder="https://..." required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Foto o Logo del Local (desde tu celu)</label>
+                    <div class="flex items-center gap-3 bg-stadium-950 border border-white/10 rounded-xl p-2.5">
+                        <img id="previewPubTtImg" src="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png" alt="Vista previa" class="w-12 h-12 rounded-xl object-cover border border-amber-500/30 shrink-0 bg-stadium-900">
+                        <div class="min-w-0 flex-1">
+                            <input type="file" id="pubTtImgFile" accept="image/*" required onchange="previsualizarArchivoTercerTiempo(this, 'previewPubTtImg')" class="block w-full text-xs text-slate-300 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500/20 file:text-amber-300 hover:file:bg-amber-500/30 cursor-pointer">
+                            <p class="text-[10px] text-slate-500 mt-1">Se ajusta automáticamente para cargar rápido.</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -411,7 +417,7 @@
                     <input type="text" id="pubTtDesc" placeholder="Ej: Envíos a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
                 </div>
 
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2 shadow-lg">
+                <button type="submit" id="btnSubmitPubTt" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2 shadow-lg">
                     <span>Publicar en Tercer Tiempo</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
@@ -704,8 +710,11 @@
                         <input type="text" id="ttTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">URL de la Imagen / Logo</label>
-                        <input type="url" id="ttImgUrl" placeholder="https://..." required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Foto o Logo del Local</label>
+                        <div class="flex items-center gap-3 bg-stadium-900 border border-white/10 rounded-xl p-2">
+                            <img id="previewAdminTtImg" src="https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png" alt="Vista previa" class="w-11 h-11 rounded-xl object-cover border border-amber-500/30 shrink-0 bg-stadium-950">
+                            <input type="file" id="ttImgFile" accept="image/*" required onchange="previsualizarArchivoTercerTiempo(this, 'previewAdminTtImg')" class="block w-full text-[11px] text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-amber-500/20 file:text-amber-300 hover:file:bg-amber-500/30 cursor-pointer">
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
@@ -721,7 +730,7 @@
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Descripción corta o Promo</label>
                         <input type="text" id="ttDesc" placeholder="Ej: Envios a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
-                    <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en 3er Tiempo</button>
+                    <button type="submit" id="btnSubmitAdminTt" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Guardar en 3er Tiempo</button>
                 </form>
                 <div id="listaTercerTiempoAdmin" class="space-y-2.5"></div>
             </div>
@@ -738,6 +747,49 @@
 
         const NUMERO_ADMIN_WSP = "5493644509472";
         const LINK_MERCADO_PAGO = "https://mpago.la/2uXPnd7";
+        const LOGO_FALLBACK = "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png";
+
+        function comprimirImagenArchivo(file, maxAncho = 480, calidad = 0.72) {
+            return new Promise((resolve, reject) => {
+                if (!file || !file.type.startsWith('image/')) {
+                    reject(new Error("Seleccioná una imagen válida."));
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let ancho = img.width;
+                        let alto = img.height;
+                        if (ancho > maxAncho) {
+                            alto = Math.round((alto * maxAncho) / ancho);
+                            ancho = maxAncho;
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = ancho;
+                        canvas.height = alto;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, ancho, alto);
+                        resolve(canvas.toDataURL('image/jpeg', calidad));
+                    };
+                    img.onerror = () => reject(new Error("No se pudo leer la imagen."));
+                    img.src = ev.target.result;
+                };
+                reader.onerror = () => reject(new Error("Error al cargar el archivo."));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        window.previsualizarArchivoTercerTiempo = async (inputEl, idImgPreview) => {
+            const imgEl = document.getElementById(idImgPreview);
+            const file = inputEl?.files?.[0];
+            if (!file || !imgEl) return;
+            try {
+                imgEl.src = await comprimirImagenArchivo(file);
+            } catch (err) {
+                imgEl.src = LOGO_FALLBACK;
+            }
+        };
 
         function formatearHoraSlot(horaNum) {
             const normalizada = ((horaNum % 24) + 24) % 24;
@@ -887,6 +939,7 @@
         };
 
         window.abrirModalTercerTiempoPublico = () => {
+            document.getElementById('previewPubTtImg').src = LOGO_FALLBACK;
             document.getElementById('modalPublicarTercerTiempo').classList.remove('hidden');
         };
         window.cerrarModalTercerTiempoPublico = () => {
@@ -896,18 +949,37 @@
         window.guardarTercerTiempoPublico = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
-            const nuevoComercio = {
-                titulo: document.getElementById('pubTtTitle').value.trim(),
-                imgUrl: document.getElementById('pubTtImgUrl').value.trim(),
-                whatsapp: document.getElementById('pubTtWsp').value.trim().replace(/\D/g, ''),
-                categoria: document.getElementById('pubTtCategoria').value.trim(),
-                descripcion: document.getElementById('pubTtDesc').value.trim(),
-                creadoEn: serverTimestamp()
-            };
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
-            document.getElementById('formPublicarTercerTiempo').reset();
-            window.cerrarModalTercerTiempoPublico();
-            alert("✅ ¡Tu comercio ya figura en Tercer Tiempo!");
+            const fileInput = document.getElementById('pubTtImgFile');
+            const archivo = fileInput?.files?.[0];
+            if (!archivo) return alert("Elegí una foto o logo de tu local.");
+
+            const btnSubmit = document.getElementById('btnSubmitPubTt');
+            const textoOriginal = btnSubmit.innerHTML;
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<span>Subiendo foto...</span>`;
+
+            try {
+                const imgComprimida = await comprimirImagenArchivo(archivo);
+                const nuevoComercio = {
+                    titulo: document.getElementById('pubTtTitle').value.trim(),
+                    imgUrl: imgComprimida,
+                    whatsapp: document.getElementById('pubTtWsp').value.trim().replace(/\D/g, ''),
+                    categoria: document.getElementById('pubTtCategoria').value.trim(),
+                    descripcion: document.getElementById('pubTtDesc').value.trim(),
+                    creadoEn: serverTimestamp()
+                };
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
+                document.getElementById('formPublicarTercerTiempo').reset();
+                document.getElementById('previewPubTtImg').src = LOGO_FALLBACK;
+                window.cerrarModalTercerTiempoPublico();
+                alert("✅ ¡Tu comercio ya figura en Tercer Tiempo!");
+            } catch (err) {
+                alert("❌ " + (err.message || "No se pudo procesar la imagen."));
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = textoOriginal;
+                lucide.createIcons();
+            }
         };
 
         window.cambiarTab = (tab) => {
@@ -1377,17 +1449,35 @@
         window.guardarTercerTiempoAdmin = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
-            const nuevoComercio = {
-                titulo: document.getElementById('ttTitle').value.trim(),
-                imgUrl: document.getElementById('ttImgUrl').value.trim(),
-                whatsapp: document.getElementById('ttWsp').value.trim().replace(/\D/g, ''),
-                categoria: document.getElementById('ttCategoria').value.trim(),
-                descripcion: document.getElementById('ttDesc').value.trim(),
-                creadoEn: serverTimestamp()
-            };
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
-            document.getElementById('formAgregarTercerTiempo').reset();
-            alert("✅ Comercio guardado en Tercer Tiempo.");
+            const fileInput = document.getElementById('ttImgFile');
+            const archivo = fileInput?.files?.[0];
+            if (!archivo) return alert("Elegí una foto o logo del local.");
+
+            const btnSubmit = document.getElementById('btnSubmitAdminTt');
+            const textoOriginal = btnSubmit.innerHTML;
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<span>Subiendo foto...</span>`;
+
+            try {
+                const imgComprimida = await comprimirImagenArchivo(archivo);
+                const nuevoComercio = {
+                    titulo: document.getElementById('ttTitle').value.trim(),
+                    imgUrl: imgComprimida,
+                    whatsapp: document.getElementById('ttWsp').value.trim().replace(/\D/g, ''),
+                    categoria: document.getElementById('ttCategoria').value.trim(),
+                    descripcion: document.getElementById('ttDesc').value.trim(),
+                    creadoEn: serverTimestamp()
+                };
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
+                document.getElementById('formAgregarTercerTiempo').reset();
+                document.getElementById('previewAdminTtImg').src = LOGO_FALLBACK;
+                alert("✅ Comercio guardado en Tercer Tiempo.");
+            } catch (err) {
+                alert("❌ " + (err.message || "No se pudo procesar la imagen."));
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = textoOriginal;
+            }
         };
 
         window.eliminarTercerTiempoAdmin = async (id) => {
