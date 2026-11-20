@@ -150,7 +150,7 @@
                     </h1>
                 </div>
 
-                <!-- Derecha: Botón Dinámico (Publicar Convocatoria o Auspiciar Local con Mercado Pago) -->
+                <!-- Derecha: Botón Dinámico (Publicar Convocatoria, Pedir PIN o Auspiciar Local con Mercado Pago) -->
                 <div class="flex justify-end">
                     <button id="btnAccionPrincipal" onclick="manejarBotonPrincipal()" class="btn-glow text-slate-950 active:scale-95 transition font-extrabold text-xs px-3.5 h-9 rounded-xl flex items-center gap-1.5 shadow-md">
                         <i id="iconoBotonPrincipal" data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
@@ -211,24 +211,7 @@
         </section>
 
         <!-- SECCIÓN 2: CANCHAS Y COMPLEJOS -->
-        <section id="vista-canchas" class="hidden space-y-3">
-            <div class="card-pro rounded-2xl p-3 bg-gradient-to-br from-emerald-500/10 via-stadium-900 to-stadium-950 border-emerald-500/30 flex items-center justify-between gap-3">
-                <div class="min-w-0">
-                    <h3 class="font-display text-xs font-bold text-white truncate">🏟️ Gestión de Complejos</h3>
-                    <p class="text-[10px] text-slate-400 truncate">¿Tenés complejo? Pedinos tu PIN o ingresá.</p>
-                </div>
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <button onclick="solicitarPinComplejoWsp()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[10px] px-2.5 py-2 rounded-xl transition flex items-center gap-1 shadow-md">
-                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-                        <span>Pedir PIN</span>
-                    </button>
-                    <button onclick="abrirModalAdminPinComplejo()" class="bg-stadium-800 hover:bg-stadium-700 text-emerald-400 border border-emerald-500/30 font-extrabold text-[10px] px-2.5 py-2 rounded-xl transition flex items-center gap-1">
-                        <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
-                        <span>Soy Complejo</span>
-                    </button>
-                </div>
-            </div>
-
+        <section id="vista-canchas" class="hidden space-y-4">
             <div class="grid grid-cols-2 gap-2 bg-stadium-900 p-1 rounded-2xl border border-white/10">
                 <button onclick="setSubTabCanchas('Futbol')" id="subtab-Futbol" class="py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center justify-center gap-1.5">
                     <span>⚽</span> Complejos de Fútbol
@@ -244,25 +227,23 @@
                     <p class="text-slate-400 text-sm font-medium">Cargando complejos...</p>
                 </div>
             </div>
+
+            <p class="text-[11px] text-slate-500 text-center pt-1">
+                Tip: Tocá un complejo para ver su grilla o hacé <strong class="text-slate-400">doble click</strong> sobre la cancha para ingresar tu PIN de administración.
+            </p>
         </section>
 
         <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
             <!-- BANNER / TARJETA INCENTIVO PARA COMERCIOS (OFERTAS, 2X1, PICADAS) -->
-            <div class="card-pro rounded-2xl p-5 border-amber-500/30 bg-gradient-to-br from-amber-500/15 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
-                        🍻
-                    </div>
-                    <div>
-                        <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
-                        <p class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
-                    </div>
+            <div class="card-pro rounded-2xl p-5 border-amber-500/30 bg-gradient-to-br from-amber-500/15 via-stadium-900 to-stadium-950 flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
+                    🍻
                 </div>
-                <a href="https://mpago.la/2uXPnd7" target="_blank" class="w-full sm:w-auto bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shrink-0">
-                    <span>💳 Auspiciar Local ($)</span>
-                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                </a>
+                <div>
+                    <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
+                    <p class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
+                </div>
             </div>
 
             <div id="listaTercerTiempo" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -687,14 +668,11 @@
         const NUMERO_ADMIN_WSP = "5493644509472";
         const LINK_MERCADO_PAGO = "https://mpago.la/2uXPnd7";
 
-        // Helper para formatear hora (ej: 24 -> "00:00", 25 -> "01:00", 8 -> "08:00")
         function formatearHoraSlot(horaNum) {
             const normalizada = ((horaNum % 24) + 24) % 24;
             return `${String(normalizada).padStart(2, '0')}:00`;
         }
 
-        // Genera la lista de franjas horarias de 1 hora entre horaInicio y horaFin
-        // Soporta cierre en el mismo día o madrugada del día siguiente (ej: 15 a 25 => 15:00 a 01:00 hs)
         function construirFranjasHorarias(horaInicio, horaFin) {
             let finAjustado = horaFin;
             if (finAjustado <= horaInicio) {
@@ -709,14 +687,12 @@
             return franjas;
         }
 
-        // Ordena cronológicamente cualquier franja ("HH:MM a HH:MM hs") considerando madrugada como posterior a la tarde/noche
         function obtenerPesoCronologico(textoHorario) {
             if (!textoHorario) return 9999;
             const match = textoHorario.match(/^(\d{2}):(\d{2})/);
             if (!match) return 9999;
             let hora = parseInt(match[1], 10);
             const min = parseInt(match[2], 10);
-            // Si es entre las 00:00 y las 05:59, se trata como madrugada posterior a la jornada nocturna
             if (hora < 6) {
                 hora += 24;
             }
@@ -923,7 +899,7 @@
 
             contenedor.innerHTML = complejosFiltrados.map(comp => {
                 return `
-                <div onclick="abrirPerfilComplejo('${comp.id}')" class="card-pro rounded-3xl p-5 cursor-pointer group flex items-center justify-between gap-4 border-emerald-500/20 hover:border-emerald-500/60 transition">
+                <div onclick="abrirPerfilComplejo('${comp.id}')" ondblclick="abrirModalAdminPinComplejo('${comp.id}')" class="card-pro rounded-3xl p-5 cursor-pointer group flex items-center justify-between gap-4 border-emerald-500/20 hover:border-emerald-500/60 transition select-none" title="Click para ver horarios • Doble click para administrar PIN">
                     <div class="flex items-center gap-3.5 min-w-0">
                         <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 font-display font-black text-lg group-hover:scale-105 transition">
                             ${comp.deporte === 'Padel' ? '🥎' : '⚽'}
@@ -1039,9 +1015,14 @@
             }).join('');
         }
 
-        window.abrirModalAdminPinComplejo = () => {
+        window.abrirModalAdminPinComplejo = (idComplejo = null) => {
+            window.cerrarModalPerfilComplejo();
+            if (idComplejo) {
+                complejoAutogestionadoActual = complejosAdminCache.find(c => c.id === idComplejo) || null;
+            }
             document.getElementById('inputPinComplejoAutogestion').value = '';
             document.getElementById('modalAdminPinComplejo').classList.remove('hidden');
+            setTimeout(() => document.getElementById('inputPinComplejoAutogestion').focus(), 50);
         };
         window.cerrarModalAdminPinComplejo = () => document.getElementById('modalAdminPinComplejo').classList.add('hidden');
 
