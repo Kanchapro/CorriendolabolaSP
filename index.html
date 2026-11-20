@@ -431,7 +431,7 @@
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
                 <div>
                     <h2 id="tituloAutogestionComp" class="font-display text-lg font-extrabold text-white">Panel de Complejo</h2>
-                    <p class="text-xs text-emerald-400 font-medium">Generación cronológica (15:00 a 01:00 hs)</p>
+                    <p id="subtituloAutogestionHorario" class="text-xs text-emerald-400 font-medium">Generación cronológica personalizada por franja horaria</p>
                 </div>
                 <button onclick="cerrarPanelAutogestion()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -450,11 +450,57 @@
                         <input type="date" id="autoFecha" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Hora de Apertura</label>
+                        <select id="autoHoraInicio" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <option value="06">06:00 hs</option>
+                            <option value="07">07:00 hs</option>
+                            <option value="08">08:00 hs</option>
+                            <option value="09">09:00 hs</option>
+                            <option value="10">10:00 hs</option>
+                            <option value="11">11:00 hs</option>
+                            <option value="12">12:00 hs</option>
+                            <option value="13">13:00 hs</option>
+                            <option value="14">14:00 hs</option>
+                            <option value="15" selected>15:00 hs</option>
+                            <option value="16">16:00 hs</option>
+                            <option value="17">17:00 hs</option>
+                            <option value="18">18:00 hs</option>
+                            <option value="19">19:00 hs</option>
+                            <option value="20">20:00 hs</option>
+                            <option value="21">21:00 hs</option>
+                            <option value="22">22:00 hs</option>
+                            <option value="23">23:00 hs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Hora de Cierre</label>
+                        <select id="autoHoraFin" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                            <option value="12">12:00 hs</option>
+                            <option value="13">13:00 hs</option>
+                            <option value="14">14:00 hs</option>
+                            <option value="15">15:00 hs</option>
+                            <option value="16">16:00 hs</option>
+                            <option value="17">17:00 hs</option>
+                            <option value="18">18:00 hs</option>
+                            <option value="19">19:00 hs</option>
+                            <option value="20">20:00 hs</option>
+                            <option value="21">21:00 hs</option>
+                            <option value="22">22:00 hs</option>
+                            <option value="23">23:00 hs</option>
+                            <option value="24">00:00 hs</option>
+                            <option value="25" selected>01:00 hs</option>
+                            <option value="26">02:00 hs</option>
+                            <option value="27">03:00 hs</option>
+                        </select>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-300 mb-1">Precio por Turno (Ej: 28000 o $28.000)</label>
                     <input type="text" id="autoPrecio" placeholder="Ej: 30000" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
                 </div>
-                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Generar de 15:00 a 01:00 hs cronológicamente ⚡</button>
+                <button type="submit" class="w-full btn-glow text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">Generar grilla en el rango seleccionado ⚡</button>
             </form>
 
             <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Turnos activos (Tocá para cambiar Libre 🟢 / Ocupado 🔴)</h3>
@@ -640,6 +686,42 @@
 
         const NUMERO_ADMIN_WSP = "5493644509472";
         const LINK_MERCADO_PAGO = "https://mpago.la/2uXPnd7";
+
+        // Helper para formatear hora (ej: 24 -> "00:00", 25 -> "01:00", 8 -> "08:00")
+        function formatearHoraSlot(horaNum) {
+            const normalizada = ((horaNum % 24) + 24) % 24;
+            return `${String(normalizada).padStart(2, '0')}:00`;
+        }
+
+        // Genera la lista de franjas horarias de 1 hora entre horaInicio y horaFin
+        // Soporta cierre en el mismo día o madrugada del día siguiente (ej: 15 a 25 => 15:00 a 01:00 hs)
+        function construirFranjasHorarias(horaInicio, horaFin) {
+            let finAjustado = horaFin;
+            if (finAjustado <= horaInicio) {
+                finAjustado += 24;
+            }
+            const franjas = [];
+            for (let h = horaInicio; h < finAjustado; h++) {
+                const desde = formatearHoraSlot(h);
+                const hasta = formatearHoraSlot(h + 1);
+                franjas.push(`${desde} a ${hasta} hs`);
+            }
+            return franjas;
+        }
+
+        // Ordena cronológicamente cualquier franja ("HH:MM a HH:MM hs") considerando madrugada como posterior a la tarde/noche
+        function obtenerPesoCronologico(textoHorario) {
+            if (!textoHorario) return 9999;
+            const match = textoHorario.match(/^(\d{2}):(\d{2})/);
+            if (!match) return 9999;
+            let hora = parseInt(match[1], 10);
+            const min = parseInt(match[2], 10);
+            // Si es entre las 00:00 y las 05:59, se trata como madrugada posterior a la jornada nocturna
+            if (hora < 6) {
+                hora += 24;
+            }
+            return hora * 60 + min;
+        }
 
         window.solicitarPinComplejoWsp = () => {
             const mensaje = encodeURIComponent("¡Hola! Quiero sumar mi complejo deportivo a *Falta Uno SP* y necesito que me habiliten mi PIN de acceso para autogestionar mis horarios. 🏟️");
@@ -915,19 +997,7 @@
 
             const turnosDelComplejo = canchasCache.filter(c => c.complejo === complejoSeleccionadoModal.nombre && c.fecha === fechaSeleccionadaModal);
 
-            const ordenHorarios = [
-                "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
-                "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
-                "23:00 a 00:00 hs", "00:00 a 01:00 hs"
-            ];
-
-            turnosDelComplejo.sort((a, b) => {
-                let indexA = ordenHorarios.indexOf(a.horarios);
-                let indexB = ordenHorarios.indexOf(b.horarios);
-                if (indexA === -1) indexA = 99;
-                if (indexB === -1) indexB = 99;
-                return indexA - indexB;
-            });
+            turnosDelComplejo.sort((a, b) => obtenerPesoCronologico(a.horarios) - obtenerPesoCronologico(b.horarios));
 
             if (!turnosDelComplejo.length) {
                 contenedor.innerHTML = `
@@ -997,19 +1067,21 @@
 
             const cancha = document.getElementById('autoCancha').value.trim();
             const fecha = document.getElementById('autoFecha').value;
+            const horaInicio = parseInt(document.getElementById('autoHoraInicio').value, 10);
+            const horaFin = parseInt(document.getElementById('autoHoraFin').value, 10);
             let precioInput = document.getElementById('autoPrecio').value.trim();
 
             if (!precioInput.startsWith('$')) {
                 precioInput = '$' + precioInput;
             }
 
-            const franjasFijas = [
-                "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
-                "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
-                "23:00 a 00:00 hs", "00:00 a 01:00 hs"
-            ];
+            const franjasSeleccionadas = construirFranjasHorarias(horaInicio, horaFin);
 
-            for (const horarios of franjasFijas) {
+            if (!franjasSeleccionadas.length) {
+                return alert("❌ Elegí una franja horaria válida.");
+            }
+
+            for (const horarios of franjasSeleccionadas) {
                 const nuevoTurno = {
                     complejo: complejoAutogestionadoActual.nombre,
                     numeroCancha: cancha,
@@ -1022,9 +1094,12 @@
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courts'), nuevoTurno);
             }
 
+            const primeraHora = formatearHoraSlot(horaInicio);
+            const ultimaHora = formatearHoraSlot(horaFin);
+
             document.getElementById('autoCancha').value = '';
             document.getElementById('autoPrecio').value = '';
-            alert("✅ ¡Grilla cronológica de 15:00 a 01:00 hs generada con éxito!");
+            alert(`✅ ¡Grilla cronológica de ${primeraHora} a ${ultimaHora} hs (${franjasSeleccionadas.length} turnos) generada con éxito!`);
             renderizarTurnosAutogestion();
         };
 
@@ -1033,19 +1108,8 @@
             if (!complejoAutogestionadoActual) return;
 
             const misTurnos = canchasCache.filter(c => c.complejo === complejoAutogestionadoActual.nombre);
-            const ordenHorarios = [
-                "15:00 a 16:00 hs", "16:00 a 17:00 hs", "17:00 a 18:00 hs", "18:00 a 19:00 hs",
-                "19:00 a 20:00 hs", "20:00 a 21:00 hs", "21:00 a 22:00 hs", "22:00 a 23:00 hs",
-                "23:00 a 00:00 hs", "00:00 a 01:00 hs"
-            ];
 
-            misTurnos.sort((a, b) => {
-                let indexA = ordenHorarios.indexOf(a.horarios);
-                let indexB = ordenHorarios.indexOf(b.horarios);
-                if (indexA === -1) indexA = 99;
-                if (indexB === -1) indexB = 99;
-                return indexA - indexB;
-            });
+            misTurnos.sort((a, b) => obtenerPesoCronologico(a.horarios) - obtenerPesoCronologico(b.horarios));
 
             if (!misTurnos.length) {
                 contenedor.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">No hay turnos generados todavía.</p>`;
