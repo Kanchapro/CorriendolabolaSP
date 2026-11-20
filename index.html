@@ -246,6 +246,9 @@
                         <span id="badgeModoTercerTiempo" class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                             Alta Libre
                         </span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/5 text-slate-300 border border-white/10">
+                            Vigencia 72 hs
+                        </span>
                     </div>
                     <p id="descModoTercerTiempo" class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
                 </div>
@@ -369,7 +372,7 @@
         </div>
     </div>
 
-    <!-- MODAL PUBLICAR COMERCIO TERCER TIEMPO (MODO LIBRE - SUBIDA DESDE CELU) -->
+    <!-- MODAL PUBLICAR COMERCIO TERCER TIEMPO (PIN PREVIO + GPS + VIGENCIA 72HS) -->
     <div id="modalPublicarTercerTiempo" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-stadium-900 border border-white/15 w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto modal-animate">
             <div class="flex justify-between items-center pb-4 mb-5 border-b border-white/10">
@@ -379,7 +382,7 @@
                     </span>
                     <div>
                         <h2 class="font-display text-lg font-extrabold text-white">Publicar Local en 3er Tiempo</h2>
-                        <p class="text-[11px] text-emerald-400 font-semibold">Alta libre habilitada</p>
+                        <p class="text-[11px] text-emerald-400 font-semibold">Requiere PIN de comercio • Dura 72 hs</p>
                     </div>
                 </div>
                 <button onclick="cerrarModalTercerTiempoPublico()" class="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition">
@@ -387,7 +390,28 @@
                 </button>
             </div>
 
-            <form id="formPublicarTercerTiempo" onsubmit="guardarTercerTiempoPublico(event)" class="space-y-4">
+            <!-- PASO 1: VALIDACIÓN DE PIN PREVIO DEL COMERCIO -->
+            <div id="pasoPinTercerTiempo" class="space-y-4">
+                <div class="bg-stadium-950/90 border border-amber-500/25 rounded-2xl p-4">
+                    <label class="block text-xs font-bold text-amber-300 mb-1.5">Ingresá tu PIN de Comercio (4 dígitos)</label>
+                    <p class="text-[11px] text-slate-400 mb-3">Solo comercios habilitados con PIN pueden publicar para evitar publicaciones al azar.</p>
+                    <div class="flex gap-2">
+                        <input type="password" id="inputPinComercioTt" maxlength="4" placeholder="••••" class="flex-1 bg-stadium-900 border border-white/10 rounded-xl px-4 py-2.5 text-center tracking-[0.45em] font-bold text-base text-white focus:outline-none focus:border-amber-500">
+                        <button type="button" onclick="validarPinComercioTercerTiempo()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs transition shrink-0">
+                            Validar PIN
+                        </button>
+                    </div>
+                    <p id="estadoPinComercioTt" class="text-[11px] text-slate-400 mt-2"></p>
+                </div>
+            </div>
+
+            <!-- PASO 2: FORMULARIO COMPLETO DEL COMERCIO -->
+            <form id="formPublicarTercerTiempo" onsubmit="guardarTercerTiempoPublico(event)" class="space-y-4 hidden">
+                <div class="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/25 rounded-xl px-3.5 py-2">
+                    <span id="badgeComercioValidadoTt" class="text-xs font-bold text-emerald-300">✅ Comercio verificado</span>
+                    <button type="button" onclick="resetearPasoPinTercerTiempo()" class="text-[11px] font-semibold text-slate-300 hover:text-white underline">Cambiar PIN</button>
+                </div>
+
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5">Nombre del Comercio</label>
                     <input type="text" id="pubTtTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
@@ -417,8 +441,22 @@
                     <input type="text" id="pubTtDesc" placeholder="Ej: Envíos a todo Sáenz Peña • 2x1 en latas" required class="w-full bg-stadium-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500">
                 </div>
 
+                <!-- UBICACIÓN POR GPS (OPCIONAL) -->
+                <div class="bg-stadium-950/90 border border-white/10 rounded-2xl p-3.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-200">Ubicación del Local por GPS</label>
+                            <p id="estadoUbicacionPubTt" class="text-[11px] text-slate-400">Opcional: fijá tu punto exacto para que te encuentren en Maps.</p>
+                        </div>
+                        <button type="button" id="btnFijarGpsTt" onclick="capturarUbicacionGpsTt()" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 shrink-0">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                            <span>Fijar GPS</span>
+                        </button>
+                    </div>
+                </div>
+
                 <button type="submit" id="btnSubmitPubTt" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 rounded-xl transition mt-2 flex items-center justify-center gap-2 shadow-lg">
-                    <span>Publicar en Tercer Tiempo</span>
+                    <span>Publicar en Tercer Tiempo (72 hs)</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
             </form>
@@ -691,7 +729,7 @@
                 <div class="bg-stadium-950/80 p-4 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modalidad de Alta de Comercios</h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Elegí si los comercios publican gratis (<strong>Libre</strong>) o van a <strong>Mercado Pago</strong>.</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Elegí si los comercios publican con PIN (<strong>Libre</strong>) o van a <strong>Mercado Pago</strong>.</p>
                     </div>
                     <div class="grid grid-cols-2 gap-1.5 bg-stadium-900 p-1 rounded-xl border border-white/10 shrink-0">
                         <button type="button" id="btnModoLibreAdmin" onclick="cambiarModoTercerTiempo('libre')" class="px-3 py-2 rounded-lg text-xs font-bold transition">
@@ -703,8 +741,19 @@
                     </div>
                 </div>
 
+                <!-- GESTOR DE PINs PARA COMERCIOS DE TERCER TIEMPO -->
+                <div class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">PINs de Acceso para Kioscos / Locales</h3>
+                    <form onsubmit="guardarPinTercerTiempoAdmin(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <input type="text" id="adminPinTtComercio" placeholder="Nombre local" required class="bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="adminPinTtCodigo" maxlength="4" placeholder="PIN (4 dígitos)" required class="bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white tracking-widest font-bold">
+                        <button type="submit" class="btn-glow text-slate-950 font-bold py-2 px-3 rounded-xl text-xs transition">Crear PIN</button>
+                    </form>
+                    <div id="listaPinsTercerTiempoAdmin" class="space-y-2"></div>
+                </div>
+
                 <form id="formAgregarTercerTiempo" onsubmit="guardarTercerTiempoAdmin(event)" class="space-y-3 bg-stadium-950/80 p-4 rounded-2xl border border-white/10">
-                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Agregar Comercio / Kiosco (3er Tiempo)</h3>
+                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Agregar Comercio / Kiosco (3er Tiempo • 72 hs)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre del Comercio</label>
                         <input type="text" id="ttTitle" placeholder="Ej: Kiosco 24hs / Lomitería El Gol" required class="w-full bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
@@ -748,6 +797,7 @@
         const NUMERO_ADMIN_WSP = "5493644509472";
         const LINK_MERCADO_PAGO = "https://mpago.la/2uXPnd7";
         const LOGO_FALLBACK = "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png";
+        const DURACION_72HS_MS = 72 * 60 * 60 * 1000;
 
         function comprimirImagenArchivo(file, maxAncho = 420, calidad = 0.68) {
             return new Promise((resolve, reject) => {
@@ -847,6 +897,29 @@
             return hora * 60 + min;
         }
 
+        function obtenerVencimiento72Hs(item) {
+            if (typeof item.venceEn === 'number') return item.venceEn;
+            if (item.venceEn && typeof item.venceEn.toMillis === 'function') return item.venceEn.toMillis();
+            if (item.creadoEn && typeof item.creadoEn.toMillis === 'function') {
+                return item.creadoEn.toMillis() + DURACION_72HS_MS;
+            }
+            return Date.now() + DURACION_72HS_MS;
+        }
+
+        function esVigente72Hs(item) {
+            return obtenerVencimiento72Hs(item) > Date.now();
+        }
+
+        function formatearTiempoRestante72Hs(item) {
+            const restanteMs = obtenerVencimiento72Hs(item) - Date.now();
+            if (restanteMs <= 0) return 'Vencida';
+            const horas = Math.ceil(restanteMs / (1000 * 60 * 60));
+            if (horas < 24) return `Vence en ${horas} h`;
+            const dias = Math.floor(horas / 24);
+            const hrs = horas % 24;
+            return hrs > 0 ? `Vence en ${dias}d ${hrs}h` : `Vence en ${dias}d`;
+        }
+
         window.solicitarPinComplejoWsp = () => {
             const mensaje = encodeURIComponent("¡Hola! Quiero sumar mi complejo deportivo a *Falta Uno SP* y necesito que me habiliten mi PIN de acceso para autogestionar mis horarios. 🏟️");
             window.open(`https://wa.me/${NUMERO_ADMIN_WSP}?text=${mensaje}`, '_blank');
@@ -895,6 +968,10 @@
         let pub1Cache = [];
         let pub2Cache = [];
         let tercerTiempoCache = [];
+        let tercerTiempoPinsCache = [];
+
+        let pinComercioValidadoActual = null;
+        let ubicacionGpsTtActual = null;
         
         let complejoSeleccionadoModal = null;
         let fechaSeleccionadaModal = '';
@@ -925,9 +1002,9 @@
 
             if (badgeModo && descModo) {
                 if (modoTercerTiempo === 'libre') {
-                    badgeModo.textContent = "Alta Libre";
+                    badgeModo.textContent = "Alta con PIN";
                     badgeModo.className = "text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-                    descModo.innerHTML = "Publicá tu local sin cargo por lanzamiento: cargá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido.";
+                    descModo.innerHTML = "Publicá tu local con tu PIN de comercio: cargá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos por 72 hs.";
                 } else {
                     badgeModo.textContent = "Auspicio MP";
                     badgeModo.className = "text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30";
@@ -963,43 +1040,126 @@
             }
         };
 
+        window.resetearPasoPinTercerTiempo = () => {
+            pinComercioValidadoActual = null;
+            ubicacionGpsTtActual = null;
+            document.getElementById('inputPinComercioTt').value = '';
+            document.getElementById('estadoPinComercioTt').textContent = '';
+            document.getElementById('pasoPinTercerTiempo').classList.remove('hidden');
+            document.getElementById('formPublicarTercerTiempo').classList.add('hidden');
+            document.getElementById('estadoUbicacionPubTt').textContent = 'Opcional: fijá tu punto exacto para que te encuentren en Maps.';
+        };
+
         window.abrirModalTercerTiempoPublico = () => {
+            window.resetearPasoPinTercerTiempo();
             document.getElementById('previewPubTtImg').src = LOGO_FALLBACK;
             document.getElementById('modalPublicarTercerTiempo').classList.remove('hidden');
+            setTimeout(() => document.getElementById('inputPinComercioTt').focus(), 50);
         };
+
         window.cerrarModalTercerTiempoPublico = () => {
             document.getElementById('modalPublicarTercerTiempo').classList.add('hidden');
+        };
+
+        window.validarPinComercioTercerTiempo = () => {
+            const pinIngresado = document.getElementById('inputPinComercioTt').value.trim();
+            const estadoEl = document.getElementById('estadoPinComercioTt');
+
+            if (pinIngresado.length !== 4) {
+                estadoEl.className = "text-[11px] text-rose-400 font-semibold mt-2";
+                estadoEl.textContent = "❌ Ingresá un PIN de 4 dígitos.";
+                return;
+            }
+
+            const pinEncontrado = tercerTiempoPinsCache.find(p => String(p.pin).trim() === pinIngresado && p.activo !== false);
+            if (!pinEncontrado) {
+                estadoEl.className = "text-[11px] text-rose-400 font-semibold mt-2";
+                estadoEl.textContent = "❌ PIN no válido o inactivo. Consultá con administración.";
+                return;
+            }
+
+            pinComercioValidadoActual = pinEncontrado;
+            document.getElementById('badgeComercioValidadoTt').textContent = `✅ ${pinEncontrado.comercio || 'Comercio'} verificado`;
+            const tituloInput = document.getElementById('pubTtTitle');
+            if (pinEncontrado.comercio && !tituloInput.value.trim()) {
+                tituloInput.value = pinEncontrado.comercio;
+            }
+            document.getElementById('pasoPinTercerTiempo').classList.add('hidden');
+            document.getElementById('formPublicarTercerTiempo').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.capturarUbicacionGpsTt = () => {
+            const estadoEl = document.getElementById('estadoUbicacionPubTt');
+            const btnGps = document.getElementById('btnFijarGpsTt');
+
+            if (!navigator.geolocation) {
+                estadoEl.className = "text-[11px] text-rose-400 font-medium";
+                estadoEl.textContent = "Tu dispositivo no soporta geolocalización GPS.";
+                return;
+            }
+
+            btnGps.disabled = true;
+            estadoEl.className = "text-[11px] text-sky-300 font-medium";
+            estadoEl.textContent = "Obteniendo ubicación GPS...";
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    ubicacionGpsTtActual = {
+                        lat: Number(pos.coords.latitude.toFixed(6)),
+                        lng: Number(pos.coords.longitude.toFixed(6))
+                    };
+                    estadoEl.className = "text-[11px] text-emerald-300 font-bold";
+                    estadoEl.textContent = `📍 GPS fijado (${ubicacionGpsTtActual.lat}, ${ubicacionGpsTtActual.lng})`;
+                    btnGps.disabled = false;
+                },
+                (err) => {
+                    estadoEl.className = "text-[11px] text-amber-300 font-medium";
+                    estadoEl.textContent = "No se pudo obtener GPS (podés publicar igual sin ubicación).";
+                    btnGps.disabled = false;
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
         };
 
         window.guardarTercerTiempoPublico = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
+            if (!pinComercioValidadoActual) {
+                return alert("❌ Primero validá tu PIN de comercio.");
+            }
+
             const fileInput = document.getElementById('pubTtImgFile');
             const archivo = fileInput?.files?.[0];
 
             const btnSubmit = document.getElementById('btnSubmitPubTt');
             const textoOriginal = btnSubmit.innerHTML;
             btnSubmit.disabled = true;
-            btnSubmit.innerHTML = `<span>Subiendo foto...</span>`;
+            btnSubmit.innerHTML = `<span>Publicando...</span>`;
 
             try {
                 const imgComprimida = archivo
                     ? await comprimirImagenArchivo(archivo)
                     : LOGO_FALLBACK;
 
+                const ahoraMs = Date.now();
                 const nuevoComercio = {
                     titulo: document.getElementById('pubTtTitle').value.trim(),
                     imgUrl: imgComprimida,
                     whatsapp: document.getElementById('pubTtWsp').value.trim().replace(/\D/g, ''),
                     categoria: document.getElementById('pubTtCategoria').value.trim(),
                     descripcion: document.getElementById('pubTtDesc').value.trim(),
+                    ubicacion: ubicacionGpsTtActual || null,
+                    pinUsado: pinComercioValidadoActual.pin,
+                    venceEn: ahoraMs + DURACION_72HS_MS,
                     creadoEn: serverTimestamp()
                 };
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
                 document.getElementById('formPublicarTercerTiempo').reset();
                 document.getElementById('previewPubTtImg').src = LOGO_FALLBACK;
+                window.resetearPasoPinTercerTiempo();
                 window.cerrarModalTercerTiempoPublico();
-                alert("✅ ¡Tu comercio ya figura en Tercer Tiempo!");
+                alert("✅ ¡Tu comercio ya figura en Tercer Tiempo por 72 horas!");
             } catch (err) {
                 alert("❌ " + (err.message || "No se pudo guardar el comercio."));
             } finally {
@@ -1407,6 +1567,7 @@
                 renderizarAdminComplejos();
                 renderizarAdminPub1();
                 renderizarAdminPub2();
+                renderizarAdminPinsTercerTiempo();
                 renderizarAdminTercerTiempo();
             } else {
                 alert("❌ Contraseña incorrecta");
@@ -1423,7 +1584,11 @@
             const key = map[tab];
             document.getElementById(`seccionAdmin${key}`).classList.remove('hidden');
             document.getElementById(`tabAdmin${key}`).className = "py-2 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
-            if (tab === 'tercertiempo') aplicarEstadoUItercerTiempo();
+            if (tab === 'tercertiempo') {
+                aplicarEstadoUItercerTiempo();
+                renderizarAdminPinsTercerTiempo();
+                renderizarAdminTercerTiempo();
+            }
         };
 
         window.guardarComplejoAdmin = async (e) => {
@@ -1473,6 +1638,30 @@
             }
         };
 
+        window.guardarPinTercerTiempoAdmin = async (e) => {
+            e.preventDefault();
+            if (!db) return alert("Conectando...");
+            const comercio = document.getElementById('adminPinTtComercio').value.trim();
+            const pin = document.getElementById('adminPinTtCodigo').value.trim();
+            if (pin.length !== 4) return alert("El PIN debe tener 4 dígitos.");
+
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo_pins'), {
+                comercio,
+                pin,
+                activo: true,
+                creadoEn: serverTimestamp()
+            });
+            document.getElementById('adminPinTtComercio').value = '';
+            document.getElementById('adminPinTtCodigo').value = '';
+            alert("✅ PIN creado para el comercio.");
+        };
+
+        window.eliminarPinTercerTiempoAdmin = async (id) => {
+            if (confirm("¿Eliminar este PIN de comercio?")) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo_pins', id));
+            }
+        };
+
         window.guardarTercerTiempoAdmin = async (e) => {
             e.preventDefault();
             if (!db) return alert("Conectando...");
@@ -1495,12 +1684,14 @@
                     whatsapp: document.getElementById('ttWsp').value.trim().replace(/\D/g, ''),
                     categoria: document.getElementById('ttCategoria').value.trim(),
                     descripcion: document.getElementById('ttDesc').value.trim(),
+                    ubicacion: null,
+                    venceEn: Date.now() + DURACION_72HS_MS,
                     creadoEn: serverTimestamp()
                 };
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), nuevoComercio);
                 document.getElementById('formAgregarTercerTiempo').reset();
                 document.getElementById('previewAdminTtImg').src = LOGO_FALLBACK;
-                alert("✅ Comercio guardado en Tercer Tiempo.");
+                alert("✅ Comercio guardado en Tercer Tiempo (vigente 72 hs).");
             } catch (err) {
                 alert("❌ " + (err.message || "No se pudo guardar el comercio."));
             } finally {
@@ -1510,10 +1701,28 @@
         };
 
         window.eliminarTercerTiempoAdmin = async (id) => {
-            if (confirm("¿Eliminar este comercio del Tercer Tiempo?")) {
+            if (confirm("¿Eliminar esta publicación del Tercer Tiempo?")) {
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo', id));
             }
         };
+
+        function renderizarAdminPinsTercerTiempo() {
+            const c = document.getElementById('listaPinsTercerTiempoAdmin');
+            if (!c) return;
+            if (!tercerTiempoPinsCache.length) {
+                c.innerHTML = `<p class="text-[11px] text-slate-500">Sin PINs de comercios cargados todavía.</p>`;
+                return;
+            }
+            c.innerHTML = tercerTiempoPinsCache.map(p => `
+                <div class="bg-stadium-900 border border-white/10 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="bg-amber-500/20 text-amber-300 text-[11px] font-bold px-2 py-0.5 rounded tracking-wider">PIN: ${p.pin}</span>
+                        <span class="text-xs font-bold text-white truncate">${p.comercio || 'Comercio'}</span>
+                    </div>
+                    <button type="button" onclick="eliminarPinTercerTiempoAdmin('${p.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-[11px] px-2.5 py-1 rounded-lg font-semibold shrink-0">Quitar</button>
+                </div>
+            `).join('');
+        }
 
         function renderizarAdminComplejos() {
             const c = document.getElementById('listaComplejosAdmin');
@@ -1576,49 +1785,74 @@
         function renderizarAdminTercerTiempo() {
             const c = document.getElementById('listaTercerTiempoAdmin');
             if (!tercerTiempoCache.length) { c.innerHTML = `<p class="text-center py-4 text-xs text-slate-500">Sin comercios en Tercer Tiempo.</p>`; return; }
-            c.innerHTML = tercerTiempoCache.map(t => `
+            c.innerHTML = tercerTiempoCache.map(t => {
+                const vigente = esVigente72Hs(t);
+                const estadoTag = vigente
+                    ? `<span class="bg-emerald-500/15 text-emerald-300 text-[9px] font-bold px-1.5 py-0.5 rounded">${formatearTiempoRestante72Hs(t)}</span>`
+                    : `<span class="bg-rose-500/15 text-rose-300 text-[9px] font-bold px-1.5 py-0.5 rounded">Vencida 72 hs</span>`;
+                return `
                 <div class="bg-stadium-950 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-3 min-w-0">
                         <img src="${t.imgUrl}" class="w-12 h-10 object-cover rounded border border-white/10 shrink-0">
                         <div class="min-w-0">
-                            <h4 class="text-xs font-bold text-white truncate">${t.titulo}</h4>
-                            <p class="text-[10px] text-amber-400 font-semibold">${t.categoria}</p>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <h4 class="text-xs font-bold text-white truncate">${t.titulo}</h4>
+                                ${estadoTag}
+                            </div>
+                            <p class="text-[10px] text-amber-400 font-semibold">${t.categoria}${t.ubicacion ? ' • 📍 GPS' : ''}</p>
                         </div>
                     </div>
                     <button onclick="eliminarTercerTiempoAdmin('${t.id}')" class="bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-xs px-2.5 py-1.5 rounded-lg font-semibold shrink-0">Eliminar</button>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function renderizarTercerTiempo() {
             const contenedor = document.getElementById('listaTercerTiempo');
-            if (!tercerTiempoCache.length) {
+            const vigentes = tercerTiempoCache.filter(esVigente72Hs);
+
+            if (!vigentes.length) {
                 contenedor.innerHTML = `
                     <div class="card-pro rounded-3xl p-10 text-center col-span-full">
                         <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl mx-auto mb-3">🍻</div>
                         <h3 class="font-display text-base font-bold text-white">Pronto más comercios</h3>
-                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Acá vas a encontrar kioscos, picadas y bebidas para el post-partido.</p>
+                        <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Acá vas a encontrar kioscos, picadas y bebidas para el post-partido (vigencia de 72 hs).</p>
                     </div>`;
                 return;
             }
 
-            contenedor.innerHTML = tercerTiempoCache.map(t => {
+            contenedor.innerHTML = vigentes.map(t => {
                 const telLimpio = (t.whatsapp || '').replace(/\D/g, '');
                 const msgWsp = encodeURIComponent(`¡Hola ${t.titulo}! Vi su comercio en la sección *Tercer Tiempo* de *Falta Uno SP* y quiero hacerles un pedido / consulta.`);
+                const tieneGps = t.ubicacion && typeof t.ubicacion.lat === 'number' && typeof t.ubicacion.lng === 'number';
+                const urlMaps = tieneGps ? `https://www.google.com/maps?q=${t.ubicacion.lat},${t.ubicacion.lng}` : null;
+
                 return `
                 <div class="card-pro rounded-3xl p-5 flex flex-col justify-between gap-4 border-amber-500/20">
                     <div class="flex items-center gap-4">
                         <img src="${t.imgUrl}" alt="${t.titulo}" class="w-16 h-16 rounded-2xl object-cover border border-amber-500/30 shrink-0 shadow-lg bg-stadium-950">
                         <div class="min-w-0">
-                            <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md inline-block mb-1">
-                                ${t.categoria}
-                            </span>
+                            <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md inline-block">
+                                    ${t.categoria}
+                                </span>
+                                <span class="text-[10px] font-semibold text-slate-400">
+                                    ⏳ ${formatearTiempoRestante72Hs(t)}
+                                </span>
+                            </div>
                             <h3 class="font-display text-base font-extrabold text-white truncate">${t.titulo}</h3>
                             <p class="text-xs text-slate-400 mt-0.5 line-clamp-2">${t.descripcion}</p>
                         </div>
                     </div>
-                    <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                        <span class="text-[11px] text-slate-500 font-medium">Sáenz Peña, Chaco</span>
+                    <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2 flex-wrap">
+                        ${tieneGps
+                            ? `<a href="${urlMaps}" target="_blank" class="bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                                <span>Ver en Maps</span>
+                               </a>`
+                            : `<span class="text-[11px] text-slate-500 font-medium">Sáenz Peña, Chaco</span>`
+                        }
                         <a href="https://wa.me/549${telLimpio}?text=${msgWsp}" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-lg">
                             <i data-lucide="message-circle" class="w-4 h-4"></i>
                             <span>Pedir por WhatsApp</span>
@@ -1872,9 +2106,14 @@
                             pub2Cache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             actualizarRotacionPublicidades();
                         });
+                        onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo_pins'), (snap) => {
+                            tercerTiempoPinsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminPinsTercerTiempo();
+                        });
                         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tercer_tiempo'), (snap) => {
                             tercerTiempoCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                             renderizarTercerTiempo();
+                            if (!document.getElementById('modalAdminPanel').classList.contains('hidden')) renderizarAdminTercerTiempo();
                         });
                     }
                 });
