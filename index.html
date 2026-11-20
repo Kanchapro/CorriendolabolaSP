@@ -87,6 +87,74 @@
             background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
         }
 
+        /* ==================== MODO CLARO ==================== */
+        body.light-mode {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            background-image:
+                radial-gradient(circle at 15% 0%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 8%, rgba(14, 165, 233, 0.08) 0%, transparent 35%);
+        }
+        body.light-mode .header-pro {
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+        body.light-mode .card-pro {
+            background: linear-gradient(150deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(15, 23, 42, 0.09);
+            box-shadow: 0 6px 20px -10px rgba(15, 23, 42, 0.12);
+        }
+        body.light-mode .card-pro:hover {
+            border-color: rgba(16, 185, 129, 0.45);
+        }
+        body.light-mode .fixed.bottom-0 {
+            background: rgba(255, 255, 255, 0.95);
+            border-top-color: rgba(15, 23, 42, 0.09);
+        }
+        body.light-mode .bg-stadium-950,
+        body.light-mode .bg-stadium-950\/90,
+        body.light-mode .bg-stadium-950\/80,
+        body.light-mode .bg-stadium-950\/60 {
+            background-color: #f8fafc !important;
+        }
+        body.light-mode .bg-stadium-900,
+        body.light-mode .bg-stadium-900\/90 {
+            background-color: #ffffff !important;
+        }
+        body.light-mode .bg-stadium-800,
+        body.light-mode .hover\:bg-stadium-800:hover {
+            background-color: #e2e8f0 !important;
+        }
+        body.light-mode .border-white\/10,
+        body.light-mode .border-white\/15,
+        body.light-mode .border-white\/5 {
+            border-color: rgba(15, 23, 42, 0.1) !important;
+        }
+        body.light-mode .text-white {
+            color: #0f172a !important;
+        }
+        body.light-mode .text-slate-100,
+        body.light-mode .text-slate-200,
+        body.light-mode .text-slate-300 {
+            color: #334155 !important;
+        }
+        body.light-mode .text-slate-400 {
+            color: #64748b !important;
+        }
+        body.light-mode input,
+        body.light-mode select {
+            color: #0f172a !important;
+            background-color: #ffffff !important;
+        }
+        body.light-mode .bg-white\/\[0\.04\] {
+            background-color: rgba(15, 23, 42, 0.04) !important;
+        }
+        body.light-mode .hover\:bg-white\/\[0\.08\]:hover,
+        body.light-mode .hover\:bg-white\/10:hover,
+        body.light-mode .hover\:bg-white\/5:hover {
+            background-color: rgba(15, 23, 42, 0.08) !important;
+        }
+
         @keyframes modalFadeIn {
             from { opacity: 0; transform: translateY(12px) scale(0.985); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -127,10 +195,15 @@
         <div class="max-w-2xl mx-auto px-3.5 py-2.5">
             
             <div class="flex items-center justify-between gap-2 mb-2.5">
-                <!-- Izquierda: Compartir -->
-                <button type="button" onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
-                    <i data-lucide="share-2" class="w-4 h-4"></i>
-                </button>
+                <!-- Izquierda: Compartir + Modo Claro/Oscuro -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button type="button" onclick="compartirAplicacion()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Compartir Aplicación">
+                        <i data-lucide="share-2" class="w-4 h-4"></i>
+                    </button>
+                    <button id="btnTema" type="button" onclick="alternarTema()" class="w-9 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-amber-400 border border-white/10 flex items-center justify-center transition active:scale-95 shrink-0" title="Cambiar modo claro / oscuro">
+                        <i id="iconoTema" data-lucide="sun" class="w-4 h-4"></i>
+                    </button>
+                </div>
 
                 <!-- Centro: Logo y Título (Doble toque secreto para Administrador General) -->
                 <div class="flex items-center gap-2.5 cursor-pointer select-none min-w-0" ondblclick="abrirModalAdmin()" title="Comunidad Deportiva Sáenz Peña">
@@ -871,8 +944,45 @@
         const LINK_MERCADO_PAGO = "https://mpago.la/2uXPnd7";
         const LOGO_FALLBACK = "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png";
         const DURACION_72HS_MS = 72 * 60 * 60 * 1000;
+        const CLAVE_TEMA = "faltauno_tema";
 
         let ultimoClickTabCanchas = 0;
+
+        function aplicarTema(esClaro) {
+            document.body.classList.toggle('light-mode', esClaro);
+            document.documentElement.classList.toggle('dark', !esClaro);
+
+            const iconoTema = document.getElementById('iconoTema');
+            const btnTema = document.getElementById('btnTema');
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+
+            if (iconoTema) {
+                iconoTema.setAttribute('data-lucide', esClaro ? 'moon' : 'sun');
+            }
+            if (btnTema) {
+                btnTema.title = esClaro ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro';
+            }
+            if (metaTheme) {
+                metaTheme.setAttribute('content', esClaro ? '#f1f5f9' : '#050a14');
+            }
+            lucide.createIcons();
+        }
+
+        window.alternarTema = () => {
+            const esClaroActual = document.body.classList.contains('light-mode');
+            const nuevoClaro = !esClaroActual;
+            aplicarTema(nuevoClaro);
+            try {
+                localStorage.setItem(CLAVE_TEMA, nuevoClaro ? 'light' : 'dark');
+            } catch (e) {}
+        };
+
+        try {
+            const guardado = localStorage.getItem(CLAVE_TEMA);
+            aplicarTema(guardado === 'light');
+        } catch (e) {
+            aplicarTema(false);
+        }
 
         function obtenerLinkWhatsAppAdmin(mensaje) {
             return `https://wa.me/${NUMERO_ADMIN_WSP}?text=${encodeURIComponent(mensaje)}`;
