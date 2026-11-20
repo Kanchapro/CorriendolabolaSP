@@ -236,22 +236,28 @@
         <!-- SECCIÓN 3: TERCER TIEMPO -->
         <section id="vista-tercer-tiempo" class="hidden space-y-6">
             <!-- BANNER / TARJETA INCENTIVO PARA COMERCIOS (OFERTAS, 2X1, PICADAS) -->
-            <div class="card-pro rounded-2xl p-5 border-amber-500/30 bg-gradient-to-br from-amber-500/15 via-stadium-900 to-stadium-950 flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
-                    🍻
-                </div>
-                <div>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
-                        <span id="badgeModoTercerTiempo" class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                            Alta Libre
-                        </span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/5 text-slate-300 border border-white/10">
-                            Vigencia 72 hs
-                        </span>
+            <div class="card-pro rounded-2xl p-5 border-amber-500/30 bg-gradient-to-br from-amber-500/15 via-stadium-900 to-stadium-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 text-xl">
+                        🍻
                     </div>
-                    <p id="descModoTercerTiempo" class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="font-display text-base font-bold text-white">Promocioná tu Kiosco o Bar 🍔</h2>
+                            <span id="badgeModoTercerTiempo" class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                Alta Libre
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/5 text-slate-300 border border-white/10">
+                                Vigencia 72 hs
+                            </span>
+                        </div>
+                        <p id="descModoTercerTiempo" class="text-xs text-slate-300 mt-0.5">Publicá tus ofertas de picadas, <strong>2x1 en cerveza</strong> y promos para el post-partido ante cientos de deportistas.</p>
+                    </div>
                 </div>
+                <button type="button" onclick="solicitarPinComercioWsp()" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center justify-center gap-1.5 shrink-0">
+                    <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+                    <span>Pedir PIN</span>
+                </button>
             </div>
 
             <div id="listaTercerTiempo" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -402,6 +408,12 @@
                         </button>
                     </div>
                     <p id="estadoPinComercioTt" class="text-[11px] text-slate-400 mt-2"></p>
+                    <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                        <span class="text-[11px] text-slate-400">¿Todavía no tenés PIN para tu local?</span>
+                        <button type="button" onclick="solicitarPinComercioWsp()" class="text-[11px] font-extrabold text-emerald-400 hover:text-emerald-300 underline shrink-0">
+                            Pedir PIN por WhatsApp
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -799,6 +811,20 @@
         const LOGO_FALLBACK = "https://raw.githubusercontent.com/Kanchapro/FaltaunoSP/refs/heads/main/logo.png";
         const DURACION_72HS_MS = 72 * 60 * 60 * 1000;
 
+        function obtenerLinkWhatsAppAdmin(mensaje) {
+            return `https://wa.me/${NUMERO_ADMIN_WSP}?text=${encodeURIComponent(mensaje)}`;
+        }
+
+        window.solicitarPinComercioWsp = () => {
+            const mensaje = "¡Hola! Quiero publicar mi kiosco o local en *Tercer Tiempo* de *Falta Uno SP* y necesito que me asignen un PIN de comercio. 🍻";
+            window.open(obtenerLinkWhatsAppAdmin(mensaje), '_blank');
+        };
+
+        window.solicitarPinComplejoWsp = () => {
+            const mensaje = "¡Hola! Quiero sumar mi complejo deportivo a *Falta Uno SP* y necesito que me habiliten mi PIN de acceso para autogestionar mis horarios. 🏟️";
+            window.open(obtenerLinkWhatsAppAdmin(mensaje), '_blank');
+        };
+
         function comprimirImagenArchivo(file, maxAncho = 420, calidad = 0.68) {
             return new Promise((resolve, reject) => {
                 if (!file) {
@@ -919,11 +945,6 @@
             const hrs = horas % 24;
             return hrs > 0 ? `Vence en ${dias}d ${hrs}h` : `Vence en ${dias}d`;
         }
-
-        window.solicitarPinComplejoWsp = () => {
-            const mensaje = encodeURIComponent("¡Hola! Quiero sumar mi complejo deportivo a *Falta Uno SP* y necesito que me habiliten mi PIN de acceso para autogestionar mis horarios. 🏟️");
-            window.open(`https://wa.me/${NUMERO_ADMIN_WSP}?text=${mensaje}`, '_blank');
-        };
 
         window.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
@@ -1074,7 +1095,7 @@
             const pinEncontrado = tercerTiempoPinsCache.find(p => String(p.pin).trim() === pinIngresado && p.activo !== false);
             if (!pinEncontrado) {
                 estadoEl.className = "text-[11px] text-rose-400 font-semibold mt-2";
-                estadoEl.textContent = "❌ PIN no válido o inactivo. Consultá con administración.";
+                estadoEl.textContent = "❌ PIN no válido o inactivo. Pedilo a administración por WhatsApp.";
                 return;
             }
 
